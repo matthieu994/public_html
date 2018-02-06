@@ -1,19 +1,14 @@
-<html>
-  <head>
-    <title>PHP - TP1</title>
-    <script>
-      setTimeout(function myFunction() {
-      location.reload();
-      }, 700);
-    </script>
-  </head>
-  <body>
-    <?php include("rebours.php"); ?>
-    <h1 style="text-align: center;">Temps restant avant la fin de l'annee</h1>
-    <h3 style="text-align: center;">Il reste 
-      <?php echo $day?> jours, 
-      <?php echo $hour?> heures, 
-      <?php echo $min?> minutes et 
-      <?php echo $sec?> secondes.</h3>
-  </body>
-</html>
+<?php
+echo "Here are our files";
+echo "<br><br>";
+$path = ".";
+$dh = opendir($path);
+$i=1;
+while (($file = readdir($dh)) !== false) {
+    if($file[0] != '.' && $file != "README.md" && $file != ".." && $file != "index.php" && $file != ".htaccess" && $file != "error_log" && $file != "cgi-bin") {
+        echo "<a href='$path/$file'>$file</a><br /><br />";
+        $i++;
+    }
+}
+closedir($dh);
+?>
