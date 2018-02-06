@@ -1,6 +1,4 @@
 <?php
-	echo '<h1 style="text-align: center;">Temps restant avant la fin de l\'année</h1>';
-	echo "\n";
 	$end = mktime(8, 0, 0, 7, 1, 2018);
 	$today = time();
 	$diff = ($end-$today);
@@ -16,6 +14,5 @@
 	$min = floor($min % 60); // Minutes restantes
 	$hour = floor($hour % 24); // Heures restantes
 	$day = floor($day); // Jours restants
-	echo '<h3 style="text-align: center;">Il reste '. $day .' jours '. $hour .' heures, '. $min .' minutes et '. $sec .' secondes.</h3>';
 	}
 ?>
