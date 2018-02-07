@@ -108,6 +108,7 @@ $_SESSION['score'] = 0;
    echo '<img class="pcplayed w3-container w3-center w3-animate-right" src="http://picoplex.net/games/rpslp/paper.png">';
    if($pc == 3)
    echo '<img class="pcplayed w3-container w3-center w3-animate-right" src="http://picoplex.net/games/rpslp/scissors.png">';
+   echo '<div class="w3-container w3-center w3-animate-top">';
    if(($pl == 1 && $pc == 2) || ($pl == 2 && $pc == 3) || ($pl == 3 && $pc == 1)) {
       echo '<h1>Perdu!</h1>';
       if($_SESSION['score'] > 0)
@@ -120,6 +121,7 @@ $_SESSION['score'] = 0;
    else {
       echo '<h1>égalité!</h1>';
    }
+   echo '</div>';
    echo '</div>';
    ?>
    <button onclick="logout.php" type="button" id="reset">Recommencer</button>
