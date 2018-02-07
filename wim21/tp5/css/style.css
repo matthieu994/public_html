@@ -1,0 +1,10 @@
+table.contacts{
+	width:100%;
+}
+table.contacts tr:nth-child(2n){
+	background-color:#f5f5f5;
+}
+
+input[type=text]{
+	width:auto;
+}

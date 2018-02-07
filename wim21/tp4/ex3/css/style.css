@@ -1,0 +1,28 @@
+table.labyrinthe{
+border-collapse: collapse;
+ table-layout:fixed;
+  margin-left:auto;
+    margin-right:auto;
+}
+table.labyrinthe td {
+border : 1px solid #aaaaaa;
+width:45px;
+height:45px;
+padding : 0px;
+margin:0px;
+  overflow: hidden;
+    white-space: nowrap;
+}
+
+table.labyrinthe td.mur {
+background-color : #C65146;//EBE1D3;//#da3c3c;
+}
+
+table.labyrinthe td.thesee {
+
+background-color : #F17F42;;
+}
+table.labyrinthe td.sortie {
+
+background-color : #10a887;
+}
