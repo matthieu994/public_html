@@ -293,7 +293,11 @@ iframe {
    display: block;
    width: 100%;
    position: absolute;
+<<<<<<< HEAD
    top: 44px;
+=======
+   top: 40px;
+>>>>>>> 48483d86ddb6f0a61042615fea6624e4e46dcc97
    left: 35px;
 
 
@@ -439,8 +443,13 @@ iframe {
 }
 
 .alert-validate::after {
+<<<<<<< HEAD
    content: "!";
    font-family: Ubuntu;
+=======
+   content: "\f12a";
+   font-family: FontAwesome;
+>>>>>>> 48483d86ddb6f0a61042615fea6624e4e46dcc97
    font-size: 16px;
    color: #c80000;
 
