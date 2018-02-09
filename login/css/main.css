@@ -438,7 +438,11 @@ iframe {
 
 .alert-validate::after {
    content: "!";
+<<<<<<< HEAD
    font-family: Roboto;
+=======
+   font-family: Ubuntu;
+>>>>>>> origin/master
    font-size: 16px;
    color: #c80000;
 
