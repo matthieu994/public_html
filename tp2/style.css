@@ -64,7 +64,7 @@ input[type=range] {
 }
 input[type=submit], input[type=reset] {
    font-size: 1em;
-   width: 80%;
+   width: 100%;
    color: white;
    padding: 14px 20px;
    margin: 8px 0;
