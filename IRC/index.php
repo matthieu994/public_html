@@ -1,53 +1,50 @@
 <?php
 session_start();
-if(!isset($_SESSION['connected'])) {
-	$_SESSION['connected'] = 0;
+if(!isset($_SESSION["connected"])) {
+   $_SESSION["connected"] = 0;
+}
+if($_SESSION["connected"] == 1) {
+   header('Location: ./salon.php');
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title><?php if($_SESSION["connected"]) echo $_SESSION["username"]; else echo 'Login' ?></title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="style.css">
+   <title> Login </title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" type="text/css" href="style.css">
+
+   <!-- <style media="screen">
+   .select {
+   border: 1px solid red;
+}
+</style> -->
 
 </head>
 <body>
 
-	<?php
-	if($_SESSION["connected"]) {
-		echo '<h1 align="center" class="username"> Bonjour, '.$_SESSION["username"].'</h1>';
-		echo '<a class="btn-8" href="logout.php">Se déconnecter</a>';
-	}
-	?>
+   <div class="container-login">
+      <form method="POST" action="salon.php">
 
-		<div class="container">
+         <input class="animated bounceIn pseudo" type="text" name="pseudo" placeholder="Pseudo"
+         <?php
+         if(isset($_COOKIE["pseudo"]))
+         echo 'value="' . $_COOKIE["pseudo"] . '"';
+         ?>
+         required>
 
-			<?php
-			if($_SESSION["connected"]) {
+         <select class="animated bounceIn salon-select" name="salon">
+            <option>APL</option>
+            <option>WIM</option>
+            <option>SQL</option>
+            <option>ASR</option>
+         </select>
 
-			}
-			else {
-				echo '
-				<form method="POST" action="login.php" class="container-login">
+         <button class="login animated zoomIn">Rejoindre</button>
 
-				<div class="pseudo">
-				<input class="input100" type="text" name="username" placeholder="Pseudo">
-				</div>
+      </form>
+   </div>
 
-				<div class="salon">
-				<input class="input100" type="password" name="pass" placeholder="Salon">
-				</div>
-
-				<div class="container-button">
-				<button class="login100-form-btn">Rejoindre</button>
-				</div>
-
-				</form>';
-			}
-			?>
-		</div>
-		
 </body>
 </html>

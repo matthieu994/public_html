@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION["connected"] = 0;
-$_SESSION["try"] = 0;
+session_destroy();
+$_SESSION = array();
 header('Location: .');
 ?>
