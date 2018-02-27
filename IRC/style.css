@@ -2,6 +2,8 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css";
 @import "https://fonts.googleapis.com/css?family=Roboto+Mono:300,700";
 
+.animated{-webkit-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:none!important;animation-fill-mode:none!important}
+
 /* -------------------------- BASIC STYLE ------------------------------------- */
 
 * {
@@ -25,7 +27,7 @@ body {
    background-color: #222C28;
    color: white;
    letter-spacing: 1px;
-   overflow: hidden;
+   overflow-x: hidden;
 
    width: 100%;
    height: 100%;
@@ -35,14 +37,21 @@ h1, h2, h3, h4 {
    padding: 5px;
 }
 
+b {
+   font-weight: bold;
+}
+
 /* -------------------------- INPUTS STYLE ------------------------------------- */
 
 .container-login {
-   /* //width: 300px; */
-   position: absolute;
+   /* position: absolute;
    left: 40%;
-   top: 40%;
-   /* //border: 1px solid red; */
+   top: 40%; */
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .pseudo, .salon-select {
@@ -107,9 +116,9 @@ h1, h2, h3, h4 {
 
 }
 
-/* -------------------------- DECONNEXION STYLE ------------------------------------- */
+/* -------------------------- PROFILE STYLE ------------------------------------- */
 
-.profil {
+.header {
    padding: 10px 16px;
    background: #171e1b;
    color: white;
@@ -117,15 +126,6 @@ h1, h2, h3, h4 {
    position: fixed;
    top: 0;
    width: 100%;
-}
-
-.irc {
-   margin-top: 150px;
-}
-
-.bienvenue {
-   text-align: center;
-   font-size: 25px;
 }
 
 .logout {
@@ -156,21 +156,320 @@ h1, h2, h3, h4 {
    background: #420909;
 }
 
+/*------------------------ SETTINGS STYLE ------------------------------------*/
+
+#profil {
+   display: -webkit-inline-box !important;
+}
+
 .dropdown {
-   position: absolute;
+   position: fixed;
    left: 0;
    display: none;
    visibility: hidden;
-
+   z-index: 99 !important;
    background-color: #171e1b;
+   box-shadow: 3px 3px 3px #151c19;
 
+   /* line-height: 35px; */
    padding: 15px;
 }
 
 .dropdown p {
-   line-height: 38px;
+   padding: 10px;
+   font-size: 19px;
 }
 
-.profil-info {
-   font-size: 22px;
+.profil-settings {
+   cursor: pointer;
+   padding: 5px;
+}
+
+.profil-settings i {
+   font-size: 28px;
+   float: right;
+}
+
+.settings {
+   visibility: hidden;
+   display: none;
+
+   width: 25vw;
+   height: 40vh;
+   min-height: 320px;
+   min-width: 200px;
+   margin-left: 37.5%;
+   margin-top: 15vh;
+
+   background-color: rgba(21, 28, 25, 1);
+   border-radius: 5px;
+
+   -webkit-box-shadow: 0px 0px 1px 100vmax rgba(0,0,0,0.8);
+   -moz-box-shadow: 0px 0px 1px 100vmax rgba(0,0,0,0.8);
+   box-shadow: 0px 0px 1px 100vmax rgba(0,0,0,0.8);
+
+   /* position: absolute;
+   left: 40%;
+   top: 40%; */
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.settings .date span {
+   margin-top: 10px;
+   padding: 4px 4px 4px 4px;
+   background-color: rgb(42, 64, 66);
+}
+
+.settings .other {
+   margin-top: 20px;
+}
+
+.settings div span {
+   white-space: normal;
+}
+
+.settings .colors {
+   width: 100%;
+   display: flex;
+   position: absolute;
+   height: 50%;
+   padding: 0;
+   bottom: 0;
+
+   min-height: 50%;
+   background-color: #06130e4f;
+}
+
+.colors input {
+   all: unset;
+   height: 100%;
+   width: 50%;
+}
+
+#othercolor {
+}
+
+#usercolor {
+
+}
+
+/* -------------------------- CHAT STYLE ------------------------------------- */
+
+.irc {
+   width: 70vw;
+   height: 80vh;
+   margin-left: 15%;
+   margin-top: 130px;
+
+   /* border: 1px solid red; */
+}
+
+.messages {
+   z-index: -1;
+   display: block;
+   /* border: 1px solid blue; */
+   height: 65%;
+   max-width: 100%;
+   min-height: 30%;
+   margin-top: 20px;
+   margin-bottom: 20px;
+
+   background-color: #2a3530;
+   border-radius: 5px;
+   box-shadow: 3px 3px 3px #151c19;
+
+   resize: both;
+   overflow: auto;
+}
+
+.messages::-webkit-scrollbar-track
+{
+   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+   /* border-radius: 5px; */
+   background-color: #2a3530;
+}
+
+.messages::-webkit-scrollbar
+{
+   width: 12px;
+   background-color: #171e1b;
+}
+
+.messages::-webkit-scrollbar-thumb
+{
+   /* border-radius: 5px; */
+   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+   background-color: #171e1b;
+}
+
+.chat {
+   /* display: block;
+   border: 1px solid green;
+   height: 20%;
+
+   background-color: #171e1b;
+   box-shadow: 3px 3px 3px #151c19; */
+}
+
+textarea {
+   height: 100px;
+   width: 100%;
+   max-width: 100%;
+   min-height: 50px;
+
+   -webkit-appearance: none;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+
+   border: none;
+   border-radius: 5px;
+   outline: none;
+   resize: both;
+   overflow: auto;
+
+   color: white;
+   font-size: 16px;
+   padding-top: 15px;
+   padding-left: 15px;
+
+   background-color: #171e1b;
+   box-shadow: 3px 3px 3px #151c19;
+}
+
+textarea::placeholder {
+   color: grey;
+   font-size: 16px;
+}
+
+.bienvenue {
+   text-align: center;
+   font-size: 25px;
+}
+
+.chat form {
+   display: flex;
+}
+
+.envoyer {
+   display: block;
+   width: 150px;
+   height: 40px;
+   outline: none;
+   border: none;
+
+   padding: 8px;
+   margin-top: 12px;
+   margin-bottom: 20px;
+   margin-left: 30px;
+   border-radius: 5px;
+
+   color: white;
+   background: #2a3f35;
+   /* text-transform: uppercase; */
+
+   font-size: 17px;
+   cursor: pointer;
+   box-shadow: 2px 2px 2px #151c19;
+}
+
+form *:hover, .messages:hover, form *:focus {
+   transition: all 0.5s ease-out;
+   box-shadow: none;
+}
+
+/*------------------- MESSAGES -------------------------*/
+
+/* Premier message */
+.messages div:first-child {
+   padding-top: 15px;
+}
+
+/* .messages div:last-child {
+padding-bottom: 15px;
+} */
+
+div:last-child span {
+   margin-bottom: 15px;
+}
+
+/* Autres messages */
+.messages div, .settings div {
+   padding: 5px 15px 0px 15px;
+   display: flow-root;
+}
+
+/* Texte des messages */
+.messages span, .settings span {
+   padding: 2.5px 10px 4.5px 10px;
+   border-radius: 5px;
+   white-space: pre-wrap;
+   display: -webkit-inline-box;
+}
+
+.user span {
+   float: right;
+   clear: both;
+   /* margin-left: 30px; */
+   /* margin-top: 5px; */
+}
+
+.other {
+   margin-right: 50px;
+}
+
+.user {
+   margin-left: 50px;
+}
+
+.other span {
+   /* margin-right: 30px; */
+}
+
+/*--------------------- DATE ET HEURE ------------------------*/
+
+.date {
+   text-align: center;
+}
+
+.date span {
+   background-color: rgb(42, 64, 66);
+}
+
+.time {
+   display: none;
+   transition: visibility 0s, opacity 0.5s ease;
+   margin-left: 5px;
+   margin-right: 5px;
+}
+
+.user span ~ .time {
+   margin-top: 2px;
+}
+
+.other span:hover {
+   background-color: rgba(61, 81, 74, 0.7);
+}
+
+.other span:hover ~ .time {
+   display: -webkit-inline-box;
+}
+
+.user span:hover {
+   background-color: rgba(28, 40, 36, 0.7);
+}
+
+.user span:hover ~ .time {
+   display: -webkit-inline-box;
+}
+
+.other label.time {
+}
+
+.user label.time {
+   float: right;
 }
