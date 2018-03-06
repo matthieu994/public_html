@@ -70,7 +70,6 @@ $salon = strtoupper($_SESSION["salon"]);
          <input type="color" id="othercolor">
          <input type="color" id="usercolor">
       </div>
-
    </div>
 
    <div class="irc animated <?php if(!$_COOKIE["return"]) echo "zoomIn";?>">
