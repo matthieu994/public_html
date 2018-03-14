@@ -1,5 +1,5 @@
 <?php
-$db = mysqli_connect('localhost', 'root', ' ', 'TP5');
+$db = mysqli_connect('localhost', 'root', 'root ', 'TP5');
 if(!$db)
   echo "échec";
 // Check connection
