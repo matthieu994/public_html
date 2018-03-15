@@ -72,9 +72,9 @@ mysqli_close($db);
 
    <div class="container" id="container_dettes" style="display: none">
       <?php
-      $nom =  $_SESSION['nom'];
+      $nom = $_SESSION['nom'];
       include('bdd.php');
-      $req = $db->prepare("SELECT payeur,article,prix*quantite FROM listeDeCourse WHERE payeur IS NOT NULL");
+      $req = $db->prepare("SELECT payeur,article,prix*quantite FROM listeDeCourse WHERE payeur IS NOT NULL ORDER BY (prix*quantite) DESC");
       // $req->bind_param("s", $nom);
       $req->execute();
 
@@ -104,12 +104,12 @@ mysqli_close($db);
       while($row = $req->fetch_array())
       {
          $dette = round(($row['montant'] - $avg), 1);
-         $bg = "#b7141461";
+         $bg = "rgba(183, 20, 20, 0.6)";
          if($dette > 0) {
             $dette = '+' . $dette;
-            $bg = "#2ba73661";
+            $bg = "rgba(72, 184, 20, 0.6)";
          }
-         echo '<span class="paiement">'. $row['personne'] . '</span><span class="montant" style="background-color:'. $bg .'">' . $dette .'€</span>';
+         echo '<div class="data"><span class="paiement">'. $row['personne'] . '</span><span class="montant" style="background-color:'. $bg .'">' . $dette .'€</span></div>';
       }
 
 
