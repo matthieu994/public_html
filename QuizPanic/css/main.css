@@ -68,7 +68,6 @@ header {
 
 .logout {
    width: 200px;
-   height: 20px;
    outline: none;
    border: none;
 
@@ -76,22 +75,24 @@ header {
    border-radius: 5px;
 
    position: absolute;
-   right: 50px;
+   right: 15px;
    top: 15px;
 
+   background-color: rgba(15, 68, 86, 0.72);
    color: white;
-   background: #560f0f;
 
    vertical-align: middle;
    text-align: center;
    text-decoration: none;
    font-size: 17px;
    cursor: pointer;
+   transition: 0.25s ease-in;
 }
 
 .logout:hover {
-   transition: all 0.25s ease-in;
-   background: #420909;
+   background-color: rgba(15, 68, 86, 0.2);
+   color: white;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.4);
 }
 
 /* -------------------------- CONTAINER STYLE ------------------------------------- */
