@@ -79,12 +79,17 @@ h1 {
    /* border: 1px solid white; */
 }
 
+form {
+    margin-top: 30vh;
+    display: -moz-groupbox;
+}
+
 .pseudo, .login {
    display: block;
 }
 .login {
    margin-top: 20px;
-   margin-left: 50px !important;
+   //margin-left: 40px !important;
 }
 
 table {

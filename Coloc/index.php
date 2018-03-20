@@ -21,11 +21,15 @@ if($_SESSION["connected"] == 1 && isset($_SESSION["nom"])) {
    <div class="container">
       <form method="POST" action="courses.php">
 
-         <input class="pseudo" type="text" name="nom" placeholder="Pseudo" required>
+         <input class="pseudo" type="text" name="nom" placeholder="Pseudo" autocomplete="off" required>
          <button class="ajouter login">Rejoindre</button>
 
+  
+         <div id="results">
+         </div>
       </form>
    </div>
 
 </body>
+<script src="script.js"></script>
 </html>
