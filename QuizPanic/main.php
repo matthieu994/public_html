@@ -17,7 +17,7 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          <img src="img/menu.png" alt="">
          <!-- <h1 style="vertical-align: 12px; display: inline-block; cursor: pointer;"> Profil </h1> -->
          <div id="dropdown">
-		   <p> Mon pseudo:<span><?php echo $_COOKIE["username"]; ?></span></p>
+		   <p> Mon pseudo:<span><?php echo $_SESSION["username"]; ?></span></p>
             <p> Messages envoyés:</p>
             <p> Couleur:</p>
          </div>
