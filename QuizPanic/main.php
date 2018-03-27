@@ -6,7 +6,7 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 <html>
 <head>
    <meta charset="utf-8">
-   <title><?php echo $_COOKIE["username"] . ' - ' . 'Accueil' ?></title>
+   <title><?php echo $_SESSION["username"] . ' - ' . 'Accueil' ?></title>
    <link rel="stylesheet" type="text/css" href="css/main.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
