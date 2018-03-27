@@ -50,7 +50,7 @@ if(!isset($_SESSION["bad_login"])) {
          <div class="username">
             <span class="animated fadeIn">USERNAME</span>
             <i class="fas fa-user" style="color: #8aaaaa; font-size: 12px; position: absolute; left: 0; top: 38%"></i>
-            <input autocomplete="off" autocomplete="new-password" type="text" name="username" placeholder="<?php if(isset($_SESSION["username"])) echo $_SESSION["username"]; else echo "Username" ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
+            <input autocomplete="off" autocomplete="new-password" type="text" name="username" placeholder="<?php if(isset($_SESSION["username"])) echo $_SESSION["username"]; else echo "Username";?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
          </div>
          <div class="password">
             <span class="animated fadeIn">PASSWORD</span>
