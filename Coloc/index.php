@@ -14,6 +14,7 @@ if($_SESSION["connected"] == 1 && isset($_SESSION["nom"])) {
    <title> Login </title>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
@@ -24,7 +25,7 @@ if($_SESSION["connected"] == 1 && isset($_SESSION["nom"])) {
          <input class="pseudo" type="text" name="nom" placeholder="Pseudo" autocomplete="off" required>
          <button class="ajouter login">Rejoindre</button>
 
-  
+
          <div id="results">
          </div>
       </form>

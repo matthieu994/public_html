@@ -1,22 +1,21 @@
 <?php
 session_start();
 
-require ('bdd.php');
+require('bdd.php');
 
 if(!isset($_POST['username']) || !isset($_POST['password'])) {
    header('Location: .');
    return;
 }
 
-//$mail = mysqli_real_escape_string($db, stripslashes($_POST['mail']));
-$username = mysqli_real_escape_string($db, stripslashes($_POST['username']));
-$password = mysqli_real_escape_string($db, stripslashes($_POST['password']));
+$username = $_POST['username'];
+$password = $_POST['password'];
+$req = $db->prepare("SELECT * from users WHERE username=? AND password=?");
+$req->bind_param('ss', $username, md5($password));
+$req->execute();
+$req->store_result();
 
-$query = "SELECT * from users WHERE username='$username' AND password='". md5($password) ."'";
-
-$result = mysqli_query($db, $query) or die(mysql_error());
-echo "error";
-if(mysqli_num_rows($result) == 1) {
+if($req->num_rows == 1) {
    $_SESSION["username"] = $username;
    $_SESSION['connected'] = 1;
    header('Location: main.php');
@@ -25,5 +24,6 @@ else {
    $_SESSION["bad_login"] = 1;
    header('Location: .');
 }
-mysqli_close($db);
+$req->close();
+$db->close();
 ?>

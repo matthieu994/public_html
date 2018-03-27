@@ -1,7 +1,4 @@
-@import "http://fonts.googleapis.com/css?family=Roboto+Mono:300,700";
 @import "http://fonts.googleapis.com/css?family=Lato:400,900i";
-@import "http://use.fontawesome.com/releases/v5.0.7/css/all.css";
-@import "http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css";
 
 /* -------------------------- BASIC STYLE ------------------------------------- */
 
@@ -9,7 +6,7 @@
    margin: 0px;
    padding: 0px;
 
-   font-family: 'Roboto Mono', sans-serif;
+   font-family: 'Roboto', sans-serif;
    font-weight: 300;
 }
 
@@ -93,41 +90,12 @@ section.alert span {
    background-color: rgba(183, 36, 36, 0.54);
 }
 /* -------------------------- INPUTS STYLE ------------------------------------- */
-input {
-   -webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
-   box-sizing: border-box;
-
-   background: unset;
-   border-radius: 15px;
-   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.16);
-   /* background-color: #2B3135; */
-   border: none;
-   display: block;
-   color: white;
-   outline: none;
-
-   width: 270px;
-   height: 40px;
-   margin-left: 20px;
-   margin-top: 18px;
-   padding: 10px 14px 10px 8px;
-
-   font-size: 17px;
-}
-input:focus {
-   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.04);
-}
-input:-webkit-autofill {
-   /* box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.14) !important; */
-   -webkit-box-shadow: 0 0 0 20px rgb(53, 76, 82) inset;
-   border-radius: 0;
-   -webkit-text-fill-color: white !important;
-   caret-color: white;
-}
-
 .password input {
    width: 227px;
+   letter-spacing: 4.5px;
+}
+.password input::placeholder {
+   letter-spacing: 1.1px;
 }
 .password input:last-child {
    width: 270px;
@@ -144,16 +112,7 @@ input:-webkit-autofill {
    transform: translate(-50%, -50%);
    text-align: center;
 }
-input::placeholder {
-   color: rgba(255, 255, 255, 0.16);
-   font-style: italic;
-   font-size: 16px;
-}
 
-.container-signup {
-   display: none;
-   visibility: hidden;
-}
 .username, .password {
    /* width: 330px; */
    margin-bottom: 18px;
@@ -176,7 +135,7 @@ input::placeholder {
    background: #aac4c4;
    /* text-transform: uppercase; */
 
-   font-weight: bold;
+   letter-spacing: 2px;
    font-size: 17px;
    cursor: pointer;
    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
@@ -234,9 +193,11 @@ img[src="img/avatar.png"] {
    font-weight: 400;
    letter-spacing: 1.5px;
    color: #e3f6f7;
+   margin-right: 8px;
 }
 
 .signup button {
+   width: 175px;
    font-family: 'Lato';
    transition: 0.25s ease-in;
    outline: none;
@@ -247,7 +208,6 @@ img[src="img/avatar.png"] {
    color: #e3f6f7;
    font-size: 20px;
 
-   margin-left: 15px;
    padding: 12px 25px 12px 25px;
    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
 }

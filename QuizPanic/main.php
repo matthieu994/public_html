@@ -7,17 +7,21 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 <head>
    <meta charset="utf-8">
    <title><?php echo $_SESSION["username"] . ' - ' . 'Accueil' ?></title>
+   <link rel="shortcut icon" href="img/fav.ico">
    <link rel="stylesheet" type="text/css" href="css/main.css">
+   <link rel="stylesheet" type="text/css" href="css/common.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
 
    <header>
       <div id="profil">
-         <img src="img/menu.png" alt="">
+         <i class="fas fa-cogs hoverable"></i>
+         <span id="help">Settings</span>
+         <!-- <img src="img/menu.png" alt=""> -->
          <!-- <h1 style="vertical-align: 12px; display: inline-block; cursor: pointer;"> Profil </h1> -->
          <div id="dropdown">
-		   <p> Mon pseudo:<span><?php echo $_SESSION["username"]; ?></span></p>
+            <p> Mon pseudo:<span><?php echo $_SESSION["username"]; ?></span></p>
             <p> Messages envoyés:</p>
             <p> Couleur:</p>
          </div>
@@ -25,31 +29,60 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
       <a class="logout" href="logout.php">Se déconnecter</a>
    </header>
 
-   <div class="container">
-      <div id="play">
-         <span>Créer ou héberger une partie</span>
-         <img src="img/sign-in.png" alt="">
+   <section role="page">
+      <div class="container">
+         <div id="play" class="animated zoomIn hoverable">
+            <img src="img/sign-in.png" alt="">
+         </div>
+         <span id="help">Créer ou rejoindre une partie</span>
+         <div id="question" class="animated zoomIn hoverable">
+            <img src="img/question.png" alt="">
+         </div>
+         <span id="help">Gérer vos questions</span>
+
+         <section id="container-fenetre" style="display: none">
+            <div class="fenetre animated slideInUp" id="container-play" style="display: none">
+               <i class="fas fa-chevron-left hoverable"></i>
+               <span id="help">Retour</span>
+               <i class="fas fa-chevron-right hoverable"></i>
+               <span id="help">Gérer vos questions</span>
+               <div id="join">
+                  <span class="title">Rejoindre une partie</span>
+               </div>
+               <div id="rooms">
+                  <span class="title">Gérer mes salles</span>
+               </div>
+            </div>
+            <div class="fenetre animated slideInUp" id="container-question" style="display: none">
+               <i class="fas fa-chevron-left hoverable"></i>
+               <span id="help">Retour</span>
+               <i class="fas fa-chevron-right hoverable"></i>
+               <span id="help">Créer ou rejoindre une partie</span>
+               <div id="join">
+                  <span class="title">Ajouter une question</span>
+                  <div class="">
+                     <input type="text" name="" value="">
+                     <input type="text" name="" value="">
+                  </div>
+               </div>
+               <div id="rooms">
+                  <span class="title">Gérer mes questions</span>
+               </div>
+            </div>
+         </section>
       </div>
-      <div id="question">
-         <span>Créer une question</span>
-         <img src="img/question.png" alt="">
+
+      <div class="notification" style="display: none">
+         <div id="">
+            <span>Vous êtes toujours là ?</span>
+            <span>Vous serez déconnecté dans <label id="timeleft"></label> secondes</span>
+            <i class="fas fa-times" id="exitnotif"></i>
+         </div>
       </div>
-   </div>
+   </section>
 
 
 </body>
-<script>
-/*------------------------PROFILE DROPDOWN--------------------------*/
-// $(document).ready(function(){
-//    var userMenu = $('header .profile');
-//    userMenu.on('touchend', function(e){
-//       userMenu.addClass('show');
-//       e.preventDefault();
-//       e.stopPropagation();
-//    });
-//    $(document).on('touchend', function(e){
-//       userMenu.removeClass('show');
-//    });
-// });
-</script>
+<script src="js/main.js"></script>
+<script src="js/timer.js"></script>
 </html>
