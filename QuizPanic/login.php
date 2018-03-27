@@ -18,6 +18,7 @@ $result = mysqli_query($db, $query) or die(mysql_error());
 echo "error";
 if(mysqli_num_rows($result) == 1) {
    setcookie('username', $username, time() + (86400 * 30), '/QuizPanic');
+   //$_SESSION["username"] = $username;
    $_SESSION['connected'] = 1;
    header('Location: main.php');
 }
