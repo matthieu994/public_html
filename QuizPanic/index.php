@@ -46,7 +46,7 @@ if(!isset($_SESSION["bad_login"])) {
    </div>
 
    <div class="container-login">
-  <?php echo $_SESSION["username"]  ?>
+  <?php echo $_SESSION["username"]; ?>
       <form method="POST" action="login.php" style="zoom: 120%; -moz-transform: scale(1.2);">
          <div class="username">
             <span class="animated fadeIn">USERNAME</span>
