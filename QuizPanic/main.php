@@ -61,8 +61,19 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
                <div id="join">
                   <span class="title">Ajouter une question</span>
                   <div class="">
-                     <input type="text" name="" value="">
-                     <input type="text" name="" value="">
+                     <textarea rows="2" cols="20" placeholder="Question" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Question'"></textarea>
+                     <input type="text" name="" value="" placeholder="Réponse 1" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 1'">
+		     <input type="text" name="" value="" placeholder="Réponse 2" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 2'">
+		     <input type="text" name="" value="" placeholder="Réponse 3" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 3'">
+		     <input type="text" name="" value="" placeholder="Réponse 4" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 4'">
+		     <button>Ajouter</button>
+		     <select>
+		        <option value="" required selected>Bonne réponse</option>
+		        <option value="">Réponse 1</option>
+		        <option value="">Réponse 2</option>
+		        <option value="">Réponse 3</option>
+		        <option value="">Réponse 4</option>
+		     </select>
                   </div>
                </div>
                <div id="rooms">
