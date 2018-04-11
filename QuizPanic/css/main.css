@@ -308,6 +308,9 @@ section[role=page] { width: 100%; height: 100%; position: relative; }
 .hoverable:hover + #help {
   display: inline;
 }
+section.alert div {
+  margin: 20px 0 0 0;
+}
 
 @keyframes shake_anim {
   2% {

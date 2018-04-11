@@ -80,3 +80,67 @@ $("#container-question .fa-chevron-right").click(function () {
       // $("#container-play").removeClass("slideInRight").addClass("slideInUp");
    }, 300);
 });
+
+/*-----------------------------------ADD QUESTION----------------------------------------*/
+$("#add button").click(function() {
+   $("section.alert div").each(function(){$(this).hide()});
+   if($("#add textarea").val().trim().length <= 10) {
+      $("#alert_question").fadeIn();
+      $("#add button").prop("disabled", true);
+      setTimeout(function () {
+         $("#alert_question").fadeOut();
+      }, 4000);
+   }
+   else if($("#add input").eq(0).val().trim() <= 4 || $("#add input").eq(1).val().trim() <= 4 || $("#add input").eq(2).val().trim() <= 4 || $("#add input").eq(3).val().trim() <= 4) {
+      $("#alert_answer2").fadeIn();
+      $("#add button").prop("disabled", true);
+      setTimeout(function () {
+         $("#alert_answer2").fadeOut();
+      }, 4000);
+   }
+   else if($("#add select").val() <= 0) {
+      $("#alert_answer").fadeIn();
+      $("#add button").prop("disabled", true);
+      setTimeout(function () {
+         $("#alert_answer").fadeOut();
+      }, 4000);
+   }
+   else {
+      addQuestion();
+   }
+   setTimeout(function () {
+      $("#add button").prop("disabled", false);
+   }, 1000);
+});
+
+function loadQuestions() {
+   $("#questions_list").load("question.php", {
+      getQuestions : '1'
+   });
+}
+
+function addQuestion() {
+   $.post(
+      'question.php',
+      $("form#addquestion").serialize()
+   )
+   .done(function() {
+      $("section.alert div").each(function(){$(this).hide()});
+      $("#success_addquestion").fadeIn();
+      setTimeout(function () {
+         $("#success_addquestion").fadeOut();
+      }, 4000);
+   })
+   .fail(function() {
+      $("section.alert div").each(function(){$(this).hide()});
+      $("#fail_addquestion").fadeIn();
+      setTimeout(function () {
+         $("#fail_addquestion").fadeOut();
+      }, 4000);
+   })
+   .always(function() {
+      $("form#addquestion")[0].reset();
+      loadQuestions();
+   });
+}
+loadQuestions();

@@ -10,7 +10,7 @@ if(!isset($_POST['username']) || !isset($_POST['password'])) {
 
 $username = $_POST['username'];
 $password = $_POST['password'];
-$req = $db->prepare("SELECT * from users WHERE username=? AND password=?");
+$req = $db->prepare("SELECT * from users WHERE BINARY username=? AND password=?");
 $req->bind_param('ss', $username, md5($password));
 $req->execute();
 $req->store_result();
