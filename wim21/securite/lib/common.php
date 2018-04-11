@@ -5,8 +5,8 @@ function initDatabase() {
 	try {
 		$db = new PDO (
 			'mysql:host=localhost;dbname=securite',
-			'',
-			'');
+			'petitm',
+			'217060');
 		//
 		//$db = new PDO('sqlite:' . $dir .'/database.sq3');
 		// $db = new PDO('mysql:host=localhost;dbname=Base', 'login', 'mdp');
@@ -15,4 +15,3 @@ function initDatabase() {
 	}
 	return $db;
 }
-

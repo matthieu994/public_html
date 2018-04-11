@@ -16,13 +16,14 @@ if (!empty($_GET['title']) && !empty($_GET['content'])) {
 			."VALUES (".$_GET['id_article'].", '$title', '$content', ".$_SESSION['user']->id.")";
 	} else {
 		$sql = "UPDATE comment SET title='$title', content='$content', id_user=". $_SESSION['user']->id
-			." WHERE id = " . $_GET['id_comment'];
+			." WHERE id = " . $_GET['id_comment'] . "AND user = " . $_SESSION['user']->id;
 	}
 	if ($db->query($sql)) {
 		header('Location: article_view.php?id=' . $_GET['id_article']);
 		exit();
 	} else {
-		die("Erreur  : $sql");
+		echo '<p>Vous n\'avez pas la permission de modifier ce commentaire.<p>';
+		// die("Erreur  : $sql");
 	}
 }
 ?>

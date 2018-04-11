@@ -35,17 +35,17 @@ if($req) {
    $_SESSION["username"] = $username;
    $_SESSION['connected'] = 1;
 
-   $username = $username . "_Questions";
-   $req = $db->prepare("CREATE TABLE `".$username."` (
-      id INT(11) PRIMARY KEY AUTO_INCREMENT,
-      question TEXT NOT NULL,
-      answer1 TEXT NOT NULL,
-      answer2 TEXT NOT NULL,
-      answer3 TEXT NOT NULL,
-      answer4 TEXT NOT NULL,
-      good_answer INT(1) NOT NULL
-   )");
-   $req->execute();
+   // $username = $username . "_Questions";
+   // $req = $db->prepare("CREATE TABLE `".$username."` (
+   //    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+   //    question TEXT NOT NULL,
+   //    answer1 TEXT NOT NULL,
+   //    answer2 TEXT NOT NULL,
+   //    answer3 TEXT NOT NULL,
+   //    answer4 TEXT NOT NULL,
+   //    good_answer INT(1) NOT NULL
+   // )");
+   // $req->execute();
 
    header('Location: main.php');
 }

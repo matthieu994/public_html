@@ -52,12 +52,12 @@ if(!isset($_SESSION["bad_login"])) {
          <div class="username">
             <span class="animated fadeIn">USERNAME</span>
             <i class="fas fa-user" style="color: #8aaaaa; font-size: 12px; position: absolute; left: 0; top: 38%"></i>
-            <input autocomplete="off" autocomplete="new-password" type="text" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
+            <input autocomplete="new-password" type="text" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
          </div>
          <div class="password">
             <span class="animated fadeIn">PASSWORD</span>
             <i class="fas fa-lock" style="color: #8aaaaa; font-size: 12px; position: absolute; left: 0; top: 38%"></i>
-            <input autocomplete="off" autocomplete="new-password" id="pass" type="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
+            <input autocomplete="new-password" id="pass" type="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
             <i class="fas fa-eye fa-eye-slash" style="color: #8aaaaa; font-size: 20px; position: absolute; left: 259px; top: 28.5%"></i>
          </div>
          <button class="login animated">Se connecter</button>
