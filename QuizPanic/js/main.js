@@ -117,6 +117,9 @@ function loadQuestions() {
    $("#questions_list").load("question.php", {
       getQuestions : '1'
    });
+   // $.getJSON(
+   //
+   // );
 }
 
 function addQuestion() {

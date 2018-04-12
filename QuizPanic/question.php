@@ -8,16 +8,19 @@ if(isset($_POST['getQuestions'])) {
    $req->bind_param('s', $username);
    $req->execute();
    $result = $req->get_result();
-   while($row = $result->fetch_array())
-   {
-      echo '<div><span>' . $row['question'] . '</span>';
+   while ($row = $result->fetch_array()) {
+      echo '<div>
+      <span>' . $row['question'] . '</span>';
       echo '<select>
       <option value="1">' . $row['answer1'] . '</option>
       <option value="2">' . $row['answer2'] . '</option>
       <option class="good_answer" value="3">' . $row['answer3'] . '</option>
       <option value="4">' . $row['answer4'] . '</option>
-      </select></div>';
+      </select>
+      </div>';
+      // $rows[] = $row;
    }
+   // print json_encode($rows);
    $req->close();
    $db->close();
 }
