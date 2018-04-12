@@ -114,14 +114,13 @@ header {
 }
 
 /* -------------------------- CONTAINER STYLE ------------------------------------- */
-section[role=page] { width: 100%; height: 88%; position: relative; }
+section[role=page] { width: 102%; height: 88%; position: relative; }
 .container {
    position: absolute;
    left: 50%;
-   top: 43%;
+   top: 50%;
    transform: translate(-50%, -50%);
    /* border: 1px solid white; */
-
    display: flex;
 }
 
@@ -163,7 +162,7 @@ section[role=page] { width: 100%; height: 88%; position: relative; }
    min-width: 600px !important;
    max-width: none !important;
 }
-.fenetre .fas {
+.fenetre .fas.hoverable {
    position: absolute;
    font-size: 80px;
    left: -90px;
@@ -172,15 +171,15 @@ section[role=page] { width: 100%; height: 88%; position: relative; }
 }
 .fenetre .fa-chevron-right {
    right: -90px;
-   left: auto;
+   left: auto !important;
 }
 .fenetre .title {
    display: inline-block;
    /* width: 49%; */
    font-size: 30px;
    font-weight: 100;
-   margin-top: 12px;
-   margin-bottom: 20px;
+   margin-top: 2%;
+   margin-bottom: 2%;
 }
 
 /*--------------- PLAY --------------------*/
@@ -192,11 +191,15 @@ section[role=page] { width: 100%; height: 88%; position: relative; }
 /*--------------- QUESTIONS ----------------*/
 #container-question > div {
    width: 50%;
+}
+#add > div, #set #questions_list {
    overflow-y: auto;
+   height: 85%;
+   /* margin-bottom: 30px; */
 }
-form#addquestion textarea {
-   margin-top: 0 !important;
-}
+/* form#addquestion textarea {
+margin-top: 0 !important;
+} */
 #add input, #add textarea {
    margin-left: 7%;
    margin-right: 7%;
@@ -204,12 +207,10 @@ form#addquestion textarea {
    resize: vertical;
 }
 #add textarea:first-child {
-   margin-top: 20px;
+   margin-top: 10px;
 }
 #add input:last-of-type {
    margin-bottom: 22px;
-}
-#add {
 }
 #add button, #add select {
    width: 40%;
@@ -243,7 +244,7 @@ form#addquestion textarea {
    margin-left: 10%;
    text-align: left;
    text-align-last: center;
-   width: 42%;
+   /* width: 42%; */
 }
 #add select option {
    text-align: center;
@@ -254,36 +255,78 @@ form#addquestion textarea {
 }
 
 /*---------------------------- QUESTIONS LIST ---------------------------*/
-#questions_list div:first-child {margin-top: 0;}
-#questions_list div {
-   width: 90%;
-   margin: 10px 5%;
-   position: relative;
+#questions_list div:first-child {margin-top: 10px;}
+#questions_list > div {
+   /* width: 100%; */
+   margin-bottom: 7px;
+   margin-left: 5px;
+   margin-right: 5px;
    font-size: 18px;
    text-align: left;
-   /* font-weight: 100; */
-}
-#questions_list span, #questions_list select {
-   word-wrap: break-word;
-   vertical-align:middle;
+   display: flex;
+   /* overflow-x: auto; */
 }
 #questions_list span {
-   padding-left: 5px;
-   border-radius: 5px;
    padding: 5px;
-   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.04);
-   background-color: rgba(0, 0, 0, 0.2);
-   display: flow-root;
-   /* margin-right: 30%; */
-   width: 65%;
+   border-radius: 5px;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.34);
+   word-wrap: break-word;
+   display: inline-block;
+   width: 87%;
+   /* min-width: 85%; */
+   max-width: 87%;
+}
+#questions_list i {
+   /* width: 5%; */
+   margin: auto 8px;
+   display: table;
+   color: rgb(186, 216, 255);
+   cursor: pointer;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.77);
+   border-radius: 12px;
+}
+#questions_list .fa-pencil-alt {
+   box-shadow: unset;
 }
 #questions_list select {
-   /* float: right; */
-   width: 30%;
-   margin: auto;
+   display: none;
+}
+
+/*----------------------DETAILS_QUESTION------------------------*/
+section.alert #alert_details span {
+   background-color: rgba(78, 112, 117, 0.49);
+   padding: 10px;
+}
+section.alert #question_details {
    position: absolute;
-   transform: translateY(-50%);
-   top: 50%; right: 0;
+   z-index: 99;
+   left: 50%;
+   margin-top: -18%;
+   opacity: 0.5;
+   transform: translate(-50%, -50%);
+   background-color: rgba(15, 31, 39, 0.62);
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.79);
+   border-radius: 5px;
+}
+#question_details #exitnotif {
+   position: unset;
+   float: right;
+   display: none;
+   font-size: 19px;
+   margin: 5px;
+}
+#question_details span {
+   padding: 5px;
+   border-radius: 5px;
+   background: unset;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.8);
+   word-wrap: break-word;
+   display: -webkit-inline-box;
+   /* width: 100%; */
+   margin: 15px 15px;
+}
+#question_details select {
+   margin-left: auto;
    text-align-last: center;
    padding: 3px 2px;
    border-radius: 5px;
@@ -294,6 +337,7 @@ form#addquestion textarea {
    cursor: pointer;
    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
    transition: all 0.25s ease-in;
+   margin: 0 15px 15px 15px;
 }
 
 /*--------------------------- IDLE COUNTDOWN -----------------------------*/

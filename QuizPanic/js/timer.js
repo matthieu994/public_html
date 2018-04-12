@@ -30,6 +30,8 @@ function startTimer() {
          el.innerHTML = untilsec;
          clearInterval(idleInterval);
          $(".notification div").attr("id", "container-timer");
+         $("section.alert div").each(function(){$(this).hide()});
+         $('section[role="page"]').css('opacity', '1');
          $(".notification").fadeIn(600);
          timer = setInterval(countdown, 1000);
          $("#exitnotif").click(reloadAll);

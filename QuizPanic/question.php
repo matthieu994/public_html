@@ -3,6 +3,14 @@ session_start();
 require('bdd.php');
 
 if(isset($_POST['getQuestions'])) {
+   $style = ' style="
+   display: none;
+   position: absolute;
+   width: 100px;
+   height: 100px;
+   border: 1px solid white;
+   top: -90px;
+   left: -90px;" ';
    $username = $_SESSION['username'];
    $req = $db->prepare("SELECT * from questions WHERE username=?");
    $req->bind_param('s', $username);
@@ -10,13 +18,15 @@ if(isset($_POST['getQuestions'])) {
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
       echo '<div>
+      <i class="fas fa-info-circle"></i>
       <span>' . $row['question'] . '</span>';
       echo '<select>
       <option value="1">' . $row['answer1'] . '</option>
       <option value="2">' . $row['answer2'] . '</option>
-      <option class="good_answer" value="3">' . $row['answer3'] . '</option>
+      <option value="3">' . $row['answer3'] . '</option>
       <option value="4">' . $row['answer4'] . '</option>
       </select>
+      <i class="fas fa-pencil-alt"></i>
       </div>';
       // $rows[] = $row;
    }

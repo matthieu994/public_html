@@ -22,14 +22,27 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          <div class="" id="alert_answer2" style="display: none">
             <span>Une de vos réponses est vide ou trop courte!</span>
          </div>
-         <div class="" id="alert_question" style="display: none">
+         <div id="alert_question" style="display: none">
             <span>Votre question est vide ou trop courte!</span>
          </div>
          <div class="good" id="success_addquestion" style="display: none">
             <span>Question ajoutée!</span>
          </div>
-         <div class="" id="fail_addquestion" style="display: none">
+         <div id="fail_addquestion" style="display: none">
             <span>Une erreur s'est produite.</span>
+         </div>
+         <div id="alert_details" style="display: none">
+            <span>Cliquez pour obtenir plus de détails.</span>
+         </div>
+         <div id="question_details" style="display: none">
+            <i class="fas fa-times" id="exitnotif"></i>
+            <span></span>
+            <select>
+               <option value="1"></option>
+               <option value="2"></option>
+               <option value="3"></option>
+               <option value="4"></option>
+            </select>
          </div>
       </section>
       <div id="profil">
@@ -115,12 +128,12 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 
 
 </body>
-<script src="js/main.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
 <?php
 if(isset($_SESSION['return'])) {
    $return = $_SESSION['return'];
    if ($return == 1) {
-      echo '<script>$( document ).ready(function() {
+      echo '<script type="text/javascript">$( document ).ready(function() {
          $("#play").hide().removeClass("fadeOutLeft").addClass("fadeInLeft");
          $("#question").hide().removeClass("fadeOutRight").addClass("fadeInRight");
          $("#container-fenetre").show();
@@ -138,5 +151,5 @@ if(isset($_SESSION['return'])) {
 }
 $_SESSION['return'] = 2;
 ?>
-<script src="js/timer.js"></script>
+<script type="text/javascript" src="js/timer.js"></script>
 </html>
