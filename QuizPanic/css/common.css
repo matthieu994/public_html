@@ -2,6 +2,11 @@
 @import "http://fonts.googleapis.com/css?family=Lato:400,900i";
 @import "https://use.fontawesome.com/releases/v5.0.7/css/all.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css";
+
+:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
 /* -------------------------- INPUTS STYLE ------------------------------------- */
 input, textarea {
    -webkit-box-sizing: border-box;

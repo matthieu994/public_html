@@ -83,34 +83,40 @@ $("#container-question .fa-chevron-right").click(function () {
 });
 
 /*-----------------------------------ADD QUESTION----------------------------------------*/
-$("#add button").click(function() {
+$('#add form').submit(false);
+$("#add form button").click(function() {
    $("section.alert div").each(function(){$(this).hide()});
    if($("#add textarea").val().trim().length <= 10) {
       $("#alert_question").fadeIn();
-      $("#add button").prop("disabled", true);
+      $(this).prop("disabled", true);
       setTimeout(function () {
          $("#alert_question").fadeOut();
       }, 4000);
    }
    else if($("#add input").eq(0).val().trim() <= 4 || $("#add input").eq(1).val().trim() <= 4 || $("#add input").eq(2).val().trim() <= 4 || $("#add input").eq(3).val().trim() <= 4) {
       $("#alert_answer2").fadeIn();
-      $("#add button").prop("disabled", true);
+      $(this).prop("disabled", true);
       setTimeout(function () {
          $("#alert_answer2").fadeOut();
       }, 4000);
    }
    else if($("#add select").val() <= 0) {
       $("#alert_answer").fadeIn();
-      $("#add button").prop("disabled", true);
+      $(this).prop("disabled", true);
       setTimeout(function () {
          $("#alert_answer").fadeOut();
       }, 4000);
    }
    else {
-      addQuestion();
+      if($(this).text() == "Modifier") {
+         modifyQuestion();
+      }
+      else {
+         addQuestion();
+      }
    }
    setTimeout(function () {
-      $("#add button").prop("disabled", false);
+      $("#add form button").prop("disabled", false);
    }, 1000);
 });
 
@@ -118,11 +124,6 @@ function loadQuestions() {
    $("#questions_list").load("question.php", {
       getQuestions : '1'
    });
-   // $("#questions_list").children().children('div').addClass("question_details");
-   // $("<style>").text("#question_list #question_details { position: absolute;width: 100px;height: 100px;border: 1px solid white;top: -90px;left: -90px;}").appendTo("head");
-   // $.getJSON(
-   //
-   // );
 }
 
 function addQuestion() {
@@ -136,6 +137,7 @@ function addQuestion() {
       setTimeout(function () {
          $("#success_addquestion").fadeOut();
       }, 4000);
+      audioElement.play();
    })
    .fail(function() {
       $("section.alert div").each(function(){$(this).hide()});
@@ -151,19 +153,15 @@ function addQuestion() {
 }
 loadQuestions();
 
-
+/*------------------------------GET DETAILS-------------------------------------------*/
 $("#questions_list").on('click', '.fa-info-circle',function () {
-   if($('section.alert #question_details').css('display') != 'none') {
-      $('section.alert #question_details').fadeOut();
+   if($('section.alert #question_details').css('opacity') != '0.5') {
       return;
    }
    $("section.alert div").each(function(){$(this).hide()});
    if($('section.alert #question_details').css('display') == 'none') {
       $('section.alert #question_details span').text($(this).next().text());
-      $('section.alert #question_details option[value="1"]').text($(this).next().next().children('option[value="1"]').text());
-      $('section.alert #question_details option[value="2"]').text($(this).next().next().children('option[value="2"]').text());
-      $('section.alert #question_details option[value="3"]').text($(this).next().next().children('option[value="3"]').text());
-      $('section.alert #question_details option[value="4"]').text($(this).next().next().children('option[value="4"]').text());
+      $(this).next().next().clone().appendTo('section.alert #question_details');
       $('section.alert #question_details').animate({
          marginTop : '75px',
          opacity : 1
@@ -174,7 +172,7 @@ $("#questions_list").on('click', '.fa-info-circle',function () {
    }
 });
 $("#questions_list").on('mouseenter', '.fa-info-circle',function () {
-   if ($('section.alert #question_details').css('display') == 'block' || $('section.alert #alert_details').css('display') != 'none') {
+   if ($('section.alert #question_details').css('opacity') != '0.5' || $('section.alert #alert_details').css('display') == 'block') {
       return;
    }
    $("section.alert div").each(function(){$(this).hide()});
@@ -184,7 +182,7 @@ $("#questions_list").on('mouseenter', '.fa-info-circle',function () {
 });
 $("#questions_list").on('mouseleave', '.fa-info-circle',function () {
    if($('section.alert #alert_details').css('display') == 'block') {
-      $('section.alert #alert_details').delay(500).fadeOut();
+      $('section.alert #alert_details').fadeOut();
    }
 });
 $(document).click(function (event) {
@@ -194,8 +192,101 @@ $(document).click(function (event) {
          marginTop : '-18%',
          opacity : 0.5
       }).fadeOut();
+      setTimeout(function () {
+         $('section.alert #question_details select').remove();
+      }, 300);
       $('section[role="page"]').animate({
          opacity : 1
       });
    }
+});
+
+/*------------------------------MODIFY QUESTION-------------------------------------------*/
+$("#questions_list").on('mouseenter', '.fa-pencil-alt',function () {
+   if ($('section.alert #question_details').css('opacity') != '0.5' || $('section.alert #alert_details').css('display') == 'block') {
+      return;
+   }
+   $("section.alert div").each(function(){$(this).hide()});
+   if($('section.alert #alert_modify').css('display') == 'none') {
+      $('section.alert #alert_modify').fadeIn();
+   }
+});
+$("#questions_list").on('mouseleave', '.fa-pencil-alt',function () {
+   if($('section.alert #alert_modify').css('display') == 'block') {
+      $('section.alert #alert_modify').fadeOut();
+   }
+});
+$("#questions_list").on('click', '.fa-pencil-alt',function () { //Modification question
+   if ($('section.alert #question_details').css('opacity') != '0.5' || $('section.alert #alert_details').css('display') == 'block') {
+      return;
+   }
+   $('form#addquestion textarea').val($(this).prev().prev().text());
+   $('form#addquestion input[name="answer1"]').val($(this).prev().children().eq(0).text());
+   $('form#addquestion input[name="answer2"]').val($(this).prev().children().eq(1).text());
+   $('form#addquestion input[name="answer3"]').val($(this).prev().children().eq(2).text());
+   $('form#addquestion input[name="answer4"]').val($(this).prev().children().eq(3).text());
+   $('form#addquestion select').val($(this).prev().find(":selected").val());
+   $('form#addquestion button').text("Modifier").attr('question_id', $(this).parent().attr('question_id'));
+   $('#add button').animate({
+      width : '18%',
+      marginLeft : 0
+   });
+   $('form#addquestion button').css('margin-right', '8%').css('background-color', '#4ec57f');
+   $('button#cancelmodify').delay(200).fadeIn(100);
+   $('button#cancelmodify').css('margin-right', '2%').css('background-color', '#bd5555');
+});
+$("#add #cancelmodify").click(function() {
+   $('form#addquestion')[0].reset();
+   $('button#cancelmodify').hide();
+   $('form#addquestion button').text("Ajouter").animate({
+      width : '35%',
+      marginLeft : '4%',
+      marginRight : '10%'
+   }).css('background-color', '#aac4c4').removeAttr('style');
+});
+
+function modifyQuestion() {
+   var data = $("form#addquestion").serializeArray();
+   data.push({name: 'modifyQuestion', value: 1});
+   data.push({name: 'id', value: $('form#addquestion button').attr('question_id')});
+   $.post(
+      'question.php',
+      data
+   )
+   .done(function() {
+      $("section.alert div").each(function(){$(this).hide()});
+      $("#success_modifyquestion").fadeIn();
+      audioElement.play();
+      setTimeout(function () {
+         $("#success_modifyquestion").fadeOut();
+      }, 4000);
+   })
+   .fail(function() {
+      $("section.alert div").each(function(){$(this).hide()});
+      $("#fail_addquestion").fadeIn();
+      setTimeout(function () {
+         $("#fail_addquestion").fadeOut();
+      }, 4000);
+   })
+   .always(function() {
+      $("form#addquestion")[0].reset();
+      loadQuestions();
+   });
+   $('form#addquestion')[0].reset();
+   $('button#cancelmodify').hide();
+   $('form#addquestion button').text("Ajouter").animate({
+      width : '35%',
+      marginLeft : '4%',
+      marginRight : '10%'
+   }).css('background-color', '#aac4c4').removeAttr('style');
+}
+
+/*-----------------------------PLAY SOUND--------------------------------------*/
+var audioElement = document.createElement('audio');
+audioElement.setAttribute('src', 'sounds/ring.m4r');
+$('#audioplay').click(function() {
+   audioElement.play();
+});
+$('#audiopause').click(function() {
+   audioElement.pause();
 });

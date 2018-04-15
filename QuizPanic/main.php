@@ -16,10 +16,10 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 
    <header>
       <section class="alert">
-         <div class="" id="alert_answer" style="display: none">
+         <div id="alert_answer" style="display: none">
             <span>Vous devez sélectionner la bonne réponse!</span>
          </div>
-         <div class="" id="alert_answer2" style="display: none">
+         <div id="alert_answer2" style="display: none">
             <span>Une de vos réponses est vide ou trop courte!</span>
          </div>
          <div id="alert_question" style="display: none">
@@ -28,21 +28,27 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          <div class="good" id="success_addquestion" style="display: none">
             <span>Question ajoutée!</span>
          </div>
+         <div class="good" id="success_modifyquestion" style="display: none">
+            <span>Question modifiée!</span>
+         </div>
          <div id="fail_addquestion" style="display: none">
             <span>Une erreur s'est produite.</span>
          </div>
-         <div id="alert_details" style="display: none">
+         <div class="indication" id="alert_details" style="display: none">
             <span>Cliquez pour obtenir plus de détails.</span>
+         </div>
+         <div class="indication" id="alert_modify" style="display: none">
+            <span>Cliquez pour modifier cette question.</span>
          </div>
          <div id="question_details" style="display: none">
             <i class="fas fa-times" id="exitnotif"></i>
             <span></span>
-            <select>
+            <!-- <select>
                <option value="1"></option>
                <option value="2"></option>
                <option value="3"></option>
                <option value="4"></option>
-            </select>
+            </select> -->
          </div>
       </section>
       <div id="profil">
@@ -90,8 +96,8 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
                <span id="help">Créer ou rejoindre une partie</span>
                <div id="add">
                   <span class="title">Ajouter une question</span>
-                  <div class="">
-                     <form id="addquestion" class="" action="question.php" method="POST">
+                  <div>
+                     <form id="addquestion" class="">
                         <textarea name="question" rows="3" cols="20" placeholder="Question" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Question'"></textarea>
                         <input type="text" name="answer1" value="" placeholder="Réponse 1" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 1'">
                         <input type="text" name="answer2" value="" placeholder="Réponse 2" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Réponse 2'">
@@ -104,8 +110,9 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
                            <option value="3">Réponse 3</option>
                            <option value="4">Réponse 4</option>
                         </select>
+                        <button>Ajouter</button>
                      </form>
-                     <button>Ajouter</button>
+                     <button id="cancelmodify" style="display: none;">Annuler</button>
                   </div>
                </div>
                <div id="set">
