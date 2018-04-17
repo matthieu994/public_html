@@ -4,7 +4,7 @@ var timer;
 
 var idleTime = 0;
 var currsec = 0;
-var minutes = 5; // Temps avant affichage countdown visible
+var minutes = 15; // Temps avant affichage countdown visible
 var untilsec = 90; // Temps affiché countdown visible
 var el = document.querySelector("#timeleft");
 
