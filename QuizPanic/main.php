@@ -133,6 +133,11 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
       </div>
    </section>
 
+   <footer>
+      <i class="fas fa-volume-up"></i>
+      <i class="fas fa-volume-off" style="display: none; padding-right: 15px"></i>
+      <i class="fas fa-volume-down" style="display: none"></i>
+   </footer>
 
 </body>
 <script type="text/javascript" src="js/main.js"></script>

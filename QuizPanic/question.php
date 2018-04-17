@@ -17,7 +17,8 @@ if(isset($_POST['getQuestions'])) {
    $req->execute();
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
-      echo '<div question_id="'. $row['id'] .'">
+      if ($row['question_set'] == null) $row['question_set'] = "NULL";
+      echo '<div question_set="'. $row['question_set'] .'" question_id="'. $row['id'] .'" style="display: none">
       <i class="fas fa-info-circle"></i>
       <span>' . $row['question'] . '</span>';
       echo '<select>';
@@ -49,13 +50,24 @@ else {
    $id = $_POST['id'];
 
    if (isset($_POST['modifyQuestion'])) {
-      $req = $db->prepare("UPDATE questions SET question = ?, answer1 = ?, answer2 = ?, answer3 = ?, answer4 = ?, good_answer = ? WHERE id=?");
-      $req->bind_param('sssssss', $question, $answer1, $answer2, $answer3, $answer4, $good_answer, $id);
+      $req = $db->prepare("SELECT username FROM questions WHERE id=?");
+      $req->bind_param('s', $id);
+      $req->execute();
+      $result = $req->get_result();
+      $row = $result->fetch_array();
+      if($row['username'] != $username) { //On verifie que la question est à l'user
+         echo "ERROR_PERM_UPDATE";
+         return;
+      }
+
+      $req = $db->prepare("UPDATE questions SET question = ?, answer1 = ?, answer2 = ?, answer3 = ?, answer4 = ?, good_answer = ? WHERE id=? AND username=?");
+      $req->bind_param('ssssssss', $question, $answer1, $answer2, $answer3, $answer4, $good_answer, $id, $username);
    }
    else {
       $req = $db->prepare("INSERT INTO questions (username, question, answer1, answer2, answer3, answer4, good_answer) VALUES (?, ?, ?, ?, ?, ?, ?)");
       $req->bind_param('sssssss', $username, $question, $answer1, $answer2, $answer3, $answer4, $good_answer);
    }
+
    $req->execute();
    $req->close();
    $db->close();
