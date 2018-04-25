@@ -525,7 +525,8 @@ output#range {
 }
 
 #join section .fa-times {
-
+   font-size: 20px;
+   cursor: pointer;
 }
 #join section div {
    margin: 5px 8px;
@@ -574,6 +575,7 @@ output#range {
    margin-left: 5px;
    font-size: 15px;
    color: rgb(170, 196, 196);
+   cursor: pointer;
 }
 /*--------------------------- IDLE COUNTDOWN -----------------------------*/
 .notification {

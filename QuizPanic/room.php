@@ -4,27 +4,34 @@ require('bdd.php');
 
 $username = $_SESSION['username'];
 if(isset($_POST['getRooms'])) {
-   $req = $db->prepare("SELECT * from rooms WHERE username=?");
+   $req = $db->prepare("SELECT * from rooms WHERE status='enabled' OR username=?");
    $req->bind_param('s', $username);
    $req->execute();
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
       $status = "checked";
-      if($row['status'] == "disabled") $status = "";
-      echo '
-      <div>
+      if($row['status'] != "enabled") $status = "";
+      echo '<div>
       <span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>
-      <span>'.$row['name'].'
-      <i class="fas fa-pencil-alt"></i>
-      <input class="tgl tgl-flip" id="'. $row['id'] .'" type="checkbox"'. $status .'/>
-      <label class="tgl-btn" data-tg-off="Plein!" data-tg-on="Ouvert!" for="'. $row['id'] .'"></label>
-      </span>
-      </div>
-      <i class="fas fa-times" style="color: #d72d2d"></i>
-      ';
+      <span>'.$row['name'];
+      if ($row['username'] == $username) {
+         echo'
+         <i class="fas fa-pencil-alt"></i>
+         <input class="tgl tgl-flip" id="'. $row['id'] .'" type="checkbox"'. $status .'/>
+         <label class="tgl-btn" data-tg-off="Off" data-tg-on="On" for="'. $row['id'] .'"></label>
+         </span>
+         </div>
+         <i class="fas fa-times" style="color: #d72d2d"></i>';
+      }
+      else {
+         echo '</span></div>';
+      }
    }
    $req->close();
    $db->close();
+}
+else if (isset($_POST['setStatus'])) {
+
 }
 else {
    $room = $_POST['room'];

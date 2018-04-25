@@ -446,3 +446,8 @@ function loadRooms() {
       getRooms : '1'
    });
 }
+$("#join section").on('click', '.fa-pencil-alt',function () { //Modification room
+   $("#rooms form").children().eq(0).val($(this).parent().text());
+   $("#rooms .title").text("Modifier une salle");
+   $("#rooms form").children().eq(3).text("Modifier");
+});
