@@ -524,6 +524,57 @@ output#range {
    letter-spacing: 2px;
 }
 
+#join section .fa-times {
+
+}
+#join section div {
+   margin: 5px 8px;
+   display: inline-block;
+   font-size: 20px;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.5);
+   border-radius: 12px;
+}
+.playercount {
+   position: relative;
+   float: left;
+   padding: 5px;
+   width: 65px;
+   height: 62px;
+   font-size: 23px;
+   border-right: 1px solid rgba(170, 196, 196, 0.75);
+   background-color: rgb(22, 94, 42);
+   border-radius: 12px 0 0 12px;
+}
+.playercount label {
+   font-family: 'Lato';
+   font-weight: 900;
+   position: absolute;
+}
+.playercount label:first-child {
+   top: 3px; left: 8px;
+}
+.playercount label:last-child {
+   bottom: 3px; right: 5px;
+}
+.playercount:first-child:after {
+   content:"";
+   position:absolute;
+   top: 50px;
+   left: 13px;
+   border-top: 1px solid rgba(170, 196, 196, 0.5);
+   width: 50px;
+   transform: rotate(317deg);
+   transform-origin: 0% 0%;
+}
+#join section div span:last-child {
+   float: right;
+   padding: 4px 10px;
+}
+#join section div span:last-child .fas {
+   margin-left: 5px;
+   font-size: 15px;
+   color: rgb(170, 196, 196);
+}
 /*--------------------------- IDLE COUNTDOWN -----------------------------*/
 .notification {
    display: none;

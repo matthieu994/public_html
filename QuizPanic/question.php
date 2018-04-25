@@ -3,14 +3,6 @@ session_start();
 require('bdd.php');
 
 if(isset($_POST['getQuestions'])) {
-   // $style = ' style="
-   // display: none;
-   // position: absolute;
-   // width: 100px;
-   // height: 100px;
-   // border: 1px solid white;
-   // top: -90px;
-   // left: -90px;" ';
    $username = $_SESSION['username'];
    $req = $db->prepare("SELECT * from questions WHERE username=?");
    $req->bind_param('s', $username);

@@ -383,6 +383,7 @@ $( document ).ready(function() { //Desactiver overflow pendant animation
    setTimeout(function () {
       $('body').css('overflow-y', 'auto');
    }, 1000);
+   loadRooms();
    $('input, textarea').each(function() {
       $(this).attr('onfocus', "this.placeholder = ''");
       $(this).attr('onblur', "this.placeholder = '"+ $(this).attr('placeholder') +"'")
@@ -425,11 +426,23 @@ $(document).on('input change', 'input#range', function() {
 });
 $('#rooms form').submit(function(event) {
    event.preventDefault();
+   if ($(this).children('input[name="room"]').val().trim().length <= 1) {
+      displayAlert("alert_roomname", 1800);
+      return;
+   }
    $.post(
       'room.php',
       $(this).serialize(),
       function (data) {
-         displayAlert("success_addroom", 2000)
+         displayAlert("success_addroom", 2000);
+         $('#rooms form')[0].reset();
+         $('output#range').text("0 - "+$('input#range').val());
+         loadRooms();
       }
    );
 });
+function loadRooms() {
+   $("#join section").load("room.php", {
+      getRooms : '1'
+   });
+}

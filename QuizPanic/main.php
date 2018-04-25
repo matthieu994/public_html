@@ -10,6 +10,7 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
    <link rel="shortcut icon" href="img/fav.ico">
    <link rel="stylesheet" type="text/css" href="css/main.css">
    <link rel="stylesheet" type="text/css" href="css/common.css">
+   <link rel="stylesheet" type="text/css" href="css/flip.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
@@ -24,6 +25,9 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          </div>
          <div id="alert_question" style="display: none">
             <span>Votre question est vide ou trop courte!</span>
+         </div>
+         <div id="alert_roomname" style="display: none">
+            <span>Le nom de votre salle est vide ou trop court!</span>
          </div>
          <div class="good" id="success_addquestion" style="display: none">
             <span>Question ajoutée!</span>
@@ -90,7 +94,7 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
             <span id="help">Gérer vos questions</span>
             <div id="join">
                <div class="container-title">
-                  <span class="title">Rejoindre une partie</span>
+                  <span class="title">Lancer une partie</span>
                </div>
                <section>
 
@@ -98,12 +102,12 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
             </div>
             <div id="rooms">
                <div class="container-title">
-                  <span class="title">Gérer mes salles</span>
+                  <span class="title">Créer une salle</span>
                </div>
                <section>
                   <form id="addroom">
-                     <input type="text" name="room" placeholder="Nom de la salle">
-                     <input id="range" type="range" min="1" max="12" value="2">
+                     <input autocomplete="off" type="text" name="room" placeholder="Nom de la salle">
+                     <input id="range" type="range" name="maxplayers" min="1" max="12" value="2">
                      <output id="range">0 - 2</output>
                      <button>Ajouter</button>
                   </form>
