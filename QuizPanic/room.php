@@ -4,8 +4,9 @@ require('bdd.php');
 
 $username = $_SESSION['username'];
 if(isset($_POST['getRooms'])) {
-   $req = $db->prepare("SELECT * from rooms WHERE status='enabled' OR username=?");
-   $req->bind_param('s', $username);
+   $status = "enabled";
+   $req = $db->prepare("SELECT * from rooms WHERE status=? OR username=?");
+   $req->bind_param('ss', $status, $username);
    $req->execute();
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {

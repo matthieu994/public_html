@@ -4,6 +4,7 @@ require('bdd.php');
 
 if(isset($_POST['getQuestions'])) {
    $username = $_SESSION['username'];
+   $questionset = 0;
    $req = $db->prepare("SELECT * from questions WHERE username=?");
    $req->bind_param('s', $username);
    $req->execute();
@@ -11,7 +12,7 @@ if(isset($_POST['getQuestions'])) {
    while ($row = $result->fetch_array()) {
       $questionset = $row['question_set'];
       if ($row['question_set'] == null) $questionset = "NULL";
-      echo '<div question_set="'. $row['question_set'] .'" question_id="'. $row['id'] .'" style="display: none">
+      echo '<div question_set="'. $questionset .'" question_id="'. $row['id'] .'" style="display: none">
       <i class="fas fa-info-circle"></i>
       <span>' . $row['question'] . '</span>';
       echo '<select>';
