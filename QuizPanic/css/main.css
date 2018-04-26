@@ -191,6 +191,7 @@ section[role=page] { width: 102%; height: 83%; position: relative; }
    padding-top: 1%;
    padding-bottom: 1%;
    height: 12%;
+   position: relative;
 }
 .fenetre > div {
    width: 50%;
@@ -307,7 +308,7 @@ form#addquestion div {
 }
 
 /*---------------------------- QUESTIONS LIST / EDIT ---------------------------*/
-#set .fa-sync-alt {
+.fa-sync-alt {
    position: absolute;
    right: 0;
    top: 0;
@@ -342,6 +343,7 @@ form#addquestion div {
 }
 #questions_list i {
    /* width: 5%; */
+   transform: unset;
    margin: auto 5px;
    /* display: -webkit-inline-box; */
    color: rgb(186, 216, 255);
@@ -452,6 +454,24 @@ section.set span i {
 /*--------------------------- ROOMS MANAGE -----------------------------*/
 #rooms section button {
    margin-top: 10px;
+   margin-left: 5%;
+   float: none;
+}
+#rooms form > div {
+   overflow: auto;
+   width: 100%;
+   height: 76px;
+}
+#rooms section button:last-child {
+   margin-left: 2% !important;
+   background-color: rgb(189, 85, 85);
+}
+#rooms section button:not(:first-child) {
+   float: left;
+   width: 20%;
+   margin-left: 7%;
+   margin-right: 0;
+   background-color: rgb(66, 147, 172);
 }
 input#range::-ms-track {
    width: 100%;
@@ -515,7 +535,7 @@ output#range {
    margin-right: 7%;
    margin-top: 10px;
    background-color: rgba(0, 0, 0, 0.1);
-   width: 100px;
+   width: 17%;
    height: 30px;
    text-align: center;
    color: white;
@@ -524,11 +544,8 @@ output#range {
    letter-spacing: 2px;
 }
 
-#join section .fa-times {
-   font-size: 20px;
-   cursor: pointer;
-}
 #join section div {
+   position: relative;
    margin: 5px 8px;
    display: inline-block;
    font-size: 20px;
@@ -537,6 +554,7 @@ output#range {
 }
 .playercount {
    position: relative;
+   cursor: pointer;
    float: left;
    padding: 5px;
    width: 65px;
@@ -545,6 +563,10 @@ output#range {
    border-right: 1px solid rgba(170, 196, 196, 0.75);
    background-color: rgb(22, 94, 42);
    border-radius: 12px 0 0 12px;
+   transition: 0.25s ease-in;
+}
+#join section div:hover .playercount, .playercount:hover {
+   opacity: 0;
 }
 .playercount label {
    font-family: 'Lato';
@@ -566,6 +588,14 @@ output#range {
    width: 50px;
    transform: rotate(317deg);
    transform-origin: 0% 0%;
+}
+#join section .fa-sign-in-alt {
+   position: absolute;
+   left: 11px;
+   top: 9px;
+   font-size: 45px;
+   z-index: -1;
+   color: rgb(55, 174, 79);
 }
 #join section div span:last-child {
    float: right;

@@ -4,7 +4,6 @@ require('bdd.php');
 
 if(isset($_POST['getQuestions'])) {
    $username = $_SESSION['username'];
-   $questionset = 0;
    $req = $db->prepare("SELECT * from questions WHERE username=?");
    $req->bind_param('s', $username);
    $req->execute();

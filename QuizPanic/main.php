@@ -41,8 +41,14 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          <div class="good" id="success_addroom" style="display: none">
             <span>Salle créée!</span>
          </div>
+         <div class="good" id="success_modifyroom" style="display: none">
+            <span>Salle modifiée!</span>
+         </div>
          <div id="error" style="display: none">
             <span>Une erreur s'est produite.</span>
+         </div>
+         <div id="error_room" style="display: none">
+            <span>Cette salle existe déjà!</span>
          </div>
          <div class="indication" id="alert_details" style="display: none">
             <span>Cliquez pour obtenir plus de détails.</span>
@@ -53,133 +59,134 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          <div id="question_details" style="display: none">
             <i class="fas fa-times" id="exitnotif"></i>
             <span></span>
-            <!-- <select>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-            <option value="4"></option>
-         </select> -->
-      </div>
-   </section>
-   <div id="profil">
-      <i class="fas fa-cogs hoverable"></i>
-      <span id="help">Settings</span>
-      <!-- <img src="img/menu.png" alt=""> -->
-      <!-- <h1 style="vertical-align: 12px; display: inline-block; cursor: pointer;"> Profil </h1> -->
-      <div id="dropdown">
-         <p> Mon pseudo:<span><?php echo $_SESSION["username"]; ?></span></p>
-         <p> Messages envoyés:</p>
-         <p> Couleur:</p>
-      </div>
-   </div>
-   <a class="logout" href="logout.php">Se déconnecter</a>
-</header>
 
-<section role="page">
-   <div class="container">
-      <div id="play" class="animated zoomIn hoverable">
-         <img src="img/sign-in.png" alt="">
-      </div>
-      <span id="help">Créer ou rejoindre une partie</span>
-      <div id="question" class="animated zoomIn hoverable">
-         <img src="img/question.png" alt="">
-      </div>
-      <span id="help">Gérer vos questions</span>
-
-      <section id="container-fenetre" style="display: none">
-         <div class="fenetre animated slideInUp" id="container-play" style="display: none">
-            <i class="fas fa-chevron-left hoverable"></i>
-            <span id="help">Retour</span>
-            <i class="fas fa-chevron-right hoverable"></i>
-            <span id="help">Gérer vos questions</span>
-            <div id="join">
-               <div class="container-title">
-                  <span class="title">Lancer une partie</span>
-               </div>
-               <section>
-
-               </section>
-            </div>
-            <div id="rooms">
-               <div class="container-title">
-                  <span class="title">Créer une salle</span>
-               </div>
-               <section>
-                  <form id="addroom">
-                     <input autocomplete="off" type="text" name="room" placeholder="Nom de la salle">
-                     <input id="range" type="range" name="maxplayers" min="1" max="12" value="2">
-                     <output id="range">0 - 2</output>
-                     <button>Ajouter</button>
-                  </form>
-               </section>
-            </div>
-         </div>
-
-         <div class="fenetre animated slideInUp" id="container-question" style="display: none">
-            <i class="fas fa-chevron-left hoverable"></i>
-            <span id="help">Retour</span>
-            <i class="fas fa-chevron-right hoverable"></i>
-            <span id="help">Créer ou rejoindre une partie</span>
-            <div id="add">
-               <div class="container-title">
-                  <span class="title">Ajouter une question</span>
-                  <span class="title" id="delete" style="display: none">Supprimer</span>
-               </div>
-               <section>
-                  <form id="addquestion" class="">
-                     <textarea name="question" rows="3" cols="20" placeholder="Question"></textarea>
-                     <input type="text" name="answer1" placeholder="Réponse 1">
-                     <input type="text" name="answer2" placeholder="Réponse 2">
-                     <input type="text" name="answer3" placeholder="Réponse 3">
-                     <input type="text" name="answer4" placeholder="Réponse 4" style="margin-bottom: 10px">
-                     <select name="sets">
-                        <option value="NULL" selected>Set: Indéfini</option>
-                     </select>
-                     <input id="addset" type="text" name="set_name" placeholder="Ajouter un set" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ajouter un set'" style="display: none">
-                     <div>
-                        <i class="fas fa-plus"></i>
-                        <i class="fas fa-check" style="display: none; color: rgb(24, 127, 33);"></i>
-                        <i class="fas fa-ban" style="display: none; color: rgb(127, 24, 33);"></i>
-                     </div>
-                     <select name="good_answer">
-                        <option value="0" selected>Bonne réponse</option>
-                        <option value="1">Réponse 1</option>
-                        <option value="2">Réponse 2</option>
-                        <option value="3">Réponse 3</option>
-                        <option value="4">Réponse 4</option>
-                     </select>
-                     <button>Ajouter</button>
-                  </form>
-                  <button id="cancelmodify" style="display: none">Annuler</button>
-               </section>
-            </div>
-            <div id="set">
-               <div class="container-title">
-                  <span class="title">Gérer mes questions
-                     <i class="fas fa-sync-alt"></i>
-                  </span>
-               </div>
-               <div id="questions_list">
-               </div>
-            </div>
          </div>
       </section>
-   </div>
-
-   <div class="notification" style="display: none">
-      <div id="">
-         <span>Vous êtes toujours là ?</span>
-         <span>Vous serez déconnecté dans <label id="timeleft"></label> secondes</span>
-         <i class="fas fa-times" id="exitnotif"></i>
+      <div id="profil">
+         <i class="fas fa-cogs hoverable"></i>
+         <span id="help">Settings</span>
+         <!-- <img src="img/menu.png" alt=""> -->
+         <!-- <h1 style="vertical-align: 12px; display: inline-block; cursor: pointer;"> Profil </h1> -->
+         <div id="dropdown">
+            <p> Mon pseudo:<span><?php echo $_SESSION["username"]; ?></span></p>
+            <p> Messages envoyés:</p>
+            <p> Couleur:</p>
+         </div>
       </div>
-   </div>
-</section>
+      <a class="logout" href="logout.php">Se déconnecter</a>
+   </header>
 
-<footer>
-   <i class="fas fa-volume-up"></i>
-   <i class="fas fa-volume-off" style="display: none; padding-right: 15px"></i>
-   <i class="fas fa-volume-down" style="display: none"></i>
-</footer>
+   <section role="page">
+      <div class="container">
+         <div id="play" class="animated zoomIn hoverable">
+            <img src="img/sign-in.png" alt="">
+         </div>
+         <span id="help">Créer ou rejoindre une partie</span>
+         <div id="question" class="animated zoomIn hoverable">
+            <img src="img/question.png" alt="">
+         </div>
+         <span id="help">Gérer vos questions</span>
+
+         <section id="container-fenetre" style="display: none">
+            <div class="fenetre animated slideInUp" id="container-play" style="display: none">
+               <i class="fas fa-chevron-left hoverable"></i>
+               <span id="help">Retour</span>
+               <i class="fas fa-chevron-right hoverable"></i>
+               <span id="help">Gérer vos questions</span>
+               <div id="join">
+                  <div class="container-title">
+                     <span class="title">Lancer une partie
+                        <i class="fas fa-sync-alt"></i>
+                     </span>
+                  </div>
+                  <section>
+
+                  </section>
+               </div>
+               <div id="rooms">
+                  <div class="container-title">
+                     <span class="title">Créer une salle</span>
+                  </div>
+                  <section>
+                     <form id="addroom">
+                        <input autocomplete="off" type="text" name="room" placeholder="Nom de la salle">
+                        <input id="range" type="range" name="maxplayers" min="1" max="12" value="2">
+                        <output id="range">0 - 2</output>
+                        <div>
+                           <button>Ajouter</button>
+                           <button type="cancel" style="display: none; background-color: rgb(66, 147, 172);">Annuler</button>
+                           <button type="delete" style="display: none; background-color: rgb(189, 85, 85);">Supprimer</button>
+                        </div>
+                     </form>
+                  </section>
+               </div>
+            </div>
+
+            <div class="fenetre animated slideInUp" id="container-question" style="display: none">
+               <i class="fas fa-chevron-left hoverable"></i>
+               <span id="help">Retour</span>
+               <i class="fas fa-chevron-right hoverable"></i>
+               <span id="help">Créer ou rejoindre une partie</span>
+               <div id="add">
+                  <div class="container-title">
+                     <span class="title">Ajouter une question</span>
+                     <span class="title" id="delete" style="display: none">Supprimer</span>
+                  </div>
+                  <section>
+                     <form id="addquestion" class="">
+                        <textarea name="question" rows="3" cols="20" placeholder="Question"></textarea>
+                        <input type="text" name="answer1" placeholder="Réponse 1">
+                        <input type="text" name="answer2" placeholder="Réponse 2">
+                        <input type="text" name="answer3" placeholder="Réponse 3">
+                        <input type="text" name="answer4" placeholder="Réponse 4" style="margin-bottom: 10px">
+                        <select name="sets">
+                           <option value="NULL" selected>Set: Indéfini</option>
+                        </select>
+                        <input id="addset" type="text" name="set_name" placeholder="Ajouter un set" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Ajouter un set'" style="display: none">
+                        <div>
+                           <i class="fas fa-plus"></i>
+                           <i class="fas fa-check" style="display: none; color: rgb(24, 127, 33);"></i>
+                           <i class="fas fa-ban" style="display: none; color: rgb(127, 24, 33);"></i>
+                        </div>
+                        <select name="good_answer">
+                           <option value="0" selected>Bonne réponse</option>
+                           <option value="1">Réponse 1</option>
+                           <option value="2">Réponse 2</option>
+                           <option value="3">Réponse 3</option>
+                           <option value="4">Réponse 4</option>
+                        </select>
+                        <button>Ajouter</button>
+                     </form>
+                     <button id="cancelmodify" style="display: none">Annuler</button>
+                  </section>
+               </div>
+               <div id="set">
+                  <div class="container-title">
+                     <span class="title">Gérer mes questions
+                        <i class="fas fa-sync-alt"></i>
+                     </span>
+                  </div>
+                  <div id="questions_list">
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+
+      <div class="notification" style="display: none">
+         <div id="">
+            <span>Vous êtes toujours là ?</span>
+            <span>Vous serez déconnecté dans <label id="timeleft"></label> secondes</span>
+            <i class="fas fa-times" id="exitnotif"></i>
+         </div>
+      </div>
+   </section>
+
+   <footer>
+      <i class="fas fa-volume-up"></i>
+      <i class="fas fa-volume-off" style="display: none; padding-right: 15px"></i>
+      <i class="fas fa-volume-down" style="display: none"></i>
+   </footer>
 
 </body>
 <script type="text/javascript" src="js/main.js"></script>

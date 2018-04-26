@@ -416,8 +416,9 @@ $('form#addquestion input#addset').keypress(function(event){ //simuler click pou
 /*------------------------------DISPLAY SETS------------------------------------------*/
 $("#questions_list").on('click', 'section.set > span i',function () {
    $(this).parent().parent().children('div').toggle(300);
-   if($(this).css('transform') == 'unset') $(this).css('transform','rotate(180deg)');
-   else $(this).css('transform','unset');
+   console.log($(this).css('transform'));
+   if($(this).css('transform') == 'none') $(this).css('transform','rotate(180deg)');
+   else $(this).css('transform','none');
 });
 
 /*------------------------------ROOMS MANAGE------------------------------------------*/
@@ -426,28 +427,133 @@ $(document).on('input change', 'input#range', function() {
 });
 $('#rooms form').submit(function(event) {
    event.preventDefault();
+   if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) {
+      console.log("cancel");
+      $('#rooms form')[0].reset();
+      $('output#range').text("0 - "+$('input#range').val());
+      $("#rooms .title").text("Ajouter une salle");
+      $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
+      $("#rooms form button:not(:first-child)").hide();
+      return;
+   }
+   if($('#addroom button[type="delete"]').eq(0).is(document.activeElement)) {
+      var data = $(this).serializeArray();
+      data.push({name: 'deleteRoom', value: 1});
+      data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
+      editRoom(data);
+      loadRooms();
+      return;
+   }
    if ($(this).children('input[name="room"]').val().trim().length <= 1) {
       displayAlert("alert_roomname", 1800);
       return;
    }
+   if ($("#rooms form button:first-child").text() == "Ajouter") { //Ajouter
+      $.post(
+         'room.php',
+         $(this).serialize(),
+         function (data) {
+            var childDivs = $('#join section').children().length;
+            loadRooms();
+            setTimeout(function () {
+               if (childDivs+1 == $('#join section').children().length) { //Si ajout effectué
+                  audioElement.play();
+                  displayAlert("success_addroom", 2000);
+                  $('#rooms form')[0].reset();
+                  $('output#range').text("0 - "+$('input#range').val());
+               }
+               else {
+                  displayAlert("error_room", 1500);
+               }
+            }, 100);
+         }
+      );
+   }
+   else { //Modifier
+      var data = $(this).serializeArray();
+      data.push({name: 'modifyRoom', value: 1});
+      data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
+      editRoom(data);
+      loadRooms();
+   }
+});
+function editRoom(data) {
    $.post(
       'room.php',
-      $(this).serialize(),
+      data,
       function (data) {
-         displayAlert("success_addroom", 2000);
+         if (data != "ERROR_PERM_UPDATE") {
+            audioElement.play();
+            displayAlert("success_modifyroom", 1500);
+         }
+         else {
+            displayAlert("error", 1500);
+         }
          $('#rooms form')[0].reset();
          $('output#range').text("0 - "+$('input#range').val());
-         loadRooms();
+         $("#rooms .title").text("Ajouter une salle");
+         $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
+         $("#rooms form button:not(:first-child)").hide();
       }
    );
-});
+}
 function loadRooms() {
    $("#join section").load("room.php", {
       getRooms : '1'
    });
+   refreshStatus();
 }
-$("#join section").on('click', '.fa-pencil-alt',function () { //Modification room
-   $("#rooms form").children().eq(0).val($(this).parent().text());
+function refreshStatus() {
+   setTimeout(function () {
+      $('#join .fa-sign-in-alt').each(function() {
+         if(!$(this).next().children().eq(1).is(':checked') && $(this).next().children().length >= 1) {
+            $(this).css('color', 'rgb(172, 22, 22)');
+            $(this).prev().css('cursor', 'not-allowed');
+         }
+         else {
+            $(this).css('color', '');
+            $(this).prev().css('cursor', '');
+         }
+      });
+   }, 200);
+}
+$('#join .fa-sync-alt').click(function () { //reload rooms
+   $(this).css('transform','rotate(180deg)');
+   loadRooms();
+   setTimeout(function () { //annulation du rotate sur actualiser
+      $('#join .fa-sync-alt').css('transition', 'unset');
+      $('#join .fa-sync-alt').css('transform','');
+      setTimeout(function () {
+         $('#join .fa-sync-alt').css('transition', '0.5s ease-in');
+      }, 50);
+   }, 500);
+});
+$("#join section").on('click', '.fa-pencil-alt',function () { //Modification room -> form
+   $("#rooms form").children().eq(0).val($(this).parent().text().trim());
+   $('input#range').val($(this).parent().prev().prev().children().eq(1).text());
+   $('output#range').text("0 - "+$('input#range').val());
    $("#rooms .title").text("Modifier une salle");
-   $("#rooms form").children().eq(3).text("Modifier");
+   $("#rooms form button:first-child").attr('room_id', $(this).next().attr('id')).text("Modifier").css('float', 'right');
+   $("#rooms form button:not(:first-child)").show();
+});
+$("#join section").on('click', '.tgl-btn',function () { //Modification statut
+   var data = $(this).serializeArray();
+   data.push({name: 'id', value: $(this).prev().attr('id')});
+   data.push({name: 'editStatus', value: 1});
+   if ($(this).prev().is(':checked')) {
+      data.push({name: 'status', value: "Off"});
+   }
+   else {
+      data.push({name: 'status', value: "On"});
+   }
+   editRoom(data);
+   refreshStatus();
+});
+
+/*------------------------------JOIN ROOM------------------------------------------*/
+$("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
+   $(this).parent().prev().prev().css('opacity', '1');
+});
+$("#join section").on('mouseleave', '.tgl-btn',function () {
+   $(this).parent().prev().prev().css('opacity', '');
 });
