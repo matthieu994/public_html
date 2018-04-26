@@ -9,8 +9,9 @@ if(isset($_POST['getQuestions'])) {
    $req->execute();
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
-      if ($row['question_set'] == null) $row['question_set'] = "NULL";
-      echo '<div question_set="'. $row['question_set'] .'" question_id="'. $row['id'] .'" style="display: none">
+      if ($row['question_set'] == null) $questionset = "NULL";
+      else $questionset = $row['question_set'];
+      echo '<div question_set="'. $question_set .'" question_id="'. $row['id'] .'" style="display: none">
       <i class="fas fa-info-circle"></i>
       <span>' . $row['question'] . '</span>';
       echo '<select>';
