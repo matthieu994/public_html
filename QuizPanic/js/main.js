@@ -152,7 +152,7 @@ function loadQuestions() {
             sets[$(this).attr('question_set')] = '';
          });
          for (set in sets) {
-            $div.filter('[question_set='+ set +']').wrapAll('<section class="set" question_set="'+ set +'"></section>');
+            $div.filter('[question_set="'+ set +'"]').wrapAll('<section class="set" question_set="'+ set +'"></section>');
          }
          $('form#addquestion select[name="sets"]').empty();
          $('form#addquestion select[name="sets"]').append('<option value="NULL" selected>Set: Indéfini');

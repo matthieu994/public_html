@@ -196,7 +196,7 @@ section[role=page] { width: 102%; height: 83%; position: relative; }
    width: 50%;
    overflow: hidden;
 }
-.fenetre div > section {
+.fenetre > div > section {
    overflow-y: auto;
    height: 88%;
    width: 100%;
