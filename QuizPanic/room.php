@@ -11,12 +11,20 @@ if(isset($_POST['getRooms'])) {
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
       $status = "checked";
-      if($row['status'] != "On") $status = "";
+      if($row['status'] != "On") {
+         $status = "";
+         echo '<div><span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>';
+      }
+      else {
+         $req = $db->prepare("SELECT * from lobbys WHERE room=?");
+         $req->bind_param('s', $row['name']);
+         $req->execute();
+         $result2 = $req->get_result();
+         echo '<div><span class="playercount"> <label>'. $result2->num_rows .'</label><label>'. $row['maxplayers'] .'</label></span>';
+      }
+      echo '<i class="fas fa-sign-in-alt"></i>';
       if ($row['username'] == $username) {
-         echo '<div>
-         <span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>
-         <i class="fas fa-sign-in-alt"></i>
-         <span>'. $row['name'] .'
+         echo '<span>'. $row['name'] .'
          <i class="fas fa-pencil-alt"></i>
          <input class="tgl tgl-flip" id="'. $row['id'] .'" type="checkbox"'. $status .'/>
          <label class="tgl-btn" data-tg-off="Off" data-tg-on="On" for="'. $row['id'] .'"></label>
@@ -24,10 +32,7 @@ if(isset($_POST['getRooms'])) {
          </div>';
       }
       else {
-         echo '<div>
-         <span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>
-         <i class="fas fa-sign-in-alt"></i>
-         <span style="margin-top: 14px;">'. $row['name'] .'</span></div>';
+         echo '<span style="margin-top: 14px;">'. $row['name'] .'</span></div>';
       }
    }
    $req->close();
@@ -56,6 +61,13 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
       $req = $db->prepare("DELETE FROM rooms WHERE id=? AND username=?");
       $req->bind_param('ss', $id, $username);
    }
+   $req->execute();
+   $req->close();
+   $db->close();
+}
+else if (isset($_POST['joinRoom'])) {
+   $req = $db->prepare("UPDATE lobbys SET room=? WHERE username=?");
+   $req->bind_param('ss', $_POST['room'], $username);
    $req->execute();
    $req->close();
    $db->close();

@@ -3,7 +3,7 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
    <meta charset="utf-8">
    <title><?php echo $_SESSION["username"] . ' - ' . 'Accueil' ?></title>
@@ -43,6 +43,9 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
          </div>
          <div class="good" id="success_modifyroom" style="display: none">
             <span>Salle modifiée!</span>
+         </div>
+         <div class="good" id="success_deleteroom" style="display: none">
+            <span>Salle supprimée!</span>
          </div>
          <div id="error" style="display: none">
             <span>Une erreur s'est produite.</span>
@@ -191,6 +194,15 @@ session_start(); if(!isset($_SESSION["connected"]) || !$_SESSION["connected"]) h
 </body>
 <script type="text/javascript" src="js/main.js"></script>
 <?php
+if(isset($_SESSION['lobby'])) {
+   echo '<script type="text/javascript">
+   $( document ).ready(function() {
+      $("section[role=\'page\']").children().first().hide();
+      $("section[role=\'page\']").prepend("<iframe>");
+      $("section[role=\'page\']").children("iframe").hide().fadeIn().attr("role", "lobby").attr("src", "lobby.php");
+   });
+   </script>';
+}
 if(isset($_SESSION['return'])) {
    $return = $_SESSION['return'];
    if ($return == 1) {
@@ -210,7 +222,7 @@ if(isset($_SESSION['return'])) {
       });</script>';
    }
 }
-$_SESSION['return'] = 1;
+// $_SESSION['lobby'] = 1;
 ?>
 <script type="text/javascript" src="js/timer.js"></script>
 </html>

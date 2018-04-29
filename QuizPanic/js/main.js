@@ -12,6 +12,15 @@ function displayAlert(alert, time) {
       $('section.alert #'+alert).fadeOut(200);
    }, time);
 }
+function playSound() {
+   if ($('footer .fa-volume-up').css('display') == 'block') {
+      audioElement.play();
+      $('footer .fa-volume-up').toggle().siblings('.fa-volume-down').toggle();
+      setTimeout(function () {
+         $('footer .fa-volume-up').fadeIn(200).siblings('.fa-volume-down').fadeOut();
+      }, 400);
+   }
+}
 /*-----------------------GESTION HELP's----------------------------*/
 $(".hoverable").mousemove(function (event) {
    var parentOffset = $(this).parent().offset();
@@ -177,13 +186,7 @@ function addQuestion() {
    )
    .done(function() {
       displayAlert("success_addquestion", 1500)
-      if ($('footer .fa-volume-up').css('display') == 'block') {
-         audioElement.play();
-         $('footer .fa-volume-up').toggle().siblings('.fa-volume-down').toggle();
-         setTimeout(function () {
-            $('footer .fa-volume-up').fadeIn(200).siblings('.fa-volume-down').fadeOut();
-         }, 400);
-      }
+      playSound();
    })
    .fail(function() {
       displayAlert("error", 1500);
@@ -314,13 +317,7 @@ function modifyQuestion() {
             displayAlert("error", 1500);
          } else {
             displayAlert("success_modifyquestion", 1500);
-            if ($('footer .fa-volume-up').css('display') == 'block') {
-               audioElement.play();
-               $('footer .fa-volume-up').toggle().siblings('.fa-volume-down').toggle();
-               setTimeout(function () {
-                  $('footer .fa-volume-up').fadeIn(200).siblings('.fa-volume-down').fadeOut();
-               }, 400);
-            }
+            playSound();
          }
          $("form#addquestion")[0].reset();
          loadQuestions();
@@ -440,7 +437,7 @@ $('#rooms form').submit(function(event) {
       var data = $(this).serializeArray();
       data.push({name: 'deleteRoom', value: 1});
       data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
-      editRoom(data);
+      editRoom(data, "delete");
       loadRooms();
       return;
    }
@@ -457,7 +454,7 @@ $('#rooms form').submit(function(event) {
             loadRooms();
             setTimeout(function () {
                if (childDivs+1 == $('#join section').children().length) { //Si ajout effectué
-                  audioElement.play();
+                  playSound();
                   displayAlert("success_addroom", 2000);
                   $('#rooms form')[0].reset();
                   $('output#range').text("0 - "+$('input#range').val());
@@ -473,18 +470,19 @@ $('#rooms form').submit(function(event) {
       var data = $(this).serializeArray();
       data.push({name: 'modifyRoom', value: 1});
       data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
-      editRoom(data);
+      editRoom(data, "modify");
       loadRooms();
    }
 });
-function editRoom(data) {
+function editRoom(data, type) {
    $.post(
       'room.php',
       data,
       function (data) {
          if (data != "ERROR_PERM_UPDATE") {
-            audioElement.play();
-            displayAlert("success_modifyroom", 1500);
+            if(type == "modify") displayAlert("success_modifyroom", 1500);
+            if(type == "delete") displayAlert("success_deleteroom", 1500);
+            playSound();
          }
          else {
             displayAlert("error", 1500);
@@ -546,14 +544,26 @@ $("#join section").on('click', '.tgl-btn',function () { //Modification statut
    else {
       data.push({name: 'status', value: "On"});
    }
-   editRoom(data);
+   editRoom(data, 0);
    refreshStatus();
 });
 
 /*------------------------------JOIN ROOM------------------------------------------*/
+$(document).ready(function() { // verification user in room
+
+});
 $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
    $(this).parent().prev().prev().css('opacity', '1');
 });
 $("#join section").on('mouseleave', '.tgl-btn',function () {
    $(this).parent().prev().prev().css('opacity', '');
+});
+$("#join section").on('click', '.playercount',function () {
+   var data = [];
+   data.push({name: 'room', value: $(this).next().next().text().trim()});
+   data.push({name: 'joinRoom', value: 1});
+   editRoom(data);
+   $('section[role="page"]').children().first().fadeOut();
+   $('section[role="page"]').prepend('<iframe>');
+   $('section[role="page"]').children('iframe').hide().fadeIn().attr('role', 'lobby').attr('src', 'lobby.php');
 });

@@ -122,7 +122,7 @@ header {
 }
 
 /* -------------------------- CONTAINER STYLE ------------------------------------- */
-section[role=page] { width: 102%; height: 83%; position: relative; }
+section[role=page] { width: 102%; height: 84%; position: relative; text-align: center; overflow-x: hidden; }
 .container {
    position: absolute;
    left: 50%;
@@ -607,6 +607,16 @@ output#range {
    color: rgb(170, 196, 196);
    cursor: pointer;
 }
+
+/*--------------------------- IFRAME LOBBY -----------------------------*/
+iframe[role='lobby'] {
+   /* border: none; */
+   width: 90%;
+   height: 99%;
+   margin: auto;
+}
+
+
 /*--------------------------- IDLE COUNTDOWN -----------------------------*/
 .notification {
    display: none;

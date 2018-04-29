@@ -30,6 +30,9 @@ $password = md5($_POST['password']);
 $req = $db->prepare("INSERT into users (username, password) VALUES (?, ?)");
 $req->bind_param('ss', $username, $password);
 $req->execute();
+$req = $db->prepare("INSERT into lobbys (username) VALUES (?)");
+$req->bind_param('s', $username);
+$req->execute();
 
 if($req) {
    $_SESSION["username"] = $username;
