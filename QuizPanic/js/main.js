@@ -110,6 +110,14 @@ $("#container-question .fa-chevron-right").click(function () { //slide to play
 });
 
 /*-----------------------------------ADD QUESTION----------------------------------------*/
+$('#add form select[name="good_answer"]').click(function() {
+   $(this).children().each(function(index, el) {
+      if ($(this).text() == "Bonne réponse" || $(this).parent().parent().children().eq(index).val() == "") {
+         return;
+      }
+      $(this).text($(this).parent().parent().children().eq(index).val());
+   });
+});
 $('#add form').submit(false);
 $("#add form button").click(function() {
    $("section.alert div").each(function(){$(this).hide()});
@@ -271,6 +279,7 @@ $("#questions_list").on('click', '.fa-pencil-alt',function () { //Modification q
    $('form#addquestion input[name="answer3"]').val($(this).prev().children().eq(2).text());
    $('form#addquestion input[name="answer4"]').val($(this).prev().children().eq(3).text());
    $('form#addquestion select[name="good_answer"]').val($(this).prev().find(":selected").val());
+   $('form#addquestion select[name="good_answer"]').click();
    $('form#addquestion select[name="sets"]').val($(this).parent().attr("question_set"));
    if ($('form#addquestion button').text() == "Modifier") {
       return;
@@ -413,7 +422,7 @@ $('form#addquestion input#addset').keypress(function(event){ //simuler click pou
 /*------------------------------DISPLAY SETS------------------------------------------*/
 $("#questions_list").on('click', 'section.set > span i',function () {
    $(this).parent().parent().children('div').toggle(300);
-   console.log($(this).css('transform'));
+   // console.log($(this).css('transform'));
    if($(this).css('transform') == 'none') $(this).css('transform','rotate(180deg)');
    else $(this).css('transform','none');
 });
@@ -425,7 +434,7 @@ $(document).on('input change', 'input#range', function() {
 $('#rooms form').submit(function(event) {
    event.preventDefault();
    if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) {
-      console.log("cancel");
+      // console.log("cancel");
       $('#rooms form')[0].reset();
       $('output#range').text("0 - "+$('input#range').val());
       $("#rooms .title").text("Ajouter une salle");
