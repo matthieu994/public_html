@@ -491,7 +491,7 @@ function editRoom(data, type) {
          if (data != "ERROR_PERM_UPDATE") {
             if(type == "modify") displayAlert("success_modifyroom", 1500);
             if(type == "delete") displayAlert("success_deleteroom", 1500);
-            playSound();
+            if(type == "modify" || type == "delete") playSound();
          }
          else {
             displayAlert("error", 1500);
@@ -558,7 +558,7 @@ $("#join section").on('click', '.tgl-btn',function () { //Modification statut
 });
 
 /*------------------------------JOIN ROOM------------------------------------------*/
-$(document).ready(function() { // verification user in room
+$(document).ready(function() { //verification user in room
 
 });
 $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
@@ -567,12 +567,13 @@ $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
 $("#join section").on('mouseleave', '.tgl-btn',function () {
    $(this).parent().prev().prev().css('opacity', '');
 });
-$("#join section").on('click', '.playercount',function () {
+$("#join section").on('click', '.playercount', loadParty);
+function loadParty() {
    var data = [];
    data.push({name: 'room', value: $(this).next().next().text().trim()});
    data.push({name: 'joinRoom', value: 1});
    editRoom(data);
    $('section[role="page"]').children().first().fadeOut();
    $('section[role="page"]').prepend('<iframe>');
-   $('section[role="page"]').children('iframe').hide().fadeIn().attr('role', 'lobby').attr('src', 'lobby.php');
-});
+   $('section[role="page"]').children('iframe').hide().fadeIn(800).attr('role', 'lobby').attr('src', 'lobby.php');
+}

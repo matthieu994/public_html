@@ -2,7 +2,6 @@
 session_start();
 require('bdd.php');
 
-$username = $_SESSION['username'];
 if(isset($_POST['getRooms'])) {
    $status = "On";
    $req = $db->prepare("SELECT * from rooms WHERE status=? OR username=?");

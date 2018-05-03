@@ -1,8 +1,9 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
    <meta charset="utf-8">
-   <title><?php echo $_SESSION["username"] . ' - ' . 'Accueil' ?></title>
+   <title><?php echo $_SESSION["lobby"] ?></title>
    <link rel="shortcut icon" href="img/fav.ico">
    <link rel="stylesheet" type="text/css" href="css/lobby.css">
    <link rel="stylesheet" type="text/css" href="css/common.css">
@@ -11,4 +12,5 @@
 <body>
 
 </body>
+<script src="js/lobby.js"></script>
 </html>
