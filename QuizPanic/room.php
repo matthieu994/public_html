@@ -77,6 +77,14 @@ else if (isset($_POST['joinRoom'])) {
 else {
    $room = $_POST['room'];
    $maxplayers = $_POST['maxplayers'];
+   $req = $db->prepare("SELECT * FROM rooms WHERE username=?"); //verification nbr de rooms
+   $req->bind_param('s', $username);
+   $req->execute();
+   $result = $req->get_result();
+   if ($result->num_rows >= 2) {
+      echo "MAX_ROOMS";
+      return;
+   }
    if ($maxplayers < 1 || strlen($room) <= 1) {
       return;
    }

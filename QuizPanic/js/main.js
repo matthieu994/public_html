@@ -125,7 +125,7 @@ $("#add form button").click(function() {
       displayAlert("alert_question", 1500);
       $(this).prop("disabled", true);
    }
-   else if($("#add input").eq(0).val().trim().length <= 2 || $("#add input").eq(1).val().trim().length <= 2 || $("#add input").eq(2).val().trim().length <= 2 || $("#add input").eq(3).val().trim().length <= 2) {
+   else if($("#add input").eq(0).val().trim().length <= 1 || $("#add input").eq(1).val().trim().length <= 1 || $("#add input").eq(2).val().trim().length <= 1 || $("#add input").eq(3).val().trim().length <= 1) {
       displayAlert("alert_answer2", 1500);
       $(this).prop("disabled", true);
    }
@@ -456,6 +456,7 @@ $('#rooms form').submit(function(event) {
          function (data) {
             var childDivs = $('#join section').children().length;
             loadRooms();
+            console.log(data);
             setTimeout(function () {
                if (childDivs+1 == $('#join section').children().length) { //Si ajout effectué
                   playSound();
@@ -464,7 +465,12 @@ $('#rooms form').submit(function(event) {
                   $('output#range').text("0 - "+$('input#range').val());
                }
                else {
-                  displayAlert("error_room", 1500);
+                  if (data == "MAX_ROOMS") {
+                     displayAlert("error_maxrooms", 1500);
+                  }
+                  else {
+                     displayAlert("error_room", 1500);
+                  }
                }
             }, 100);
          }

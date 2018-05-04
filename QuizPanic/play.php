@@ -2,6 +2,15 @@
 session_start();
 require('bdd.php');
 
+$req = $db->prepare("SELECT room from lobbys WHERE username=?"); //Kick si joueur pas dans la salle
+$req->bind_param('s', $username);
+$req->execute();
+$row = $req->get_result()->fetch_array();
+if ($row['room'] == NULL) {
+   echo "NOT IN ROOM";
+   return;
+}
+
 if (isset($_POST['getName'])) {
    $req = $db->prepare("SELECT room from lobbys WHERE username=?"); //Récupération nom room
    $req->bind_param('s', $username);

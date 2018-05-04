@@ -53,6 +53,9 @@ require 'check.php';
          <div id="error_room" style="display: none">
             <span>Cette salle existe déjà!</span>
          </div>
+         <div id="error_maxrooms" style="display: none">
+            <span>Vous avez atteint le maximum de salles!</span>
+         </div>
          <div class="indication" id="alert_details" style="display: none">
             <span>Cliquez pour obtenir plus de détails.</span>
          </div>

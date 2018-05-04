@@ -81,7 +81,7 @@ section#container-pads {
    /* display: none; */
 }
 
-/*-------------------------- BARRE ET FINISH TIME --------------------------------*/
+/*-------------------------- AFFICHAGE JOUEURS --------------------------------*/
 #players {
    position: absolute;
    top: 50%;
@@ -91,6 +91,15 @@ section#container-pads {
    width: auto;
    display: flex;
    /* border: solid; */
+}
+#players div {
+   position: relative;
+   display: grid;
+   margin: 10px;
+}
+#players span {
+   /* position: absolute;
+   bottom: -10px; */
 }
 #players img {
    width: 50px;

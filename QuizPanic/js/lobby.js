@@ -2,7 +2,9 @@ var room="Lobby", maxplayers=1, current=0, intervalPlayers;
 
 /*-----------------------------------  AFFICHAGE JOUEURS -----------------------------------------*/
 $(document).ready(function() {
-   intervalPlayers = setInterval(function () {                // Afficher nbr de joueurs
+   loadPlayers();
+   $('head title').text(room+' - '+current+'/'+maxplayers);
+   intervalPlayers = setInterval(function () {                //Afficher nbr de joueurs
       loadPlayers();
       $('head title').text(room+' - '+current+'/'+maxplayers);
       if (current == maxplayers) {
@@ -13,13 +15,17 @@ $(document).ready(function() {
 });
 function loadPlayers() {
    $.post('play.php', {getName: '1', loadPlayers: '1'}, function(data) {
+      console.log(data);
+      if (data == "NOT IN ROOM") {
+         window.location.href = 'main.php';
+      }
       var result = $.parseJSON(data);
       room = result['room'];
       maxplayers = result['maxplayers'];
       current = result['current'];
       $('#players').children().remove();
-      for (var i = 1; i <= current; i++) {
-         $('#players').append('<div><img src="img/avatar.png">');
+      for (var i = 0; i < current; i++) {
+         $('#players').append('<div><img src="img/avatar.png"><span>'+ result[i]);
       }
    });
 }

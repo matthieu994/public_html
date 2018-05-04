@@ -4,7 +4,7 @@ require('bdd.php');
 
 if(isset($_POST['getQuestions'])) {
    $username = $_SESSION['username'];
-   $req = $db->prepare("SELECT * from questions WHERE username=?");
+   $req = $db->prepare("SELECT * from questions WHERE username=? OR question_set='Public'");
    $req->bind_param('s', $username);
    $req->execute();
    $result = $req->get_result();
@@ -21,10 +21,12 @@ if(isset($_POST['getQuestions'])) {
          } else
          echo '<option value='. $i .'>' . $row['answer'.$i] . '</option>';
       }
-      echo '</select>
-      <i class="fas fa-pencil-alt"></i>
-      <i class="fas fa-trash-alt" style="color: #d72d2d"></i>
-      </div>';
+      echo '</select>';
+      if ($row['question_set'] != "Public") {
+         echo '<i class="fas fa-pencil-alt"></i>
+         <i class="fas fa-trash-alt" style="color: #d72d2d"></i>';
+      }
+      echo '</div>';
    }
    $req->close();
    $db->close();
@@ -43,7 +45,7 @@ else {
    $good_answer = $_POST['good_answer'];
    $id = $_POST['id'];
 
-   if (isset($_POST['deleteQuestion'])) { //Suppression question
+   if (isset($_POST['deleteQuestion']) && $_POST['sets'] != "Public") { //Suppression question
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
@@ -56,7 +58,7 @@ else {
       $req = $db->prepare("DELETE FROM questions WHERE id=? AND username=?");
       $req->bind_param('ss', $id, $username);
    }
-   else if (isset($_POST['modifyQuestion'])) { //Modification question
+   else if (isset($_POST['modifyQuestion']) && $_POST['sets'] != "Public") { //Modification question
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
