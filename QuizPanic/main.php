@@ -66,7 +66,7 @@ require 'check.php';
          </div>
       </section>
       <div id="profil">
-         <i class="fas fa-cogs hoverable"></i>
+         <!-- <i class="fas fa-cogs hoverable"></i> -->
          <span id="help">Settings</span>
          <!-- <img src="img/menu.png" alt=""> -->
          <!-- <h1 style="vertical-align: 12px; display: inline-block; cursor: pointer;"> Profil </h1> -->

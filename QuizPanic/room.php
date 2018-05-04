@@ -10,15 +10,18 @@ if(isset($_POST['getRooms'])) {
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
       $status = "checked";
+      $req = $db->prepare("SELECT * from lobbys WHERE room=? AND !admin");
+      $req->bind_param('s', $row['name']);
+      $req->execute();
+      $result2 = $req->get_result();
+      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username) {
+         continue;
+      }
       if($row['status'] != "On") {
          $status = "";
          echo '<div><span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       else {
-         $req = $db->prepare("SELECT * from lobbys WHERE room=? AND !admin");
-         $req->bind_param('s', $row['name']);
-         $req->execute();
-         $result2 = $req->get_result();
          echo '<div><span class="playercount"> <label>'. $result2->num_rows .'</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       echo '<i class="fas fa-sign-in-alt"></i>';

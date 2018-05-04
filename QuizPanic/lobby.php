@@ -11,27 +11,28 @@
 </head>
 <body>
 
+   <header>
+      <i class="fas fa-sign-out-alt"></i>
+   </header>
    <!-- <section id="container-pads"> -->
+   <div id="players">
+   </div>
 
    <div class="sub-container">
-      <span id="question">QUESTION</span>
+      <span id="question">EXEMPLE QUESTION</span>
       <div id="pad1">
-
       </div>
       <div id="pad2">
-
       </div>
    </div>
    <div class="sub-container">
       <div id="pad3">
-
       </div>
       <div id="pad4">
-
       </div>
-      <span id="progressbar">
-         <span></span>
-      </span>
+
+      <span id="finishtime">Temps écoulé!</span>
+      <span id="progressbar"></span>
    </div>
    <!-- </section> -->
 

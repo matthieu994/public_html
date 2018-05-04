@@ -429,10 +429,10 @@ $(document).on('input change', 'input#range', function() {
 $('#rooms form').submit(function(event) {
    event.preventDefault();
    if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) {
-      // console.log("cancel");
+      console.log("cancel");
       $('#rooms form')[0].reset();
       $('output#range').text("0 - "+$('input#range').val());
-      $("#rooms .title").text("Ajouter une salle");
+      $("#rooms .title").text("Créer une salle");
       $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
       $("#rooms form button:not(:first-child)").hide();
       return;
@@ -493,19 +493,19 @@ function editRoom(data, type) {
          }
          $('#rooms form')[0].reset();
          $('output#range').text("0 - "+$('input#range').val());
-         $("#rooms .title").text("Ajouter une salle");
+         $("#rooms .title").text("Créer une salle");
          $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
          $("#rooms form button:not(:first-child)").hide();
       }
    );
 }
-function loadRooms() {
+function loadRooms() { //Chargement des rooms
    $("#join section").load("room.php", {
       getRooms : '1'
    });
    refreshStatus();
 }
-function refreshStatus() {
+function refreshStatus() { //Chargement du status
    setTimeout(function () {
       $('#join .fa-sign-in-alt').each(function() {
          if(!$(this).next().children().eq(1).is(':checked') && $(this).next().children().length >= 1) {
@@ -539,17 +539,19 @@ $("#join section").on('click', '.fa-pencil-alt',function () { //Modification roo
    $("#rooms form button:not(:first-child)").show();
 });
 $("#join section").on('click', '.tgl-btn',function () { //Modification statut
-   var data = $(this).serializeArray();
+   var room = $(this).parent().text().trim(),
+   data = $(this).serializeArray();
    data.push({name: 'id', value: $(this).prev().attr('id')});
    data.push({name: 'editStatus', value: 1});
    if ($(this).prev().is(':checked')) {
       data.push({name: 'status', value: "Off"});
+      $.post('play.php', {room: room, kickAll: 1}, function(data) {});
    }
    else {
       data.push({name: 'status', value: "On"});
    }
    editRoom(data, 0);
-   refreshStatus();
+   loadRooms();
 });
 
 /*------------------------------JOIN ROOM------------------------------------------*/
@@ -562,13 +564,19 @@ $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
 $("#join section").on('mouseleave', '.tgl-btn',function () {
    $(this).parent().prev().prev().css('opacity', '');
 });
-$("#join section").on('click', '.playercount', loadParty);
+$("#join section").on('click', '.playercount', function() {
+   var data = [];
+   data.push({name: 'room', value: $(this).next().next().text().trim()});
+   data.push({name: 'joinRoom', value: 1});
+   editRoom(data);
+   window.location.href = "lobby.php";
+});
 function loadParty() {
    var data = [];
    data.push({name: 'room', value: $(this).next().next().text().trim()});
    data.push({name: 'joinRoom', value: 1});
    editRoom(data);
-   $('section[role="page"]').children().first().fadeOut();
-   $('section[role="page"]').prepend('<iframe>');
-   $('section[role="page"]').children('iframe').hide().fadeIn(800).attr('role', 'lobby').attr('src', 'lobby.php');
+   $('body').children().fadeOut();
+   $('body').prepend('<iframe>');
+   $('body').children('iframe').hide().fadeIn(800).attr('role', 'lobby').attr('src', 'lobby.php');
 }

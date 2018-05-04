@@ -24,9 +24,23 @@ if (isset($_POST['loadPlayers'])) {
    $req->execute();
    $result = $req->get_result();
    $array->current = $result->num_rows;
-   $req->close();
-   $db->close();
+   $i = 0;
+   while ($row = $result->fetch_assoc()) {
+      $array->$i = $row['username'];
+      $i++;
+   }
    echo json_encode($array);
 }
-
+if (isset($_POST['kickAll'])) {
+   $req = $db->prepare("UPDATE lobbys SET room=NULL WHERE room=?");
+   $req->bind_param('s', $_POST['room']);
+   $req->execute();
+}
+if (isset($_POST['leaveRoom'])) {
+   $req = $db->prepare("UPDATE lobbys SET room=NULL WHERE username=?");
+   $req->bind_param('s', $username);
+   $req->execute();
+}
+$req->close();
+$db->close();
 ?>

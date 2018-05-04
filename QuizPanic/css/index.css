@@ -42,7 +42,7 @@ b {
    /* transform: translate(-50%, -50%); */
    position: absolute;
    width: 100%;
-   top: 30px;
+   top: 10px;
    z-index: -1;
    text-align: center;
 }
@@ -201,7 +201,7 @@ img[src="img/avatar.png"] {
    border-radius: 8px;
 }
 
-/*@media screen and (max-height: 900px) {
+@media screen and (max-height: 900px) {
    .container-login, .container-signup {
       top: 60%;
    }
@@ -226,9 +226,10 @@ img[src="img/avatar.png"] {
    .header {
       display: none;
    }
-}*/
-@media screen and (max-width: 940px) {
+}
+/* @media screen and (max-width: 940px) {
    .header h1 {
+      top: -10px;
       font-size: 80px;
    }
 }
@@ -249,4 +250,4 @@ img[src="img/avatar.png"] {
    .container-login, .container-signup {
       top: 55%;
    }
-}
+} */
