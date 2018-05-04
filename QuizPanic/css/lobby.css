@@ -3,7 +3,7 @@ body {
    color: white;
    letter-spacing: 1px;
    text-align: center;
-   overflow: visible;
+   overflow: overlay;
    width: 98vw;
    /* min-width: 99vw; */
    height: 97vh;
@@ -13,7 +13,7 @@ body {
 
 /*-------------------- HEADER --------------------------*/
 header {
-   width: 101%;
+   width: 102%;
    height: 65px;
    background-color: rgb(15, 94, 100);
    z-index: 1;
@@ -32,7 +32,7 @@ section#container-pads {
    height: 90%;
 }
 .sub-container {
-   width: 101%;
+   width: 102%;
    height: 390px;
    /* margin-top: 50px; */
 }
@@ -40,7 +40,6 @@ section#container-pads {
 
 }
 .sub-container:last-of-type {
-   width: 101%;
    height: 370px;
    position: absolute;
    bottom: 0;

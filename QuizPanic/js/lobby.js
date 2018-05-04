@@ -24,9 +24,6 @@ function loadPlayers() {
    });
 }
 function start() {
-   $('#question').animate({
-      marginTop: '10px'
-   });
    setTimeout(function () {
       displayAnswer("#pad1");
       setTimeout(function () {
@@ -35,20 +32,25 @@ function start() {
             displayAnswer("#pad3");
             setTimeout(function () {
                displayAnswer("#pad4");
-               $('#progressbar').fadeIn().animate({
-                  width: 0
-               }, 9500);
                setTimeout(function () {
-                  $('#progressbar').css('background', 'rgb(174, 141, 16)');
-               }, 2000);
-               setTimeout(function () {
-                  $('#progressbar').css('background', 'rgb(127, 0, 0)');
-               }, 6500);
-               setTimeout(function () {
-                  $('#finishtime').fadeIn();
-                  $('#question').css('marginTop', '-70px');
-                  $('#progressbar').css('width', '1000px').css('background', 'rgb(44, 156, 44)').hide();
-               }, 9800);
+                  $('#question').animate({
+                     marginTop: '10px'
+                  });
+                  $('#progressbar').fadeIn().animate({
+                     width: 0
+                  }, 9500);
+                  setTimeout(function () {
+                     $('#progressbar').css('background', 'rgb(174, 141, 16)');
+                  }, 2000);
+                  setTimeout(function () {
+                     $('#progressbar').css('background', 'rgb(127, 0, 0)');
+                  }, 6500);
+                  setTimeout(function () {
+                     $('#finishtime').fadeIn();
+                     $('#question').css('marginTop', '-70px');
+                     $('#progressbar').css('width', '1000px').css('background', 'rgb(44, 156, 44)').hide();
+                  }, 9800);
+               }, 500);
             }, 800);
          }, 800);
       }, 800);
