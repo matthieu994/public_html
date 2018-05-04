@@ -158,32 +158,27 @@ $('#set .fa-sync-alt').click(function () { //reload questions
 });
 function loadQuestions() {
    // $("#questions_list").append('Chargement des questions');
-   $("#questions_list").load("question.php", {
-      getQuestions : '1'
-   });
-   $("#questions_list").ready(function() {
-      setTimeout(function () { //TRI SUPER COOL POUR SETS
-         var $div = $('#questions_list > div');
-         sets = {};
-         $div.each(function(){
-            sets[$(this).attr('question_set')] = '';
-         });
-         for (set in sets) {
-            $div.filter('[question_set="'+ set +'"]').wrapAll('<section class="set" question_set="'+ set +'"></section>');
+   $("#questions_list").load("question.php", {getQuestions : '1'}, function() { //TRI SUPER COOL POUR SETS
+      var $div = $('#questions_list > div');
+      sets = {};
+      $div.each(function(){
+         sets[$(this).attr('question_set')] = '';
+      });
+      for (set in sets) {
+         $div.filter('[question_set="'+ set +'"]').wrapAll('<section class="set" question_set="'+ set +'"></section>');
+      }
+      $('form#addquestion select[name="sets"]').empty();
+      $('form#addquestion select[name="sets"]').append('<option value="NULL" selected>Set: Indéfini');
+      $('#questions_list section.set').each(function () {
+         if ($(this).attr("question_set") == "NULL") $(this).prepend('<span>'+"Indéfini"+'<i class="fas fa-caret-down"></i>');
+         else {
+            $(this).prepend('<span>'+$(this).attr("question_set")+'<i class="fas fa-caret-down"></i>');
+            $('form#addquestion select[name="sets"]').append($('<option>', {
+               value: $(this).attr("question_set"),
+               text: 'Set: '+$(this).attr("question_set")
+            }));
          }
-         $('form#addquestion select[name="sets"]').empty();
-         $('form#addquestion select[name="sets"]').append('<option value="NULL" selected>Set: Indéfini');
-         $('#questions_list section.set').each(function () {
-            if ($(this).attr("question_set") == "NULL") $(this).prepend('<span>'+"Indéfini"+'<i class="fas fa-caret-down"></i>');
-            else {
-               $(this).prepend('<span>'+$(this).attr("question_set")+'<i class="fas fa-caret-down"></i>');
-               $('form#addquestion select[name="sets"]').append($('<option>', {
-                  value: $(this).attr("question_set"),
-                  text: 'Set: '+$(this).attr("question_set")
-               }));
-            }
-         });
-      }, 100);
+      });
    });
 }
 
