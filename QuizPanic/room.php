@@ -15,7 +15,7 @@ if(isset($_POST['getRooms'])) {
          echo '<div><span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       else {
-         $req = $db->prepare("SELECT * from lobbys WHERE room=?");
+         $req = $db->prepare("SELECT * from lobbys WHERE room=? AND !admin");
          $req->bind_param('s', $row['name']);
          $req->execute();
          $result2 = $req->get_result();

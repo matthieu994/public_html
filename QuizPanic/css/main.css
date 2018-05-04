@@ -2,30 +2,6 @@
 
 /* -------------------------- BASIC STYLE ------------------------------------- */
 
-* {
-   margin: 0px;
-   padding: 0px;
-
-   font-family: 'Roboto', sans-serif;
-   font-weight: 300;
-}
-
-* , *:before, *:after{
-   box-sizing:border-box;
-   -moz-box-sizing:border-box;
-   -webkit-box-sizing:border-box;
-   -ms-box-sizing:border-box;
-}
-
-::selection {
-   background: #54a3a5;
-   color: white;
-}
-::-moz-selection {
-   background: #54a3a5;
-   color: white;
-}
-
 body {
    background-image: radial-gradient(circle, #284d60, #25485a, #224354, #1f3e4e, #1c3948);
    color: white;

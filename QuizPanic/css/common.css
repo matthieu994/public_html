@@ -3,10 +3,31 @@
 @import "https://use.fontawesome.com/releases/v5.0.7/css/all.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css";
 
+* {
+   margin: 0px;
+   padding: 0px;
+   font-family: 'Roboto', sans-serif;
+   font-weight: 300;
+}
+* , *:before, *:after{
+   box-sizing:border-box;
+   -moz-box-sizing:border-box;
+   -webkit-box-sizing:border-box;
+   -ms-box-sizing:border-box;
+}
+::selection {
+   background: #54a3a5;
+   color: white;
+}
+::-moz-selection {
+   background: #54a3a5;
+   color: white;
+}
 :focus {
   outline-color: transparent;
   outline-style: none;
 }
+
 /* -------------------------- INPUTS STYLE ------------------------------------- */
 input, textarea {
    -webkit-box-sizing: border-box;
