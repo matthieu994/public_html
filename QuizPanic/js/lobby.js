@@ -1,31 +1,34 @@
-var room="Lobby", maxplayers=1, current=0, intervalPlayers;
+var result, intervalPlayers;;
 
 /*-----------------------------------  AFFICHAGE JOUEURS -----------------------------------------*/
 $(document).ready(function() {
    loadPlayers();
-   $('head title').text(room+' - '+current+'/'+maxplayers);
-   intervalPlayers = setInterval(function () {                //Afficher nbr de joueurs
+   intervalPlayers = setInterval(function () { //Afficher nbr de joueurs
       loadPlayers();
-      $('head title').text(room+' - '+current+'/'+maxplayers);
-      if (current == maxplayers) {
+      $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
+      if (result['current'] == result['maxplayers']) {
          clearInterval(intervalPlayers);
+         backgroundData();
          start();
       }
    }, 1000);
 });
+function backgroundData() {
+   setInterval(function () {
+      loadPlayers();
+   }, 1000);
+}
 function loadPlayers() {
    $.post('play.php', {getName: '1', loadPlayers: '1'}, function(data) {
-      console.log(data);
       if (data == "NOT IN ROOM") {
          window.location.href = 'main.php';
       }
-      var result = $.parseJSON(data);
-      room = result['room'];
-      maxplayers = result['maxplayers'];
-      current = result['current'];
+      result = $.parseJSON(data);
+      // console.log(result);
       $('#players').children().remove();
-      for (var i = 0; i < current; i++) {
-         $('#players').append('<div><img src="img/avatar.png"><span>'+ result[i]);
+      $('#players').append('<div><img src="img/avatar'+result['user']['avatar']+'.png"><span style="color: #0cd50c">'+ result['user']['username']);
+      for (var i = 0; i < result['current']-1; i++) {
+         $('#players').append('<div><img src="img/avatar'+result[i]['avatar']+'.png"><span>'+ result[i]['username']);
       }
    });
 }
@@ -66,9 +69,37 @@ function displayAnswer(pad) {
    $(pad).fadeIn();
 }
 
+/*-----------------------------------  SETTINGS -----------------------------------------*/
+$('header .fa-cogs').click(function() {
+   $('#settings').animate({
+      marginLeft: 0,
+      opacity: 1
+   }, 400);
+   $(this).fadeOut(300);
+});
+$('header .fa-chevron-left').click(function() {
+   $('#settings').animate({
+      marginLeft: '-300px',
+      opacity: 0
+   }, 400);
+   $('header .fa-cogs').fadeIn(300);
+});
+function updateAvatar() {
+   $.post('play.php', {getAvatar: 1}, function(data) {
+      $('#avatar').children().eq(data-1).css('background', 'rgba(16, 121, 133, 0.4)');
+   });
+}
+$('#avatar').ready(updateAvatar);
+$('#avatar img').click(function() {
+   $(this).parent().children('img').css('background', '');
+   $.post('play.php', {setAvatar: $(this).index()+1});
+   updateAvatar();
+   $('#players').children().first().children('img').attr('src', 'img/avatar'+($(this).index()+1)+'.png').hide().fadeIn();
+});
+
 /*-----------------------------------  QUITTER SALLE -----------------------------------------*/
 $('header .fa-sign-out-alt').click(function() {
-   $.post('play.php', {leaveRoom: 1, room: room}, function(data) {
+   $.post('play.php', {leaveRoom: 1, room: result['room']}, function(data) {
       window.location.href = 'main.php';
    });
 });

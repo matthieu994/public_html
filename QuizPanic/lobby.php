@@ -3,7 +3,7 @@
 <html lang="fr">
 <head>
    <meta charset="utf-8">
-   <title> LOBBY </title>
+   <title> Lobby </title>
    <link rel="shortcut icon" href="img/fav.ico">
    <link rel="stylesheet" type="text/css" href="css/lobby.css">
    <link rel="stylesheet" type="text/css" href="css/common.css">
@@ -12,7 +12,15 @@
 <body>
 
    <header>
+      <i class="fas fa-cogs"></i>
       <i class="fas fa-sign-out-alt"></i>
+      <div id="settings">
+         <i class="fas fa-chevron-left"></i>
+         <div id="avatar">
+            <img src="img/avatar1.png"><img src="img/avatar2.png"><img src="img/avatar3.png"><img src="img/avatar4.png">
+            <span>Choisis ton avatar!</span>
+         </div>
+      </div>
    </header>
    <!-- <section id="container-pads"> -->
    <div id="players">
@@ -20,16 +28,12 @@
 
    <div class="sub-container">
       <span id="question">EXEMPLE QUESTION</span>
-      <div id="pad1">
-      </div>
-      <div id="pad2">
-      </div>
+      <div id="pad1"></div>
+      <div id="pad2"></div>
    </div>
    <div class="sub-container">
-      <div id="pad3">
-      </div>
-      <div id="pad4">
-      </div>
+      <div id="pad3"></div>
+      <div id="pad4"></div>
 
       <span id="finishtime">Temps écoulé!</span>
       <span id="progressbar"></span>

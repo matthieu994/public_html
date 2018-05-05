@@ -10,6 +10,10 @@ body {
    min-height: 800px;
    position: relative;
 }
+span {
+   font-family: 'Roboto';
+   font-weight: 100;
+}
 
 /*-------------------- HEADER --------------------------*/
 header {
@@ -17,16 +21,54 @@ header {
    height: 65px;
    background-color: rgb(15, 94, 100);
    z-index: 1;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.3);
 }
 header .fa-sign-out-alt {
    font-size: 60px;
-   margin: 2px 0 0 10px;
+   margin: 2px 30px;
+   color: rgb(155, 184, 187);
+   cursor: pointer;
+   float: right;
+}
+header .fa-cogs, header .fa-chevron-left {
+   font-size: 50px;
+   margin: 7px 10px;
    color: rgb(155, 184, 187);
    cursor: pointer;
    float: left;
-   transform: rotate(180deg);
+   z-index: 1;
+}
+#settings {
+   height: 103%;
+   width: 250px;
+   margin-left: -300px;
+   opacity: 0;
+   background-color: rgba(5, 51, 55, 0.84);
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.5);
+   position: absolute;
+   z-index: 1;
+}
+#avatar {
+   height: 100px;
+   margin-top: 75px;
+}
+#avatar span {
+   display: inline-block;
+}
+#avatar img {
+   width: 50px;
+   margin: 0 6px;
+   padding: 5px;
+   cursor: pointer;
+   border-radius: 5px;
+}
+#avatar img:hover {
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.35);
+   background-color: rgba(16, 121, 133, 0.1);
 }
 
+
+/*-------------------------- QUESTIONS PAD --------------------------------*/
 section#container-pads {
    width: 101%;
    height: 90%;
@@ -45,8 +87,6 @@ section#container-pads {
    bottom: 0;
    /* margin-bottom: 20px; */
 }
-
-/*-------------------------- QUESTIONS PAD --------------------------------*/
 .sub-container > div {
    width: 350px;
    height: 350px;

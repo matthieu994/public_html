@@ -380,11 +380,7 @@ $('footer .fas').click(function() {
    $(this).siblings('.fas').eq(0).toggle();
 });
 
-$( document ).ready(function() { //Desactiver overflow pendant animation
-   setTimeout(function () {
-      $('body').css('overflow-y', 'auto');
-   }, 1000);
-   loadRooms();
+$(document).ready(function() { //Desactiver overflow pendant animation
    $('input, textarea').each(function() {
       $(this).attr('onfocus', "this.placeholder = ''");
       $(this).attr('onblur', "this.placeholder = '"+ $(this).attr('placeholder') +"'")
@@ -557,12 +553,16 @@ $("#join section").on('click', '.tgl-btn',function () { //Modification statut
       data.push({name: 'status', value: "On"});
    }
    editRoom(data, 0);
-   loadRooms();
+   setTimeout(function () {
+      loadRooms();
+   }, 800);
 });
 
 /*------------------------------JOIN ROOM------------------------------------------*/
 $(document).ready(function() { //verification user in room
-
+   $.post('play.php', {leaveRoom: '1'}, function() {
+      loadRooms();
+   });
 });
 $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
    $(this).parent().prev().prev().css('opacity', '1');
@@ -571,6 +571,9 @@ $("#join section").on('mouseleave', '.tgl-btn',function () {
    $(this).parent().prev().prev().css('opacity', '');
 });
 $("#join section").on('click', '.playercount', function() {
+   if ($(this).css('cursor') == "not-allowed") {
+      return;
+   }
    var data = [];
    data.push({name: 'room', value: $(this).next().next().text().trim()});
    data.push({name: 'joinRoom', value: 1});
