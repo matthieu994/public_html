@@ -489,6 +489,7 @@ function editRoom(data, type) {
             if(type == "modify") displayAlert("success_modifyroom", 1500);
             if(type == "delete") displayAlert("success_deleteroom", 1500);
             if(type == "modify" || type == "delete") playSound();
+            if(type == "join") window.location.href = "lobby.php";
          }
          else {
             displayAlert("error", 1500);
@@ -577,8 +578,7 @@ $("#join section").on('click', '.playercount', function() {
    var data = [];
    data.push({name: 'room', value: $(this).next().next().text().trim()});
    data.push({name: 'joinRoom', value: 1});
-   editRoom(data);
-   window.location.href = "lobby.php";
+   editRoom(data, "join");
 });
 function loadParty() {
    var data = [];

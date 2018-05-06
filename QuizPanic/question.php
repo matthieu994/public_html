@@ -22,7 +22,7 @@ if(isset($_POST['getQuestions'])) {
          echo '<option value='. $i .'>' . $row['answer'.$i] . '</option>';
       }
       echo '</select>';
-      if ($row['question_set'] != "Public") {
+      if ($row['question_set'] != "Public" || $row['username'] == $username) {
          echo '<i class="fas fa-pencil-alt"></i>
          <i class="fas fa-trash-alt" style="color: #d72d2d"></i>';
       }
@@ -45,7 +45,7 @@ else {
    $good_answer = $_POST['good_answer'];
    $id = $_POST['id'];
 
-   if (isset($_POST['deleteQuestion']) && $_POST['sets'] != "Public") { //Suppression question
+   if (isset($_POST['deleteQuestion'])) { //Suppression question
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
@@ -58,7 +58,7 @@ else {
       $req = $db->prepare("DELETE FROM questions WHERE id=? AND username=?");
       $req->bind_param('ss', $id, $username);
    }
-   else if (isset($_POST['modifyQuestion']) && $_POST['sets'] != "Public") { //Modification question
+   else if (isset($_POST['modifyQuestion'])) { //Modification question
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
@@ -79,7 +79,7 @@ else {
       }
    }
    else { //Ajout question
-      if(isset($_POST['sets'])) { //Set defini
+      if(isset($_POST['sets']) && $_POST['sets'] != "Public") { //Set defini
          $req = $db->prepare("INSERT INTO questions (username, question, answer1, answer2, answer3, answer4, good_answer, question_set) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
          $req->bind_param('ssssssss', $username, $question, $answer1, $answer2, $answer3, $answer4, $good_answer, $_POST['sets']);
       }

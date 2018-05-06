@@ -5,8 +5,8 @@ body {
    text-align: center;
    overflow: overlay;
    width: 98vw;
-   /* min-width: 99vw; */
-   height: 97vh;
+   min-width: 1000px;
+   height: 800px;
    min-height: 800px;
    position: relative;
 }
@@ -76,17 +76,11 @@ section#container-pads {
 .sub-container {
    width: 102%;
    height: 390px;
-   /* margin-top: 50px; */
 }
-.sub-container:first-of-type {
-
-}
-.sub-container:last-of-type {
-   height: 370px;
+/* .sub-container:last-of-type {
    position: absolute;
-   bottom: 0;
-   /* margin-bottom: 20px; */
-}
+   bottom: -25px;
+} */
 .sub-container > div {
    width: 350px;
    height: 350px;
@@ -94,6 +88,7 @@ section#container-pads {
    border: 1px solid rgba(255,255,255,0.4);
    border-radius: 15px;
    background-color: rgba(6, 97, 99, 0.65);
+   cursor: pointer;
    display: none;
 }
 #pad1 {
@@ -113,11 +108,12 @@ section#container-pads {
    font-family: 'Roboto';
    font-size: 32px;
    font-weight: 100;
-   margin-top: -70px;
+   margin-top: -170px;
    position: absolute;
    left: 50%;
    transform: translate(-50%, 0);
-   z-index: -1;
+   z-index: 0;
+   transition: 0.75s linear;
    /* display: none; */
 }
 
@@ -136,6 +132,7 @@ section#container-pads {
    position: relative;
    display: grid;
    margin: 10px;
+   /* transition: 1s ease-in; */
 }
 #players span {
    /* position: absolute;
@@ -144,6 +141,7 @@ section#container-pads {
 #players img {
    width: 50px;
    height: 50px;
+   margin: auto;
 }
 
 /*-------------------------- BARRE ET FINISH TIME --------------------------------*/

@@ -14,7 +14,7 @@ if(isset($_POST['getRooms'])) {
       $req->bind_param('s', $row['name']);
       $req->execute();
       $result2 = $req->get_result();
-      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username) {
+      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username || $row['question'] != NULL) {
          continue;
       }
       if($row['status'] != "On") {
