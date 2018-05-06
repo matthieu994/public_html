@@ -14,7 +14,7 @@ if(isset($_POST['getRooms'])) {
       $req->bind_param('s', $row['name']);
       $req->execute();
       $result2 = $req->get_result();
-      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username || $row['question'] != NULL) {
+      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username) {
          continue;
       }
       if($row['status'] != "On") {
@@ -47,7 +47,7 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
    $req->execute();
    $result = $req->get_result();
    $row = $result->fetch_array();
-   if($row['username'] != $username) { //On verifie que la question est à l'user
+   if($row['username'] != $username) { //On verifie que la salle est à l'user
       echo "ERROR_PERM_UPDATE";
       return;
    }
@@ -56,7 +56,7 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
       $req->bind_param('ssss', $_POST['room'], $_POST['maxplayers'], $id, $username);
    }
    if (isset($_POST['editStatus'])) {
-      $req = $db->prepare("UPDATE rooms SET status = ? WHERE id=? AND username=?");
+      $req = $db->prepare("UPDATE rooms SET status=?,question=NULL WHERE id=? AND username=?");
       $req->bind_param('sss', $_POST['status'], $id, $username);
    }
    if (isset($_POST['deleteRoom'])) {

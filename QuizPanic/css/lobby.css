@@ -77,10 +77,6 @@ section#container-pads {
    width: 102%;
    height: 390px;
 }
-/* .sub-container:last-of-type {
-   position: absolute;
-   bottom: -25px;
-} */
 .sub-container > div {
    width: 350px;
    height: 350px;
@@ -89,7 +85,16 @@ section#container-pads {
    border-radius: 15px;
    background-color: rgba(6, 97, 99, 0.65);
    cursor: pointer;
+   transition: background-color 1s ease-in;
    display: none;
+}
+.sub-container > div > span {
+   font-size: 25px;
+   margin-top: 4px;
+   display: inline-block;
+   background: #074447;
+   padding: 5px;
+   border-radius: 5px;
 }
 #pad1 {
    float: left;

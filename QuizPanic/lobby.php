@@ -28,12 +28,20 @@
 
    <div class="sub-container">
       <span id="question">EXEMPLE QUESTION</span>
-      <div id="pad1"></div>
-      <div id="pad2"></div>
+      <div id="pad1">
+         <span></span>
+      </div>
+      <div id="pad2">
+         <span></span>
+      </div>
    </div>
    <div class="sub-container">
-      <div id="pad3"></div>
-      <div id="pad4"></div>
+      <div id="pad3">
+         <span></span>
+      </div>
+      <div id="pad4">
+         <span></span>
+      </div>
 
       <span id="finishtime">Temps écoulé!</span>
       <span id="progressbar"></span>

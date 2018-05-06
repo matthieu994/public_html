@@ -2,10 +2,16 @@
 session_start();
 require('bdd.php');
 
+if (isset($_POST['kickAll'])) {
+   $req = $db->prepare("UPDATE lobbys SET room=NULL WHERE room=?");
+   $req->bind_param('s', $_POST['kickAll']);
+   $req->execute();
+}
 $req = $db->prepare("SELECT room from lobbys WHERE username=?"); //Kick si joueur pas dans la salle
 $req->bind_param('s', $username);
 $req->execute();
 $row = $req->get_result()->fetch_array();
+$room = $row['room'];
 if ($row['room'] == NULL) {
    echo "NOT IN ROOM";
    return;
@@ -19,18 +25,40 @@ if ($row['status'] == "Off") {
    return;
 }
 
-$req = $db->prepare("SELECT room from lobbys WHERE username=?"); //Récupération nom room
-$req->bind_param('s', $username);
-$req->execute();
-$result = $req->get_result();
-$row = $result->fetch_array();
-$room = $row['room'];
-
 if (isset($_POST['loadPlayers'])) {
    $array = new stdClass();
    $array->room = $room;
+   $req = $db->prepare("UPDATE lobbys SET answer=0 WHERE room=? AND username=?"); //Reset question de la salle
+   $req->bind_param('ss', $room, $username);
+   $req->execute();
+   $req = $db->prepare("UPDATE rooms SET question=NULL WHERE name=?"); //Reset question de la salle
+   $req->bind_param('s', $room);
+   $req->execute();
 
    loadPlayers($array);
+   if($array->current != 1) {
+      echo json_encode($array);
+      return;
+   }
+
+   $questions = new stdClass();
+   $req = $db->prepare("SELECT id FROM questions WHERE question_set='Public'"); //Selection de 5 questions aléatoires
+   $req->execute();
+   $result = $req->get_result();
+   $i = 0;
+   while ($row = $result->fetch_assoc()) {
+      $i++;
+      $questions->$i = $row['id'];
+   }
+   $question_array = (array)json_decode(json_encode($questions, true));
+   $rand_questions = array_rand($question_array, 5);
+   $array->question_list = array(
+      '0' => $question_array[$rand_questions[0]],
+      '1' => $question_array[$rand_questions[1]],
+      '2' => $question_array[$rand_questions[2]],
+      '3' => $question_array[$rand_questions[3]],
+      '4' => $question_array[$rand_questions[4]]
+   );
    echo json_encode($array);
 }
 
@@ -38,23 +66,7 @@ if (isset($_POST['playerData'])) {
    $array = new stdClass();
    $array->room = $room;
 
-   $req = $db->prepare("UPDATE lobbys SET answer=? WHERE username=?"); //Set answer
-   $req->bind_param('ss', $_POST['answer'], $username);
-   $req->execute();
-
    loadPlayers($array);
-   $req = $db->prepare("SELECT * from questions WHERE id=?"); //Récupération de la question
-   $req->bind_param('s', $array->question_id);
-   $req->execute();
-   $row = $req->get_result()->fetch_array();
-   $array->question = array(
-      0 => $row['question'],
-      1 => $row['answer1'],
-      2 => $row['answer2'],
-      3 => $row['answer3'],
-      4 => $row['answer4'],
-      'good' => $row['good_answer']
-   );
    echo json_encode($array);
 }
 
@@ -100,20 +112,29 @@ function loadPlayers ($array) {
 
 
 if (isset($_POST['loadQuestions'])) {
-   $array = new stdClass();
-   $req = $db->prepare("SELECT * FROM questions WHERE question_set=?");
-   $req->bind_param('s', $_POST['loadQuestions']); $req->execute(); $result = $req->get_result();
-   $i = 0;
-   while ($row = $result->fetch_assoc()) {
-      $array->$i = $row['id'];
-      $i++;
+   $req = $db->prepare("SELECT question FROM rooms WHERE name=?");
+   $req->bind_param('s', $room); $req->execute();
+   $row = $req->get_result()->fetch_assoc();
+   echo "'".$row['question']."'";
+   if (!empty($row['question'])) {
+      return;
    }
+
+   $array = new stdClass();
+   $req = $db->prepare("SELECT id FROM questions WHERE question_set=?"); //Selection d'une question aléatoire
+   $req->bind_param('s', $_POST['loadQuestions']); $req->execute();
+   $result = $req->get_result();
+   $i = 0;
+   $rand = rand(1,$result->num_rows);
+   $array->$i = $rand;
+   while ($row = $result->fetch_assoc()) {
+      $i++;
+      $array->$i = $row['id'];
+   }
+   $i = 0;
+   $req = $db->prepare("UPDATE rooms SET question=? WHERE name=?");
+   $req->bind_param('ss', $array->$rand, $room); $req->execute();
    echo json_encode($array);
-}
-if (isset($_POST['kickAll'])) {
-   $req = $db->prepare("UPDATE lobbys SET room=NULL WHERE room=?");
-   $req->bind_param('s', $_POST['room']);
-   $req->execute();
 }
 if (isset($_POST['leaveRoom'])) {
    $req = $db->prepare("UPDATE lobbys SET room=NULL WHERE username=?");
@@ -132,10 +153,41 @@ if (isset($_POST['setAvatar'])) {
    $req->bind_param('ss', $_POST['setAvatar'], $username);
    $req->execute();
 }
+if (isset($_POST['setAnswer'])) {
+   $req = $db->prepare("UPDATE lobbys SET answer=? WHERE username=?"); //Set answer
+   $req->bind_param('ss', $_POST['setAnswer'], $username);
+   $req->execute();
+}
+if (isset($_POST['resetAnswers'])) {
+   $req = $db->prepare("UPDATE lobbys SET answer=0 WHERE room=?"); //Set answers to 0
+   $req->bind_param('s', $room);
+   $req->execute();
+}
 if (isset($_POST['setQuestion'])) {
    $req = $db->prepare("UPDATE rooms SET question=? WHERE name=?");
    $req->bind_param('ss', $_POST['setQuestion'], $room);
    $req->execute();
+}
+if (isset($_POST['getQuestion'])) {
+   $req = $db->prepare("SELECT question FROM rooms WHERE name=?");
+   $req->bind_param('s', $room); $req->execute();
+   $row = $req->get_result()->fetch_assoc();
+   // if(empty($row['question'])) {
+   //    return;
+   // }
+   $req = $db->prepare("SELECT * from questions WHERE id=?"); //Récupération de la question
+   $req->bind_param('s', $row['question']);
+   $req->execute();
+   $row = $req->get_result()->fetch_array();
+   $array = array(
+      0 => $row['question'],
+      1 => $row['answer1'],
+      2 => $row['answer2'],
+      3 => $row['answer3'],
+      4 => $row['answer4'],
+      'good' => $row['good_answer']
+   );
+   echo json_encode($array);
 }
 $req->close();
 $db->close();

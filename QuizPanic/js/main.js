@@ -548,7 +548,7 @@ $("#join section").on('click', '.tgl-btn',function () { //Modification statut
    data.push({name: 'editStatus', value: 1});
    if ($(this).prev().is(':checked')) {
       data.push({name: 'status', value: "Off"});
-      $.post('play.php', {room: room, kickAll: 1}, function(data) {});
+      $.post('play.php', {kickAll: room});
    }
    else {
       data.push({name: 'status', value: "On"});

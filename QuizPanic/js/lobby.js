@@ -1,11 +1,8 @@
-var result, players, intervalPlayers, questions, question_count = 5;
+var result, players, intervalPlayers, question_list, question, question_count = 5;
 var position = new Object();
 
 /*-----------------------------------  AFFICHAGE JOUEURS -----------------------------------------*/
 $(document).ready(function() {
-   $.post('play.php', {loadQuestions: 'Public'}, function(data) {
-      questions = $.parseJSON(data);
-   });
    if ($(window).height()-30 > 800) {
       $('body').css('min-height', $(window).height()-30);
       $('body').css('height', $(window).height()-30);
@@ -15,8 +12,7 @@ $(document).ready(function() {
    //    $('body').css('width', $(window).width()-40);
    // }
    $(window).resize(function() {
-      position = $('#players').offset();
-      position.left -= $('#players').width()/2;
+      // position = $('#players').offset();
    });
    if ($('body').height()-$('.sub-container').eq(0).height()*2-$('.sub-container').eq(0).offset().top > 0) $('.sub-container').eq(1).css('margin-top', $('body').height()-$('.sub-container').eq(0).height()*2-$('.sub-container').eq(0).offset().top);
    loadPlayers();
@@ -38,6 +34,11 @@ function loadPlayers() { //Chargement des joueurs avant la partie
       }
       // console.log(data);
       result = $.parseJSON(data);
+      if(question_list == undefined) question_list = result['question_list'];
+      if(question_list != undefined) {
+         $('#question').attr('question_id', question_list[question_count-1]);
+         $.post('play.php', {setQuestion: $('#question').attr('question_id')});
+      }
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
       $('#players').children().remove();
       $('#players').append('<div><img src="img/avatar'+result['user']['avatar']+'.png"><span style="color: #0cd50c">'+ result['user']['username']);
@@ -51,19 +52,34 @@ function loadPlayers() { //Chargement des joueurs avant la partie
    });
 }
 function start() { //Lancement d'un cycle
-var random = 0;
-$('#question').attr('question_id', questions[Math.round(Math.random()*Object.keys(questions).length)]);
-$.post('play.php', {setQuestion: $('#question').attr('question_id')}, function(data) {
-   setTimeout(function () {
+if(question_list != undefined) {
+   // console.log(question_list);
+   $('#question').attr('question_id', question_list[question_count-1]);
+   question_count--;
+}
+$.post('play.php', {getQuestion: 1}, function(data) {
+   console.log(data);
+   question = $.parseJSON(data);
+   while(question[0] == "") {
+      $.post('play.php', {getQuestion: 1}, function(data) {
+         question = $.parseJSON(data);
+      });
+   }
+   // console.log(question);
+   setTimeout(function () { //Affichage des réponses
+      $("#pad1").children('span').text(question[1]);
       $("#pad1").fadeIn();
       setTimeout(function () {
+         $("#pad2").children('span').text(question[2]);
          $("#pad2").fadeIn();
          setTimeout(function () {
+            $("#pad3").children('span').text(question[3]);
             $("#pad3").fadeIn();
             setTimeout(function () {
+               $("#pad4").children('span').text(question[4]);
                $("#pad4").fadeIn();
                setTimeout(function () { //Commencer décompte
-                  $('#question').text(result['question'][0]);
+                  $('#question').text(question[0]);
                   $('#question').css('marginTop', '10px');
                   $('#progressbar').css('width', $(window).width()/2);
                   $('#progressbar').fadeIn().animate({
@@ -88,20 +104,36 @@ $.post('play.php', {setQuestion: $('#question').attr('question_id')}, function(d
 });
 }
 function showAnswers() {
-   var i = 0;
+   var good = $('.sub-container > div').eq(question['good']-1);
+   $('.sub-container > div').each(function(index, el) {
+      if ($(this).is(good)) $(this).css('backgroundColor', 'rgba(11, 100, 14, 0.65)');
+      else $(this).css('backgroundColor', 'rgba(100, 11, 14, 0.65)');
+   });
+   setTimeout(function () {
+      $('.sub-container > div').css('backgroundColor','').fadeOut();
+      $.post('play.php', {resetAnswers: 1});
+      $('#players').children().each(function(index, el) {
+         $(this).attr('answer', '0');
+         placePlayer(index);
+      });
+      start();
+   }, 3000);
 }
 
 /*----------------------------------- MOVE ON PAD / Player Data -----------------------------------------*/
 function playerData() {
    setInterval(function () {
-      $.post('play.php', {playerData: 1, answer: $('#players').children().first().attr('answer')}, function(data) {
+      if(question_list != undefined) {
+         $.post('play.php', {setQuestion: $('#question').attr('question_id')});
+      }
+      $.post('play.php', {playerData: 1}, function(data) {
          if (data == "NOT IN ROOM") {
             window.location.href = 'main.php';
             return;
          }
          result = $.parseJSON(data);
          players = result;
-         console.log(result);
+         // console.log(result);
          if (result['current'] != $('#players').children().length) { //Si un joueur a quitté la salle
             $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
             for (var i = 1; i < $('#players').children().length; i++) {
@@ -111,7 +143,7 @@ function playerData() {
                      verif = true;
                   }
                }
-               if(verif == false) $('#players').children().eq(i).css('opacity', '0');
+               if(verif == false) $('#players').children().eq(i).css('opacity', '0').attr('answer', '0');
             }
          }
          $('#players').children().first().children('img').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
@@ -128,6 +160,12 @@ function playerData() {
 }
 function placePlayer(index) {
    var player = $('#players').children().eq(index);
+   if (player.attr('answer') == 0 || player.attr('answer') == undefined) {
+      player.animate({
+         top: 0, left: 0
+      }, 600);
+      return;
+   }
    var pad = $('#pad'+player.attr('answer'));
    player.animate({
       top: pad.offset().top-position[index].top+50,
@@ -139,6 +177,7 @@ $('.sub-container div').click(function() {
       return;
    }
    $('#players').children().first().attr('answer', $(this).attr('id').substr(3,1));
+   $.post('play.php', {setAnswer: $('#players').children().first().attr('answer')});
    placePlayer(0);
 });
 
