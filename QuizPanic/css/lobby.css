@@ -81,12 +81,15 @@ section#container-pads {
    width: 350px;
    height: 350px;
    margin: 20px;
-   border: 1px solid rgba(255,255,255,0.4);
+   border: 1px solid rgba(255,255,255,0.1);
    border-radius: 15px;
    background-color: rgba(6, 97, 99, 0.65);
    cursor: pointer;
-   transition: background-color 1s ease-in;
+   transition: background-color 0.75s ease-in;
    display: none;
+}
+.sub-container > div:hover {
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.5);
 }
 .sub-container > div > span {
    font-size: 25px;
@@ -113,13 +116,12 @@ section#container-pads {
    font-family: 'Roboto';
    font-size: 32px;
    font-weight: 100;
-   margin-top: -170px;
+   margin-top: 10px;
    position: absolute;
    left: 50%;
    transform: translate(-50%, 0);
    z-index: 0;
-   transition: 0.75s linear;
-   /* display: none; */
+   display: none;
 }
 
 /*-------------------------- AFFICHAGE JOUEURS --------------------------------*/
@@ -139,9 +141,18 @@ section#container-pads {
    margin: 10px;
    /* transition: 1s ease-in; */
 }
-#players span {
-   /* position: absolute;
-   bottom: -10px; */
+#players div:first-child span:first-of-type { /*Score*/
+   color: #0cd50c;
+}
+#players span:first-of-type { /*Score*/
+   position: absolute;
+   top: -25%;
+   left: 57%;
+   transform: translate(-50%, -50%);
+   display: none;
+}
+#players div:first-child span:last-of-type { /*Pseudo*/
+   color: #0cd50c;
 }
 #players img {
    width: 50px;

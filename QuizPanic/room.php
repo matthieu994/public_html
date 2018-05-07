@@ -68,7 +68,7 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
    $db->close();
 }
 else if (isset($_POST['joinRoom'])) {
-   $req = $db->prepare("UPDATE lobbys SET room=? WHERE username=?");
+   $req = $db->prepare("UPDATE lobbys SET room=?,score=0 WHERE username=?");
    $req->bind_param('ss', $_POST['room'], $username);
    $req->execute();
    $req->close();

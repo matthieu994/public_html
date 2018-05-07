@@ -174,7 +174,7 @@ section[role=page] { width: 102%; height: 84%; position: relative; text-align: c
    overflow: hidden;
 }
 .fenetre > div > section {
-   overflow-y: auto;
+   overflow-y: overlay;
    height: 88%;
    width: 100%;
 }
@@ -184,7 +184,7 @@ section[role=page] { width: 102%; height: 84%; position: relative; text-align: c
 
 /*--------------- QUESTIONS ----------------*/
 #set #questions_list {
-   overflow-y: auto;
+   overflow-y: overlay;
    height: 87%;
    /* margin-bottom: 30px; */
 }
@@ -434,7 +434,7 @@ section.set span i {
    float: none;
 }
 #rooms form > div {
-   overflow: auto;
+   overflow: overlay;
    width: 100%;
    height: 76px;
 }
