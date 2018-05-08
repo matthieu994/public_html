@@ -99,16 +99,10 @@ section#container-pads {
    padding: 5px;
    border-radius: 5px;
 }
-#pad1 {
+.sub-container.top > div:first-of-type, .sub-container.bottom > div:first-child {
    float: left;
 }
-#pad2 {
-   float: right;
-}
-#pad3 {
-   float: left;
-}
-#pad4 {
+.sub-container.top > div:last-child, .sub-container.bottom > div:last-of-type {
    float: right;
 }
 
@@ -147,7 +141,7 @@ section#container-pads {
 #players span:first-of-type { /*Score*/
    position: absolute;
    top: -25%;
-   left: 57%;
+   left: 50%;
    transform: translate(-50%, -50%);
    display: none;
 }

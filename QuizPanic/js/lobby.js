@@ -70,22 +70,27 @@ $.post('play.php', {getQuestion: 1}, function(data) {
       question_count--;
    }
    console.log(question);
+   var padArray = [1,2,3,4];
+   padArray.sort(function() { return 0.5 - Math.random() }); console.log(padArray);
    setTimeout(function () { //Affichage des réponses
       $('#players').children().each(function(index) { //On masque les scores
          $(this).children('span').first().fadeOut();
       });
       $('#progressbar').css('width', $(window).width()/2);
+      $('.sub-container > div').each(function(index) {
+         $(this).attr('id', 'pad'+padArray[index]);
+      });
       $("#pad1").children('span').text(question[1]);
-      $("#pad1").fadeIn();
+      $("#pad2").children('span').text(question[2]);
+      $("#pad3").children('span').text(question[3]);
+      $("#pad4").children('span').text(question[4]);
+      $(".sub-container.top > div:first-of-type").fadeIn();
       setTimeout(function () {
-         $("#pad2").children('span').text(question[2]);
-         $("#pad2").fadeIn();
+         $(".sub-container.top > div:last-child").fadeIn();
          setTimeout(function () {
-            $("#pad3").children('span').text(question[3]);
-            $("#pad3").fadeIn();
+            $(".sub-container.bottom > div:first-child").fadeIn();
             setTimeout(function () {
-               $("#pad4").children('span').text(question[4]);
-               $("#pad4").fadeIn();
+               $(".sub-container.bottom > div:last-of-type").fadeIn();
                setTimeout(function () { //Commencer décompte
                   $('#question').text(question[0]);
                   $('#question').fadeIn();
@@ -111,7 +116,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
 });
 }
 function showAnswers() {
-   var good = $('.sub-container > div').eq(question['good']-1);
+   var good = $('#pad'+question['good']);
    $('.sub-container > div').each(function(index, el) { //Affichage des réponses
       if ($(this).is(good)) $(this).css('backgroundColor', 'rgba(11, 100, 14, 0.65)');
       else $(this).css('backgroundColor', 'rgba(100, 11, 14, 0.65)');
@@ -123,8 +128,8 @@ function showAnswers() {
       setScores();
       setTimeout(function () {
          start();
-      }, 5000);
-   }, 3000);
+      }, 3500);
+   }, 5000);
 }
 function setScores() {
    if(question_list != undefined) {
@@ -172,12 +177,12 @@ function endGame() {
 function playerData() {
    intervalData = setInterval(function () {
       if(question_list != undefined && question_count == -1) { //Set question à -1 pour endGame
-         console.log("set to -1");
+         // console.log("set to -1");
          $.post('play.php', {setQuestion: -1});
       }
       else if(question_list != undefined) {
          $.post('play.php', {setQuestion: $('#question').attr('question_id')}, function(data){}); //Le joueur hôte set la question
-         console.log("set to "+$('#question').attr('question_id'));
+         // console.log("set to "+$('#question').attr('question_id'));
       }
       $.post('play.php', {playerData: 1}, function(data) {
          if (data == "NOT IN ROOM") {
