@@ -1,4 +1,5 @@
 <?php
+header( 'content-type: text/html; charset=utf-8' );
 session_start();
 require('bdd.php');
 
@@ -196,7 +197,9 @@ if (isset($_POST['getQuestion'])) {
       'good' => $row['good_answer'],
       'id' => $id
    );
-   $question = array_map('utf8_encode', $question);
+   // print_r($question);
+   // $question = array_map('utf8_encode', $question);
+   // print_r($question);
    echo json_encode($question);
    // echo "here";
 }

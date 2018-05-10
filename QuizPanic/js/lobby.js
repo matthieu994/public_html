@@ -63,6 +63,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
       console.log("Le serveur a planté, fonction: start()");
       return endGame();
    }
+   console.log(data);
    question = $.parseJSON(data);
    if(question['id'] == -1) return endGame(); //Fin du jeu
    if(question_list != undefined) {
