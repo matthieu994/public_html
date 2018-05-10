@@ -46,29 +46,27 @@ if (isset($_POST['loadPlayers'])) {
 
    $req = $db->prepare("UPDATE rooms SET question=NULL WHERE name=?"); //Reset question de la salle
    $req->bind_param('s', $room); $req->execute();
-   $questions = new stdClass();
+   // $questions = new stdClass();
    $req = $db->prepare("SELECT id FROM questions WHERE question_set='Public'"); //Selection de 5 questions aléatoires
    $req->execute();
    $result = $req->get_result();
    $i = 0;
    while ($row = $result->fetch_assoc()) {
       $i++;
-      $questions->$i = $row['id'];
+      $questions[$i] = $row['id'];
    }
+   print_r($questions);
    $question_array = (array)json_decode(json_encode($questions, true));
    $rand_questions = array_rand($question_array, 5);
-   $r1 = $rand_questions[0];
-   $r2 = $rand_questions[1];
-   $r3 = $rand_questions[2];
-   $r4 = $rand_questions[3];
-   $r5 = $rand_questions[4];
+   print_r($rand_questions);
    $array->question_list = array(
-      0 => $questions->$r1,
-      1 => $questions->$r2,
-      2 => $questions->$r3,
-      3 => $questions->$r4,
-      4 => $questions->$r5
+      0 => $questions[$rand_questions[0]],
+      1 => $questions[$rand_questions[1]],
+      2 => $questions[$rand_questions[2]],
+      3 => $questions[$rand_questions[3]],
+      4 => $questions[$rand_questions[4]]
    );
+   print_r($array->question_list);
    // print_r($array->question_list);
    echo json_encode($array);
 }

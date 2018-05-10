@@ -449,6 +449,9 @@ section.set span i {
    margin-right: 0;
    background-color: rgb(66, 147, 172);
 }
+#rooms section button:last-child {
+   min-width: 105px;
+}
 input#range::-ms-track {
    width: 100%;
    cursor: pointer;

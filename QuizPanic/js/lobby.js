@@ -1,5 +1,5 @@
 var result, players, intervalPlayers, question_list, question, question_count = 5;
-var time = 4000;
+var time = 8000;
 var position = new Object();
 var intervalPlayers, intervalData;
 
@@ -37,7 +37,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          window.location.href = 'main.php';
          return;
       }
-      // console.log(data);
+      console.log(data);
       result = $.parseJSON(data);
       if(result['current'] == 1 && question_list == undefined) {
          question_list = result['question_list'];
@@ -63,7 +63,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
       console.log("Le serveur a planté, fonction: start()");
       return endGame();
    }
-   console.log(data);
+   // console.log(data);
    question = $.parseJSON(data);
    if(question['id'] == -1) return endGame(); //Fin du jeu
    if(question_list != undefined) {
@@ -72,7 +72,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
    }
    console.log(question);
    var padArray = [1,2,3,4];
-   padArray.sort(function() { return 0.5 - Math.random() }); console.log(padArray);
+   padArray = shuffle(padArray); console.log(padArray);
    setTimeout(function () { //Affichage des réponses
       $('#players').children().each(function(index) { //On masque les scores
          $(this).children('span').first().fadeOut();
@@ -304,3 +304,16 @@ $('header .fa-sign-out-alt').click(function() {
       window.location.href = 'main.php';
    });
 });
+
+
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
