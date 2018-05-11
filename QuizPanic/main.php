@@ -93,6 +93,15 @@ require 'check.php';
          <span id="help">Gérer vos questions</span>
 
          <section id="container-fenetre" style="display: none">
+            <div id="room_popup">
+               <span></span>
+               <form>
+                  <input id="range" type="range" name="maxplayers" min="5" max="12" value="5">
+                  <output id="range">5 questions</output>
+               </form>
+               <button>Ajouter</button>
+               <i class="fas fa-times" id="exitnotif"></i>
+            </div>
             <div class="fenetre animated slideInUp" id="container-play" style="display: none">
                <i class="fas fa-chevron-left hoverable"></i>
                <span id="help">Retour</span>
@@ -105,7 +114,6 @@ require 'check.php';
                      </span>
                   </div>
                   <section>
-
                   </section>
                </div>
                <div id="rooms">

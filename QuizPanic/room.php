@@ -37,8 +37,6 @@ if(isset($_POST['getRooms'])) {
          echo '<span style="margin-top: 14px;">'. $row['name'] .'</span></div>';
       }
    }
-   $req->close();
-   $db->close();
 }
 else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_POST['deleteRoom'])) { //Modification/Suppression/Changement statut
    $id = $_POST['id'];
@@ -64,17 +62,19 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
       $req->bind_param('ss', $id, $username);
    }
    $req->execute();
-   $req->close();
-   $db->close();
 }
-else if (isset($_POST['joinRoom'])) {
-   $req = $db->prepare("UPDATE lobbys SET room=?,score=0 WHERE username=?");
-   $req->bind_param('ss', $_POST['room'], $username);
+else if (isset($_POST['verifRoom'])) { //Vérification du nbr de joueurs
+   $req = $db->prepare("SELECT username FROM lobbys WHERE room=?");
+   $req->bind_param('s', $_POST['room']);
    $req->execute();
-   $req->close();
-   $db->close();
+   echo $req->get_result()->num_rows;
+   if(isset($_POST['joinRoom'])) { //Join room
+      $req = $db->prepare("UPDATE lobbys SET room=?,score=0 WHERE username=?");
+      $req->bind_param('ss', $_POST['room'], $username);
+      $req->execute();
+   }
 }
-else {
+else { //Création d'une salle
    $room = $_POST['room'];
    $maxplayers = $_POST['maxplayers'];
    $req = $db->prepare("SELECT * FROM rooms WHERE username=?"); //verification nbr de rooms
@@ -91,7 +91,7 @@ else {
    $req = $db->prepare("INSERT INTO rooms(username, name, maxplayers) VALUES(?, ?, ?)");
    $req->bind_param('sss', $username, $room, $maxplayers);
    $req->execute();
-   $req->close();
-   $db->close();
 }
+$req->close();
+$db->close();
 ?>

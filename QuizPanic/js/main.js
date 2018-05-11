@@ -419,8 +419,8 @@ $("#questions_list").on('click', 'section.set > span i',function () {
 });
 
 /*------------------------------ROOMS MANAGE------------------------------------------*/
-$(document).on('input change', 'input#range', function() {
-   $('output#range').text("0 - "+$(this).val());
+$(document).on('input change', 'form#addroom input#range', function() {
+   $('form#addroom output#range').text("0 - "+$(this).val());
 });
 $('#rooms form').submit(function(event) {
    event.preventDefault();
@@ -489,7 +489,6 @@ function editRoom(data, type) {
             if(type == "modify") displayAlert("success_modifyroom", 1500);
             if(type == "delete") displayAlert("success_deleteroom", 1500);
             if(type == "modify" || type == "delete") playSound();
-            if(type == "join") window.location.href = "lobby.php";
          }
          else {
             displayAlert("error", 1500);
@@ -575,17 +574,40 @@ $("#join section").on('click', '.playercount', function() {
    if ($(this).css('cursor') == "not-allowed") {
       return;
    }
-   var data = [];
-   data.push({name: 'room', value: $(this).next().next().text().trim()});
-   data.push({name: 'joinRoom', value: 1});
-   editRoom(data, "join");
+   var room = $(this).next().next().text().trim()
+   var maxplayers = $(this).children().eq(1).text();
+   $.post('room.php', {room: room, verifRoom: 1}, function(data) {
+      // console.log(data+' < '+maxplayers);
+      if(data == 0) {
+         $('#room_popup').fadeIn(300);
+         $('#room_popup span').eq(0).text(
+            room
+         );
+         $('#container-play').css('opacity', '0.4');
+      }
+      else if(data <= maxplayers) {
+         $.post('room.php', {room: room, verifRoom: 1, joinRoom: 1}, function() {
+            window.location.href = "lobby.php";
+         });
+      }
+   });
 });
-function loadParty() {
-   var data = [];
-   data.push({name: 'room', value: $(this).next().next().text().trim()});
-   data.push({name: 'joinRoom', value: 1});
-   editRoom(data);
-   $('body').children().fadeOut();
-   $('body').prepend('<iframe>');
-   $('body').children('iframe').hide().fadeIn(800).attr('role', 'lobby').attr('src', 'lobby.php');
-}
+
+/*------------------------------ ROOM POPUP ------------------------------------------*/
+$(document).on('input change', '#room_popup input#range', function() {
+   $('#room_popup output#range').text($(this).val()+" questions");
+});
+$('#room_popup #exitnotif').click(function() {
+   $(this).parent().toggle(300);
+   $('#container-play').css('opacity', '');
+});
+
+// function loadParty() { //IFRAME
+//    var data = [];
+//    data.push({name: 'room', value: $(this).next().next().text().trim()});
+//    data.push({name: 'joinRoom', value: 1});
+//    editRoom(data);
+//    $('body').children().fadeOut();
+//    $('body').prepend('<iframe>');
+//    $('body').children('iframe').hide().fadeIn(800).attr('role', 'lobby').attr('src', 'lobby.php');
+// }

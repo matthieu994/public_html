@@ -587,7 +587,7 @@ output#range {
    cursor: pointer;
 }
 
-/*--------------------------- IFRAME LOBBY -----------------------------*/
+/*--------------------------- IFRAME LOBBY / ROOM POPUP-----------------------------*/
 iframe[role='lobby'] {
    position: absolute;
    border: none;
@@ -595,6 +595,33 @@ iframe[role='lobby'] {
    height: 100%;
    margin: auto;
    left: 0;
+}
+#room_popup {
+   display: none;
+   position: absolute;
+   z-index: 1;
+   left: 50%;
+   top: 41%;
+   transform: translate(-50%, -50%);
+   width: 480px;
+   height: 150px;
+   padding: 10px;
+   border-radius: 10px;
+   margin: 0 auto;
+   background-color: rgba(0, 0, 0, 0.8);
+   font-size: 25px;
+   font-weight: 100 !important;
+}
+#room_popup form {
+   display: flex;
+}
+#room_popup output {
+   margin: 10px 5px;
+   font-size: 20px;
+   width: auto;
+}
+#room_popup input {
+   margin: 10px 0;
 }
 
 
