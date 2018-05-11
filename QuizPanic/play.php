@@ -55,18 +55,13 @@ if (isset($_POST['loadPlayers'])) {
       $i++;
       $questions[$i] = $row['id'];
    }
-   print_r($questions);
-   $question_array = (array)json_decode(json_encode($questions, true));
-   $rand_questions = array_rand($question_array, 5);
-   print_r($rand_questions);
-   $array->question_list = array(
-      0 => $questions[$rand_questions[0]],
-      1 => $questions[$rand_questions[1]],
-      2 => $questions[$rand_questions[2]],
-      3 => $questions[$rand_questions[3]],
-      4 => $questions[$rand_questions[4]]
-   );
-   print_r($array->question_list);
+   // print_r($questions);
+   $count = 5;
+   $rand_questions = array_rand($questions, $count);
+   // print_r($rand_questions);
+   for ($i=0; $i < $count; $i++) {
+      $array->question_list[$i] = $questions[$rand_questions[$i]];
+   }
    // print_r($array->question_list);
    echo json_encode($array);
 }
