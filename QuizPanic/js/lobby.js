@@ -1,5 +1,5 @@
-var result, players, intervalPlayers, question_list, question, question_count = 5;
-var time = 8000;
+var result, players, intervalPlayers, question_list, question, question_count;
+var time;
 var position = new Object();
 var intervalPlayers, intervalData;
 
@@ -39,7 +39,12 @@ function loadPlayers() { //Chargement des joueurs avant la partie
       }
       console.log(data);
       result = $.parseJSON(data);
-      if(result['current'] == 1 && question_list == undefined) {
+      if(result['admin'] == 2) $('.fa-cogs').hide();
+      if (question_count == undefined) {
+         question_count = result['question_count'];
+         time = result['time'] * 1000;
+      }
+      if((result['current'] == 1 && result['admin'] == 0 || result['admin'] == 2) && question_list == undefined) {
          question_list = result['question_list'];
          $('#question').attr('question_id', question_list[question_count-1]);
          question_count--;
@@ -47,8 +52,12 @@ function loadPlayers() { //Chargement des joueurs avant la partie
       }
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
       $('#players').children().remove();
-      $('#players').append('<div><span></span><img src="img/avatar'+result['user']['avatar']+'.png"><span>'+ result['user']['username']);
-      for (var i = 0; i < result['current']-1; i++) {
+      if (result['user'] != undefined) {
+         $('#players').append('<div><span></span><img src="img/avatar'+result['user']['avatar']+'.png"><span>'+ result['user']['username']);
+      }
+      if(result['admin'] == 2) var current = result['current'];
+      else var current = result['current']-1;
+      for (var i = 0; i < current; i++) {
          $('#players').append('<div><span></span><img src="img/avatar'+result[i]['avatar']+'.png"><span>'+result[i]['username']);
       }
       for (var i = 0; i < $('#players').children().length; i++) { //Contient la position de chaque joueur
@@ -72,7 +81,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
    }
    console.log(question);
    var padArray = [1,2,3,4];
-   padArray = shuffle(padArray); console.log(padArray);
+   padArray = shuffle(padArray);
    setTimeout(function () { //Affichage des réponses
       $('#players').children().each(function(index) { //On masque les scores
          $(this).children('span').first().fadeOut();
@@ -140,17 +149,14 @@ function setScores() {
          scores[index]['username'] = $(this).children('span:last-of-type').text();
          if($(this).attr('answer') == undefined) scores[index]['answer'] = "0";
          else scores[index]['answer'] = $(this).attr('answer');
-         $(this).attr('answer', '0'); //Set tout les joueurs sur answer0 et re-positionne
-         placePlayer(index);
       });
       $.post('play.php', {setScores: scores, goodAnswer: question['good']});
-      // console.log(scores);
-   } else {
-      $('#players').children().each(function(index) {
-         $(this).attr('answer', '0'); //Set tout les joueurs sur answer0 et re-positionne
-         placePlayer(index);
-      });
+      console.log(scores);
    }
+   $('#players').children().each(function(index) {
+      $(this).attr('answer', '0'); //Set tout les joueurs sur answer0 et re-positionne
+      placePlayer(index);
+   });
    var indexMax = 0;
    $('#players').children().each(function(index) { //On affiche les scores et recupere le meilleur score
       $(this).children('span').first().fadeIn();
@@ -166,13 +172,16 @@ function setScores() {
 function endGame() {
    setScores();
    setTimeout(function () {
-      // clearInterval(intervalData);
-   }, 1500);
-   console.log("End of game!");
-   // if(question_list != undefined) {
-   //    $.post('play.php', {kickAll: result['room']});
-   //    window.location.href = 'main.php';
-   // }
+      window.location.href = 'main.php';
+   }, 10000);
+   $('#players div').each(function(index) {
+      $('#leaderboard').append('<tr><td>'+
+      $(this).children('img').prop('outerHTML')+
+      $(this).children('span').last().text()+'<td>'+
+      $(this).children('span').first().text());
+   });
+   $('#players').fadeOut();
+   $('#leaderboard').fadeIn(500);
 }
 /*----------------------------------- MOVE ON PAD / Player Data -----------------------------------------*/
 function playerData() {
@@ -191,13 +200,20 @@ function playerData() {
             return;
          }
          result = $.parseJSON(data);
-         if(result['current'] == 1 && result['maxplayers']!=1) window.location.reload(); //Si joueur seul dans la salle
+         // console.log(result);
+         if(result['current'] == 1 && result['maxplayers']!=1 || (result['admin'] == 2 && result['current'] == 0)) window.location.reload(); //Si joueur seul dans la salle
          players = result;
          // if(result['question_id'] == -1) return endGame(); //Fin du jeu
-         $('#players').children().first().children().first().text(result['user']['score']); //Set scores
-         $('#players').children(':not(:first-child)').each(function(index) {
-            $(this).children().first().text(result[index]['score']);
-         });
+         if (result['user'] != undefined) {
+            $('#players').children().first().children().first().text(result['user']['score']); //Set scores
+            $('#players').children(':not(:first-child)').each(function(index) {
+               $(this).children().first().text(result[index]['score']);
+            });
+         } else {
+            $('#players').children().each(function(index) {
+               $(this).children().first().text(result[index]['score']);
+            });
+         }
          if (result['current'] != $('#players').children().length) { //Si un joueur a quitté la salle
             $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
             for (var i = 1; i < $('#players').children().length; i++) {
@@ -210,8 +226,12 @@ function playerData() {
                if(verif == false) $('#players').children().eq(i).css('opacity', '0').attr('answer', '0');
             }
          }
-         $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
-         for (var i = 0; i < result['current']-1; i++) { //Placement des joueurs
+         if (result['user'] != undefined) {
+            $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
+         }
+         if(result['admin'] == 2) var current = result['current'];
+         else var current = result['current']-1;
+         for (var i = 0; i < current; i++) { //Placement des joueurs
             var player = $('#players').children().eq(i+1);
             player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
             if (player.attr('answer') != result[i]['answer'] && $('#progressbar').width() != 0) {
@@ -226,6 +246,7 @@ function playerData() {
    }, 1000);
 }
 function placePlayer(index) {
+   if(result['admin'] == 2) index-=1;
    var player = $('#players').children().eq(index);
    if (player.attr('answer') == 0 || player.attr('answer') == undefined) {
       player.animate({
@@ -246,6 +267,7 @@ function placePlayer(index) {
    }, 400);
 }
 function arrangePad(playerIndex, newAnswer) { //Reset les positions sur le pad et attribue answer
+   if(result['admin'] == 2) playerIndex-=1;
    var initPlayer = $('#players').children().eq(playerIndex);
    var answer = initPlayer.attr('answer');
    initPlayer.attr('answer', newAnswer);
@@ -300,20 +322,21 @@ $('#avatar img').click(function() {
 
 /*-----------------------------------  QUITTER SALLE -----------------------------------------*/
 $('header .fa-sign-out-alt').click(function() {
+   if (result['admin'] == 2) {
+      $.post('play.php', {kickAll: result['room']});
+   }
    $.post('play.php', {leaveRoom: 1, room: result['room']}, function(data) {
       window.location.href = 'main.php';
    });
 });
 
-
-
 function shuffle(a) {
-    var j, x, i;
-    for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
+   var j, x, i;
+   for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+   }
+   return a;
 }

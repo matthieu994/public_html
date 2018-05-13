@@ -6,6 +6,7 @@ $("#profil").click(function () {
    $("#dropdown").toggle();
 });
 function displayAlert(alert, time) {
+   // console.log('heya');
    $("section.alert div").each(function(){$(this).hide()});
    $('section.alert #'+alert).fadeIn(200);
    setTimeout(function () {
@@ -31,7 +32,7 @@ $(".hoverable").mousemove(function (event) {
 });
 
 /*-----------------------FENETRES MENU----------------------------*/
-$("#play").click(function () { //aficher rooms
+function displayFenetre(fenetre) {
    $('body').css('overflow-y', 'hidden');
    setTimeout(function () {
       $('body').css('overflow-y', 'auto');
@@ -44,26 +45,12 @@ $("#play").click(function () { //aficher rooms
    }, 299);
    setTimeout(function () {
       $("#container-fenetre").show();
-      $("#container-play").show();
+      fenetre.show();
    }, 300);
-});
-$("#question").click(function () { //afficher questions
-   $('body').css('overflow-y', 'hidden');
-   setTimeout(function () {
-      $('body').css('overflow-y', 'auto');
-   }, 1000);
-   $("#play").removeClass("zoomIn").addClass("fadeOutLeft");
-   $("#question").removeClass("zoomIn").addClass("fadeOutRight");
-   setTimeout(function () {
-      $("#play").hide().removeClass("fadeOutLeft").addClass("fadeInLeft");
-      $("#question").hide().removeClass("fadeOutRight").addClass("fadeInRight");
-   }, 299);
-   setTimeout(function () {
-      $("#container-fenetre").show();
-      $("#container-question").show();
-   }, 300);
-});
-$(".fenetre .fa-chevron-left").click(function () { //retour menu
+}
+$("#play").click(function(){displayFenetre($('#container-play'))});      //Afficher #play / #questions
+$("#question").click(function(){displayFenetre($('#container-question'))});
+function returnMenu() {
    $('body').css('overflow-y', 'hidden');
    setTimeout(function () {
       $('body').css('overflow-y', 'auto');
@@ -81,8 +68,9 @@ $(".fenetre .fa-chevron-left").click(function () { //retour menu
       $("#play").show();
       $("#question").show();
    }, 300);
-});
-$("#container-play .fa-chevron-right").click(function () { //slide to questions
+}
+$(".fenetre .fa-chevron-left").click(returnMenu); //Retour au menu
+function slideToQuestions() {
    $("#container-play").removeClass("slideInRight");
    $("#container-question").removeClass("slideInRight");
    $("#container-play").removeClass("slideInUp").addClass("fadeOutLeft");
@@ -92,10 +80,10 @@ $("#container-play .fa-chevron-right").click(function () { //slide to questions
    }, 299);
    setTimeout(function () {
       $("#container-question").show();
-      // $("#container-question").removeClass("slideInRight").addClass("slideInUp");
    }, 300);
-});
-$("#container-question .fa-chevron-right").click(function () { //slide to play
+}
+$("#container-play .fa-chevron-right").click(slideToQuestions); //Slide play->questions
+function slideToPlay() {
    $("#container-play").removeClass("slideInRight");
    $("#container-question").removeClass("slideInRight");
    $("#container-question").removeClass("slideInUp").addClass("fadeOutLeft");
@@ -105,9 +93,9 @@ $("#container-question .fa-chevron-right").click(function () { //slide to play
    }, 299);
    setTimeout(function () {
       $("#container-play").show();
-      // $("#container-play").removeClass("slideInRight").addClass("slideInUp");
    }, 300);
-});
+}
+$("#container-question .fa-chevron-right").click(slideToPlay); //Slide questions->play
 
 /*-----------------------------------ADD QUESTION----------------------------------------*/
 $('#add form select[name="good_answer"]').click(function() {
@@ -170,9 +158,10 @@ function loadQuestions() {
       $('form#addquestion select[name="sets"]').empty();
       $('form#addquestion select[name="sets"]').append('<option value="NULL" selected>Set: Indéfini');
       $('#questions_list section.set').each(function () {
-         if ($(this).attr("question_set") == "NULL") $(this).prepend('<span>'+"Indéfini"+'<i class="fas fa-caret-down"></i>');
+         if ($(this).attr("question_set") == "NULL") $(this).prepend('<span>'+"Indéfini"+'<i class="fas fa-trash-alt" style="color: #d72d2d"></i><i class="fas fa-caret-down">');
          else {
-            $(this).prepend('<span>'+$(this).attr("question_set")+'<i class="fas fa-caret-down"></i>');
+            if($(this).attr("question_set") == 'Public') $(this).prepend('<span>'+$(this).attr("question_set")+'<i class="fas fa-caret-down">');
+            else $(this).prepend('<span>'+$(this).attr("question_set")+'<i class="fas fa-trash-alt" style="color: #d72d2d"></i><i class="fas fa-caret-down">');
             $('form#addquestion select[name="sets"]').append($('<option>', {
                value: $(this).attr("question_set"),
                text: 'Set: '+$(this).attr("question_set")
@@ -247,6 +236,15 @@ $(document).click(function (event) {
          opacity : 1
       });
    }
+});
+
+/*------------------------------DELETE SET-------------------------------------------*/
+$("#questions_list").on('click', 'section.set span .fa-trash-alt',function () {
+   if ($(this).parent().text().trim()) var set = 'NULL';
+   else var set = $(this).parent().text().trim();
+   $.post('question.php', {deleteSet: set}, function(data) {
+
+   });
 });
 
 /*------------------------------MODIFY/DELETE QUESTION-------------------------------------------*/
@@ -425,9 +423,9 @@ $(document).on('input change', 'form#addroom input#range', function() {
 $('#rooms form').submit(function(event) {
    event.preventDefault();
    if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) {
-      console.log("cancel");
+      // console.log("cancel");
       $('#rooms form')[0].reset();
-      $('output#range').text("0 - "+$('input#range').val());
+      $('form#addroom output#range').text("0 - "+$('form#addroom input#range').val());
       $("#rooms .title").text("Créer une salle");
       $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
       $("#rooms form button:not(:first-child)").hide();
@@ -458,7 +456,7 @@ $('#rooms form').submit(function(event) {
                   playSound();
                   displayAlert("success_addroom", 2000);
                   $('#rooms form')[0].reset();
-                  $('output#range').text("0 - "+$('input#range').val());
+                  $('form#addroom output#range').text("0 - "+$('form#addroom input#range').val());
                }
                else {
                   if (data == "MAX_ROOMS") {
@@ -494,7 +492,7 @@ function editRoom(data, type) {
             displayAlert("error", 1500);
          }
          $('#rooms form')[0].reset();
-         $('output#range').text("0 - "+$('input#range').val());
+         $('form#addroom output#range').text("0 - "+$('form#addroom input#range').val());
          $("#rooms .title").text("Créer une salle");
          $("#rooms form button:first-child").attr('room_id', 0).text("Ajouter").css('float', '');
          $("#rooms form button:not(:first-child)").hide();
@@ -534,8 +532,8 @@ $('#join .fa-sync-alt').click(function () { //reload rooms
 });
 $("#join section").on('click', '.fa-pencil-alt',function () { //Modification room -> form
    $("#rooms form").children().eq(0).val($(this).parent().text().trim());
-   $('input#range').val($(this).parent().prev().prev().children().eq(1).text());
-   $('output#range').text("0 - "+$('input#range').val());
+   $('form#addroom input#range').val($(this).parent().prev().prev().children().eq(1).text());
+   $('form#addroom output#range').text("0 - "+$('form#addroom input#range').val());
    $("#rooms .title").text("Modifier une salle");
    $("#rooms form button:first-child").attr('room_id', $(this).next().attr('id')).text("Modifier").css('float', 'right');
    $("#rooms form button:not(:first-child)").show();
@@ -559,7 +557,7 @@ $("#join section").on('click', '.tgl-btn',function () { //Modification statut
 });
 
 /*------------------------------JOIN ROOM------------------------------------------*/
-$(document).ready(function() { //verification user in room
+$(document).ready(function() { //quitte la salle ou le joueur était
    $.post('play.php', {leaveRoom: '1'}, function() {
       loadRooms();
    });
@@ -570,23 +568,28 @@ $("#join section").on('mouseenter', '.tgl-btn',function () { //Hover status
 $("#join section").on('mouseleave', '.tgl-btn',function () {
    $(this).parent().prev().prev().css('opacity', '');
 });
-$("#join section").on('click', '.playercount', function() {
+$("#join section").on('click', '.playercount', function() { //Rejoindre une salle
    if ($(this).css('cursor') == "not-allowed") {
       return;
    }
-   var room = $(this).next().next().text().trim()
+   var room = $(this).next().next();
    var maxplayers = $(this).children().eq(1).text();
-   $.post('room.php', {room: room, verifRoom: 1}, function(data) {
+   $.post('room.php', {room: room.text().trim(), verifRoom: 1}, function(data) {
       // console.log(data+' < '+maxplayers);
       if(data == 0) {
+         if (room.children().length == 3) { //Si le joueur est admin
+            $('#room_popup button').css('float','left').css('marginLeft', '10px');
+            $('#room_popup span').last().fadeIn();
+            $('#room_popup label').fadeIn(200).prev().prop('checked', false);
+         }
          $('#room_popup').fadeIn(300);
-         $('#room_popup span').eq(0).text(
-            room
-         );
-         $('#container-play').css('opacity', '0.4');
+         $('#room_popup input').first().val(5); $('#room_popup output').first().text("5 questions");
+         $('#room_popup input').last().val(10); $('#room_popup output').last().text("10 secondes");
+         $('#room_popup span').eq(0).text(room.text().trim());
+         $('#container-play').css('opacity', '0.4').css('z-index', '-1');
       }
-      else if(data <= maxplayers) {
-         $.post('room.php', {room: room, verifRoom: 1, joinRoom: 1}, function() {
+      else if(data < maxplayers) {
+         $.post('room.php', {room: room.text().trim(), verifRoom: 1, joinRoom: 1}, function() {
             window.location.href = "lobby.php";
          });
       }
@@ -594,12 +597,91 @@ $("#join section").on('click', '.playercount', function() {
 });
 
 /*------------------------------ ROOM POPUP ------------------------------------------*/
-$(document).on('input change', '#room_popup input#range', function() {
-   $('#room_popup output#range').text($(this).val()+" questions");
+$('#room_popup form').first().on('input change', 'input#range', function() {
+   $(this).next().text($(this).val()+" questions");
+   $('#room_popup select').children().remove();
+   $('#questions_list section.set').each(function() {
+      if($(this).children('div').length >= $('#room_popup input#range').val())
+      $('#room_popup select').append($('<option>', {
+         value: $(this).attr('question_set'),
+         text: $(this).children('span').text()
+      }));
+   });
+});
+$('#room_popup form').last().on('input change', 'input#range', function() {
+   $(this).next().text($(this).val()+" secondes");
+});
+$('#room_popup button').click(function() {
+   var data = {
+      room: $('#room_popup span').first().text(),
+      verifRoom: 1,
+      joinRoom: 1,
+      questionCount: $('#room_popup input').first().val()
+   };
+   if($('#room_popup label').prev().prop('checked') == true && $(this).parent().children().length == 3) { //Admin : true
+      data['admin'] = 1;
+      data['delay'] = $('#room_popup input').last().val();
+      data['set'] = $('#room_popup select').val();
+   }
+   $.post('room.php', data, function(data) {
+      window.location.href = "lobby.php";
+   });
+});
+$('#room_popup label').click(function() {
+   if($(this).prev().prop('checked') == false) { //Si le joueur est admin
+      $(this).parent().css('height', '235px');
+      $('#room_popup form').last().fadeIn();
+      $('#room_popup div').fadeIn();
+      $('#room_popup select').children().remove();
+      $('#questions_list section.set').each(function() {
+         if($(this).children('div').length >= $('#room_popup input#range').val())
+         $('#room_popup select').append($('<option>', {
+            value: $(this).attr('question_set'),
+            text: $(this).children('span').text()
+         }));
+      });
+   } else {
+      $(this).parent().css('height', '');
+      $('#room_popup form').last().hide();
+      $('#room_popup div').hide();
+   }
 });
 $('#room_popup #exitnotif').click(function() {
-   $(this).parent().toggle(300);
-   $('#container-play').css('opacity', '');
+   $(this).parent().fadeOut('300', function() {
+      $(this).css('height', '');
+      $('#room_popup form').last().hide();
+      $('#room_popup button').css('float','').css('marginLeft', '');
+      $('#room_popup span').last().hide();
+      $('#room_popup label').hide();
+      $('#room_popup div').hide();
+   });
+   $('#container-play').css('opacity', '').css('z-index','');
+});
+
+/*--------------------------- HELPER (clic droit) -----------------------------*/
+var helper = $('#helper');
+$(document).contextmenu(function(event) {
+   event.preventDefault();
+   if(helper.is(event.target) || helper.children().is(event.target)) return;
+   if(event.clientX+353 > $(this).width()) helper.css('left',$(this).width()-390);
+   else helper.css('left',event.clientX);
+   if(event.clientY+100 > $(this).height()) helper.css('top',$(this).height()-100);
+   else helper.css('top', event.clientY);
+   helper.fadeIn(100);
+});
+$('#helper span').click(function(event) {
+   helper.hide();
+   if ($("#container-play").css('display')!='none' || $("#container-question").css('display')!='none') {
+      if($("#container-play").css('display')=='none' && $('#helper span').first().is(event.target)) slideToPlay();
+      if($("#container-question").css('display')=='none' && $('#helper span').last().is(event.target)) slideToQuestions();
+      return;
+   }
+   if($('#helper span').first().is(event.target)) displayFenetre($("#container-play"));
+   else displayFenetre($("#container-question"));
+});
+$(document).click(function(event) {
+   if(helper.is(event.target) || helper.children().is(event.target)) return;
+   helper.hide();
 });
 
 // function loadParty() { //IFRAME

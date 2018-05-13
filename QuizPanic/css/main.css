@@ -204,7 +204,7 @@ margin-top: 0 !important;
 #add input:last-of-type {
    margin-bottom: 12px;
 }
-#add button, #add select, #rooms button {
+#add button, #add select, #rooms button, #room_popup button, #room_popup select {
    width: 40%;
    outline: none;
    border: none;
@@ -226,12 +226,12 @@ margin-top: 0 !important;
    margin-left: 4%;
    height: 42px;
 }
-#add button:hover, #rooms button:hover {
+#add button:hover, #rooms button:hover, #room_popup button:hover {
    background-color: unset !important;
    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.4);
    color: #aac4c4;
 }
-#add select {
+#add select, #room_popup select {
    float: left;
    margin-left: 7%;
    margin-right: 5%;
@@ -245,7 +245,7 @@ margin-top: 0 !important;
 #add select option[value="0"] {
    display: none;
 }
-#add select[name="sets"], form#addquestion input#addset {
+#add select[name="sets"], form#addquestion input#addset, #room_popup select {
    width: 60%;
    margin-bottom: 12px;
    background-color: rgb(41, 84, 104);
@@ -425,6 +425,11 @@ section.set span i {
    top: 0;
    font-size: 32px;
    box-shadow: unset !important;
+}
+section.set span .fa-trash-alt {
+   position: unset;
+   float: left;
+   font-size: 24px;
 }
 
 /*--------------------------- ROOMS MANAGE -----------------------------*/
@@ -611,19 +616,82 @@ iframe[role='lobby'] {
    background-color: rgba(0, 0, 0, 0.8);
    font-size: 25px;
    font-weight: 100 !important;
+   /* transition: 0.5s ease-in; */
 }
-#room_popup form {
+#room_popup form:first-of-type {
    display: flex;
 }
 #room_popup output {
    margin: 10px 5px;
    font-size: 20px;
    width: auto;
+   background-color: rgb(24, 42, 51);
+   padding: 5px 5px 30px 5px;
+}
+#room_popup form:last-of-type output {
+   margin: 6px 8px;
 }
 #room_popup input {
+   width: 300px;
    margin: 10px 0;
 }
+#room_popup span:last-of-type {
+   display: none;
+   float: left;
+   font-size: 22px;
+   margin: 9px 30px;
+}
+#room_popup label {
+   display: none;
+   margin: 10px 20px;
+   position: absolute;
+   right: 0;
+}
+#room_popup button:hover {
+   background-color: rgb(24, 42, 51) !important;
+}
+#room_popup form:last-of-type {
+   position: absolute;
+   bottom: 47px;
+}
+#room_popup div {
+   position: absolute;
+   bottom: 0; left: 0;
+   width: 100%;
+}
+#room_popup select {
+   float: none;
+   padding: 7px 8px;
+   width: auto;
+   margin: 10px;
+}
 
+/*--------------------------- HELPER (clic droit) -----------------------------*/
+#helper {
+   display: none;
+   position: absolute;
+   z-index: 1;
+   width: 353px;
+   height: 100px;
+   background-color: rgba(12, 23, 26, 0.9);
+   box-shadow: 3px 3px 16px 1px rgba(0, 0, 0, 0.7);
+}
+#helper span {
+   display: inline-block;
+   width: 100%;
+   cursor: alias;
+   font-size: 25px;
+   font-weight: 100;
+   padding: 10px 9px;
+}
+#helper span:hover {
+   background-color: rgb(20, 39, 45);
+}
+#helper div {
+   width: 353px;
+   position: absolute;
+   border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
 
 /*--------------------------- IDLE COUNTDOWN -----------------------------*/
 .notification {

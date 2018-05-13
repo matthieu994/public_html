@@ -81,6 +81,12 @@ require 'check.php';
       <a class="logout" href="logout.php">Se déconnecter</a>
    </header>
 
+   <div id="helper">
+      <span>Créer ou rejoindre une partie</span>
+      <div></div>
+      <span>Gérer mes questions</span>
+   </div>
+
    <section role="page">
       <div class="container">
          <div id="play" class="animated zoomIn hoverable">
@@ -90,7 +96,7 @@ require 'check.php';
          <div id="question" class="animated zoomIn hoverable">
             <img src="img/question.png" alt="">
          </div>
-         <span id="help">Gérer vos questions</span>
+         <span id="help">Gérer mes questions</span>
 
          <section id="container-fenetre" style="display: none">
             <div id="room_popup">
@@ -99,9 +105,18 @@ require 'check.php';
                   <input id="range" type="range" name="maxplayers" min="5" max="12" value="5">
                   <output id="range">5 questions</output>
                </form>
-               <button>Ajouter</button>
+               <button>Rejoindre</button>
+               <span>Mode admin: </span>
+               <input class="tgl tgl-flip" id="admintoggle" type="checkbox" checked/>
+               <label class="tgl-btn" data-tg-off="Non" data-tg-on="Oui" for="admintoggle"></label>
+               <form style="display: none">
+                  <input id="range" type="range" name="maxplayers" min="5" max="20" value="10">
+                  <output id="range">10 secondes</output>
+               </form>
+               <div style="display: none">Set: <select></select></div>
                <i class="fas fa-times" id="exitnotif"></i>
             </div>
+
             <div class="fenetre animated slideInUp" id="container-play" style="display: none">
                <i class="fas fa-chevron-left hoverable"></i>
                <span id="help">Retour</span>

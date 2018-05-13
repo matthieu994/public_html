@@ -26,6 +26,12 @@
    </header>
    <!-- <section id="container-pads"> -->
    <div id="players"></div>
+   <table id="leaderboard">
+      <tr>
+         <th>Joueur</th>
+         <th>Score</th>
+      </tr>
+   </table>
 
    <div class="sub-container top">
       <span id="question">EXEMPLE QUESTION</span>

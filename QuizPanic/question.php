@@ -2,6 +2,10 @@
 session_start();
 require('bdd.php');
 
+if (isset($_POST['deleteSet'])) {
+   $req = $db->prepare("DELETE FROM questions WHERE question_set=? AND username=?");
+   $req->bind_param('ss', $_POST['deleteSet'], $username); $req->execute();
+}
 if(isset($_POST['getQuestions'])) {
    $username = $_SESSION['username'];
    $req = $db->prepare("SELECT * from questions WHERE username=? OR question_set='Public'");

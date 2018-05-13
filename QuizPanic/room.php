@@ -66,12 +66,25 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
 else if (isset($_POST['verifRoom'])) { //Vérification du nbr de joueurs
    $req = $db->prepare("SELECT username FROM lobbys WHERE room=?");
    $req->bind_param('s', $_POST['room']);
-   $req->execute();
-   echo $req->get_result()->num_rows;
+   $req->execute(); $countplayers = $req->get_result()->num_rows;
+   echo $countplayers;
    if(isset($_POST['joinRoom'])) { //Join room
-      $req = $db->prepare("UPDATE lobbys SET room=?,score=0 WHERE username=?");
-      $req->bind_param('ss', $_POST['room'], $username);
+      if(isset($_POST['admin']) && $countplayers == 0) {
+         $req = $db->prepare("UPDATE lobbys SET room=?,score=0,admin=1 WHERE username=?");
+         $req->bind_param('ss', $_POST['room'], $username);
+         $req2 = $db->prepare("UPDATE rooms SET delay=?,question_set=? WHERE name=? AND username=?");
+         $req2->bind_param('ssss', $_POST['delay'], $_POST['set'], $_POST['room'], $username);
+         $req2->execute();
+      }
+      else {
+         $req = $db->prepare("UPDATE lobbys SET room=?,score=0 WHERE username=?");
+         $req->bind_param('ss', $_POST['room'], $username);
+      }
       $req->execute();
+   }
+   if (isset($_POST['questionCount']) && $countplayers == 0) {
+      $req = $db->prepare("UPDATE rooms SET question_count=?,delay=10 WHERE name=?");
+      $req->bind_param('ss', $_POST['questionCount'], $_POST['room']); $req->execute();
    }
 }
 else { //Création d'une salle
