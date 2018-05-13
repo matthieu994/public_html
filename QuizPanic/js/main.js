@@ -618,7 +618,7 @@ $('#room_popup button').click(function() {
       joinRoom: 1,
       questionCount: $('#room_popup input').first().val()
    };
-   if($('#room_popup label').prev().prop('checked') == true && $(this).parent().children().length == 3) { //Admin : true
+   if($('#room_popup label').prev().prop('checked') == true && $(this).parent().css('height') == '235px') { //Admin : true
       data['admin'] = 1;
       data['delay'] = $('#room_popup input').last().val();
       data['set'] = $('#room_popup select').val();
