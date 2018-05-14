@@ -78,7 +78,7 @@ section.alert {
    text-align: center;
 }
 section.alert div {
-   margin-bottom: 40px;
+   margin: 20px 0 0 0;
 }
 section.alert span {
    font-family: 'Lato';

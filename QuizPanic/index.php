@@ -3,9 +3,6 @@ session_start();
 if(isset($_SESSION["connected"]) && $_SESSION["connected"]) {
    header('Location: main.php');
 }
-if(!isset($_SESSION["bad_login"])) {
-   $_SESSION["bad_login"] = 0;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,17 +24,17 @@ if(!isset($_SESSION["bad_login"])) {
 
    <div class="header">
       <section class="alert">
-         <div class="" id="error_auth" style="display: <?php if($_SESSION["bad_login"]) echo "block"; else echo "none"; $_SESSION["bad_login"]=0; ?>">
+         <div class="" id="error_auth" style="display: none">
             <span>Erreur d'authentification!</span>
          </div>
          <div class="" id="error_taken" style="display:none">
             <span>Ce pseudo existe déjà!</span>
          </div>
          <div class="" id="alert_user" style="display: none">
-            <span>Le nom d'utilisateur doit contenir au moins 5 caractères!</span>
+            <span>Le nom d'utilisateur doit contenir au moins 3 caractères!</span>
          </div>
          <div class="" id="alert_pass" style="display: none">
-            <span>Le mot de passe doit contenir au moins 4 caractères!</span>
+            <span>Le mot de passe doit contenir au moins 3 caractères!</span>
          </div>
          <div class="" id="alert_pass2" style="display: none">
             <span>Les mots de passe ne correspondent pas!</span>
@@ -48,7 +45,7 @@ if(!isset($_SESSION["bad_login"])) {
    </div>
 
    <div class="container-login">
-      <form method="POST" action="login.php" style="zoom: 120%; -moz-transform: scale(1.2);">
+      <form style="zoom: 120%; -moz-transform: scale(1.2);">
          <div class="username">
             <span class="animated fadeIn">USERNAME</span>
             <i class="fas fa-user" style="color: #8aaaaa; font-size: 12px; position: absolute; left: 0; top: 38%"></i>
@@ -67,7 +64,7 @@ if(!isset($_SESSION["bad_login"])) {
 
 
    <div class="container-signup" style="display: none">
-      <form method="POST" action="register.php" style="zoom: 120%; -moz-transform: scale(1.2);">
+      <form style="zoom: 120%; -moz-transform: scale(1.2);">
          <div class="username">
             <span class="animated fadeIn">USERNAME</span>
             <i class="fas fa-user" style="color: #8aaaaa; font-size: 12px; position: absolute; left: 0; top: 38%"></i>

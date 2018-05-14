@@ -35,10 +35,10 @@ $req->execute();
 if($req) {
    $_SESSION["username"] = $username;
    $_SESSION['connected'] = 1;
-   header('Location: main.php');
+   echo 'success';
 }
 else {
-   header('Location: .');
+   echo 'fail';
 }
 
 $req->close();

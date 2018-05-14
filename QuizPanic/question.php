@@ -5,6 +5,8 @@ require('bdd.php');
 if (isset($_POST['deleteSet'])) {
    $req = $db->prepare("DELETE FROM questions WHERE question_set=? AND username=?");
    $req->bind_param('ss', $_POST['deleteSet'], $username); $req->execute();
+   echo $_POST['deleteSet'];
+   return;
 }
 if(isset($_POST['getQuestions'])) {
    $username = $_SESSION['username'];
@@ -96,6 +98,5 @@ else {
    $req->execute();
    $req->close();
    $db->close();
-   header('Location: .');
 }
 ?>

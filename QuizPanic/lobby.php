@@ -1,4 +1,4 @@
-<?php session_start() ?>
+<?php require 'check.php' ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

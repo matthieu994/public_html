@@ -1,6 +1,4 @@
-<?php
-require 'check.php';
-?>
+<?php require 'check.php' ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -36,6 +34,9 @@ require 'check.php';
          </div>
          <div class="good" id="success_deletequestion" style="display: none">
             <span>Question supprimée!</span>
+         </div>
+         <div class="good" id="success_deleteset" style="display: none">
+            <span>Set supprimé!</span>
          </div>
          <div class="good" id="success_addroom" style="display: none">
             <span>Salle créée!</span>

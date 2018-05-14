@@ -240,11 +240,10 @@ $(document).click(function (event) {
 
 /*------------------------------DELETE SET-------------------------------------------*/
 $("#questions_list").on('click', 'section.set span .fa-trash-alt',function () {
-   if ($(this).parent().text().trim()) var set = 'NULL';
+   if ($(this).parent().text().trim() == 'Indéfini') var set = 'NULL';
    else var set = $(this).parent().text().trim();
-   $.post('question.php', {deleteSet: set}, function(data) {
-
-   });
+   $.post('question.php', {deleteSet: set}, function(data) {loadQuestions()});
+   displayAlert("success_deleteset", 1500);
 });
 
 /*------------------------------MODIFY/DELETE QUESTION-------------------------------------------*/
@@ -364,7 +363,7 @@ $('#add #delete').click(function () {
       marginRight : '10%'
    }).css('background-color', '#aac4c4').removeAttr('style');
 });
-$('#questions_list').on('click', '.fa-trash-alt',function () { //Suppression question
+$('#questions_list div').on('click', '.fa-trash-alt',function () { //Suppression question
    var data = $("form#addquestion").serializeArray();
    data.push({name: 'id', value: $(this).parent().attr('question_id')});
    deleteQuestion(data);
@@ -393,7 +392,11 @@ $('form#addquestion .fas').click(function(event) {
    $("form#addquestion select[name='sets']").toggle();
 });
 $('form#addquestion .fa-check').click(function(event) {
-   if ($("form#addquestion input#addset").val().length <= 1) return;
+   var verif = 0;
+   $('select[name="sets"] option').each(function(index) {
+      if($("form#addquestion input#addset").val() == $(this).attr('value')) verif = 1;
+   });
+   if (verif == 1 || $("form#addquestion input#addset").val().length <= 1 || $("form#addquestion input#addset").val() == 'Indéfini') return;
    $('form#addquestion select[name="sets"]').append($('<option>', {
       value: $("form#addquestion input#addset").val(),
       text: 'Set: '+$("form#addquestion input#addset").val()
@@ -409,7 +412,7 @@ $('form#addquestion input#addset').keypress(function(event){ //simuler click pou
 });
 
 /*------------------------------DISPLAY SETS------------------------------------------*/
-$("#questions_list").on('click', 'section.set > span i',function () {
+$("#questions_list").on('click', 'section.set > span i.fa-caret-down',function () {
    $(this).parent().parent().children('div').toggle(300);
    // console.log($(this).css('transform'));
    if($(this).css('transform') == 'none') $(this).css('transform','rotate(180deg)');

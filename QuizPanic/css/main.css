@@ -753,9 +753,6 @@ iframe[role='lobby'] {
 .hoverable:hover + #help {
    display: inline;
 }
-section.alert div {
-   margin: 20px 0 0 0;
-}
 
 /*-------------------FOOTER---------------------------*/
 footer {

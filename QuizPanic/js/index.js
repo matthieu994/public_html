@@ -29,17 +29,17 @@ function check_valid () {
    if($("#pass1").val() == "") {
       $(".container-signup .password .fas").each(function() {
          $(this).css("color", "#8aaaaa");
-         $("#alert_pass").fadeOut();
+         // $("#alert_pass").fadeOut();
       });
       return;
    }
-   if($("#pass1").val().length < 4) {
-      $("#alert_pass").fadeIn();
+   if($("#pass1").val().length < 3) {
+      displayAlert("alert_pass", 1500);
       $(".container-signup button").css("pointer-events", "none");
       $(".container-signup .password .fa-lock").first().css("color", "rgba(82, 0, 0, 0.59)");
       $(".container-signup button").prop("disabled", true);
    }
-   if($("#pass1").val().length >= 4) {
+   if($("#pass1").val().length >= 3) {
       $("#alert_pass").fadeOut();
       $(".container-signup button").css("pointer-events", "auto");
       $(".container-signup .password .fa-lock").first().css("color", "rgb(30, 142, 61)");
@@ -59,7 +59,7 @@ function check () {
       $(".container-signup button").css("pointer-events", "none");
       $(".confirm .fa-lock").css("color", "rgba(82, 0, 0, 0.59)");
       $(".container-signup button").prop("disabled", true);
-      $("#alert_pass2").fadeIn();
+      displayAlert("alert_pass2", 1500);
    } else {
       // $("#pass2").css("box-shadow", "0px 0px 16px 1px rgba(0, 0, 0, 0.14)");
       $(".container-signup button").css("pointer-events", "auto");
@@ -89,25 +89,45 @@ $("#pass1").focus(check_valid);
 $("#pass2").keyup(check);
 $("#pass2").focus(check);
 
+/*------------------------SE CONNECTER------------------------------------------------------------*/
+$('.container-login form').submit(function(event) {
+   event.preventDefault();
+   $.post('login.php', $('.container-login form').serialize(), function(data) {
+      if (data == "connected") {
+         window.location.href = 'main.php';
+      }
+      else {
+         displayAlert("error_auth", 1500);
+      }
+   });
+});
+
+$('.container-signup form').submit(function(event) {
+   event.preventDefault();
+   $.post('register.php', $('.container-signup form').serialize(), function(data) {
+      if (data == 'success') {
+         window.location.href = 'main.php';
+      }
+   });
+});
+
 /*------------------------PASSWORD REVEAL------------------------------------------------------------*/
 document.querySelector(".container-login .fa-eye-slash").addEventListener("mouseover", function () {this.classList.remove("fa-eye-slash"); document.getElementById("pass").type = "text";});
 document.querySelector(".container-signup .fa-eye-slash").addEventListener("mouseover", function () {this.classList.remove("fa-eye-slash"); document.getElementById("pass1").type = "text";});
 document.querySelector(".container-login .fa-eye-slash").addEventListener("mouseout", function () {this.classList.add("fa-eye-slash"); document.getElementById("pass").type = "password";});
 document.querySelector(".container-signup .fa-eye-slash").addEventListener("mouseout", function () {this.classList.add("fa-eye-slash"); document.getElementById("pass1").type = "password";});
 
-
 /*------------------------USERNAME VERIFICATION------------------------------------------------------*/
 function verifUsername() { // Effectue une requête et récupère les résultats
    var username = $("#userinput").val();
-   console.log(username);
    if(username == "") {
       $(".container-signup .fa-user").css("color", "#8aaaaa");
       $("#error_taken").fadeOut();
       return;
    }
-   if(username.length < 5) {
+   if(username.length < 3) {
       $(".container-signup .fa-user").css("color", "rgba(82, 0, 0, 0.59)");
-      $("#alert_user").fadeIn();
+      displayAlert("alert_user", 1500);
       $(".container-signup button").css("pointer-events", "none");
       $(".container-signup button").prop("disabled", true);
       return;
@@ -121,7 +141,7 @@ function verifUsername() { // Effectue une requête et récupère les résultats
    $.post('register.php', {verifUsername: '1', username: username}, function(data) {
       if(data == "taken") { // Pseudo existe déjà
          $(".container-signup .fa-user").css("color", "rgba(82, 0, 0, 0.59)");
-         $("#error_taken").fadeIn();
+         displayAlert("error_taken", 1500);
          $(".container-signup button").css("pointer-events", "none");
          $(".container-signup button").prop("disabled", true);
       }
@@ -134,3 +154,14 @@ function verifUsername() { // Effectue une requête et récupère les résultats
    });
 }
 $(".container-signup .username").keyup(verifUsername);
+
+
+
+function displayAlert(alert, time) {
+   if($('#'+alert).css('display') != 'none') return;
+   $("section.alert div").each(function(){$(this).hide()});
+   $('section.alert #'+alert).fadeIn(200);
+   setTimeout(function () {
+      $('section.alert #'+alert).fadeOut(200);
+   }, time);
+}

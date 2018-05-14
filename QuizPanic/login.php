@@ -9,20 +9,19 @@ if(!isset($_POST['username']) || !isset($_POST['password'])) {
 }
 
 $username = $_POST['username'];
-$password = $_POST['password'];
+$password = md5($_POST['password']);
 $req = $db->prepare("SELECT * from users WHERE BINARY username=? AND password=?");
-$req->bind_param('ss', $username, md5($password));
+$req->bind_param('ss', $username, $password);
 $req->execute();
 $req->store_result();
 
 if($req->num_rows == 1) {
    $_SESSION["username"] = $username;
    $_SESSION['connected'] = 1;
-   header('Location: main.php');
+   echo 'connected';
 }
 else {
-   $_SESSION["bad_login"] = 1;
-   header('Location: .');
+   echo 'bad login';
 }
 $req->close();
 $db->close();
