@@ -1,5 +1,6 @@
 var result, players, intervalPlayers, question_list, question, question_count;
 var time;
+var counter = 0;
 var position = new Object();
 var intervalPlayers, intervalData;
 
@@ -74,12 +75,16 @@ $.post('play.php', {getQuestion: 1}, function(data) {
    }
    // console.log(data);
    question = $.parseJSON(data);
+   // console.log(question);
    if(question['id'] == -1) return endGame(); //Fin du jeu
    if(question_list != undefined) {
       $('#question').attr('question_id', question_list[question_count-1]);
       question_count--;
    }
-   console.log(question);
+
+   counter++; //Affichage du counter
+   $('header span').text('Question '+counter+' / '+result['question_count']);
+
    var padArray = [1,2,3,4];
    padArray = shuffle(padArray);
    setTimeout(function () { //Affichage des réponses
@@ -232,7 +237,8 @@ function playerData() {
          if(result['admin'] == 2) var current = result['current'];
          else var current = result['current']-1;
          for (var i = 0; i < current; i++) { //Placement des joueurs
-            var player = $('#players').children().eq(i+1);
+            if(result['admin'] == 2) var player = $('#players').children().eq(i);
+            else var player = $('#players').children().eq(i+1);
             player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
             if (player.attr('answer') != result[i]['answer'] && $('#progressbar').width() != 0) {
                arrangePad(i+1, result[i]['answer']);
@@ -282,6 +288,7 @@ function arrangePad(playerIndex, newAnswer) { //Reset les positions sur le pad e
    });
 }
 $('.sub-container div').click(function() {
+   if(result['admin'] == 2) return;
    if ($('#progressbar').width() == 0 || $(this).css('opacity') != 1) {
       return;
    }

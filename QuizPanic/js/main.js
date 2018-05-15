@@ -578,20 +578,23 @@ $("#join section").on('click', '.playercount', function() { //Rejoindre une sall
    var room = $(this).next().next();
    var maxplayers = $(this).children().eq(1).text();
    $.post('room.php', {room: room.text().trim(), verifRoom: 1}, function(data) {
-      // console.log(data+' < '+maxplayers);
-      if(data == 0) {
+      // console.log(data);
+      var data = JSON.parse(data);
+      if(data['players'] == 0) {
          if (room.children().length == 3) { //Si le joueur est admin
             $('#room_popup button').css('float','left').css('marginLeft', '10px');
             $('#room_popup span').last().fadeIn();
             $('#room_popup label').fadeIn(200).prev().prop('checked', false);
          }
-         $('#room_popup').fadeIn(300);
-         $('#room_popup input').first().val(5); $('#room_popup output').first().text("5 questions");
-         $('#room_popup input').last().val(10); $('#room_popup output').last().text("10 secondes");
-         $('#room_popup span').eq(0).text(room.text().trim());
-         $('#container-play').css('opacity', '0.4').css('z-index', '-1');
+         if(data['admin'] == 0) {
+            $('#room_popup').fadeIn(300);
+            $('#room_popup input').first().val(5); $('#room_popup output').first().text("5 questions");
+            $('#room_popup input').last().val(10); $('#room_popup output').last().text("10 secondes");
+            $('#room_popup span').eq(0).text(room.text().trim());
+            $('#container-play').css('opacity', '0.4').css('z-index', '-1');
+         }
       }
-      else if(data < maxplayers) {
+      else if(data['players']-data['admin'] < maxplayers) {
          $.post('room.php', {room: room.text().trim(), verifRoom: 1, joinRoom: 1}, function() {
             window.location.href = "lobby.php";
          });

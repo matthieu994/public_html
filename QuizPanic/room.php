@@ -10,11 +10,13 @@ if(isset($_POST['getRooms'])) {
    $result = $req->get_result();
    while ($row = $result->fetch_array()) {
       $status = "checked";
-      $req = $db->prepare("SELECT * from lobbys WHERE room=? AND !admin");
+      $req = $db->prepare("SELECT * from lobbys WHERE room=?");
       $req->bind_param('s', $row['name']);
       $req->execute();
-      $result2 = $req->get_result();
-      if ($result2->num_rows == $row['maxplayers'] && $row['username'] != $username) {
+      $result2 = $req->get_result(); $row2 = $result2->fetch_array();
+      $countrow = $result2->num_rows;
+      if($row2['admin'] == 1) $countrow--;
+      if ($countrow == $row['maxplayers'] && $row['username'] != $username) {
          continue;
       }
       if($row['status'] != "On") {
@@ -22,7 +24,7 @@ if(isset($_POST['getRooms'])) {
          echo '<div><span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       else {
-         echo '<div><span class="playercount"> <label>'. $result2->num_rows .'</label><label>'. $row['maxplayers'] .'</label></span>';
+         echo '<div><span class="playercount"> <label>'.  $countrow .'</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       echo '<i class="fas fa-sign-in-alt"></i>';
       if ($row['username'] == $username) {
@@ -64,10 +66,17 @@ else if (isset($_POST['modifyRoom']) || isset($_POST['editStatus']) || isset($_P
    $req->execute();
 }
 else if (isset($_POST['verifRoom'])) { //Vérification du nbr de joueurs
-   $req = $db->prepare("SELECT username FROM lobbys WHERE room=?");
+   $req = $db->prepare("SELECT username,admin FROM lobbys WHERE room=?");
    $req->bind_param('s', $_POST['room']);
-   $req->execute(); $countplayers = $req->get_result()->num_rows;
-   echo $countplayers;
+   $req->execute(); $result = $req->get_result();
+   $countplayers = $result->num_rows;
+   $array['players'] = $countplayers;
+   $array['admin'] = 0;
+   while ($row = $result->fetch_array()) { //-1 si admin present
+      if($row['admin'] == 1) {
+         $array['admin'] = 1;
+      }
+   } echo json_encode($array);
    if(isset($_POST['joinRoom'])) { //Join room
       if(isset($_POST['admin']) && $countplayers == 0) {
          $req = $db->prepare("UPDATE lobbys SET room=?,score=0,admin=1 WHERE username=?");

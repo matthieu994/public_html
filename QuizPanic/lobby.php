@@ -12,6 +12,7 @@
 <body>
 
    <header>
+      <span></span>
       <i class="fas fa-cogs"></i>
       <i class="fas fa-sign-out-alt"></i>
       <div id="settings">
