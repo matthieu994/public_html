@@ -38,9 +38,9 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          window.location.href = 'main.php';
          return;
       }
-      console.log(data);
+      // console.log(data);
       result = $.parseJSON(data);
-      if(result['admin'] == 2) $('.fa-cogs').hide();
+      // if(result['admin'] == 2) $('#avatar').hide();
       if (question_count == undefined) {
          question_count = result['question_count'];
          time = result['time'] * 1000;
@@ -49,6 +49,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          question_list = result['question_list'];
          $('#question').attr('question_id', question_list[question_count-1]);
          question_count--;
+         $.post('chat.php', {deleteAll: result['room']});
          console.log(question_list);
       }
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
@@ -65,6 +66,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          position[i] = $('#players').children().eq(i).offset();
       }
       // position.left -= $('#players').children().first().width()/2;
+      loadMessages();
    });
 }
 function start() { //Lancement d'un cycle
@@ -83,7 +85,7 @@ $.post('play.php', {getQuestion: 1}, function(data) {
    }
 
    counter++; //Affichage du counter
-   $('header span').text('Question '+counter+' / '+result['question_count']);
+   $('header > span').text('Question '+counter+' / '+result['question_count']);
 
    var padArray = [1,2,3,4];
    padArray = shuffle(padArray);
@@ -190,66 +192,66 @@ function endGame() {
 }
 /*----------------------------------- MOVE ON PAD / Player Data -----------------------------------------*/
 function playerData() {
-   intervalData = setInterval(function () {
-      if(question_list != undefined && question_count == -1) { //Set question à -1 pour endGame
-         // console.log("set to -1");
-         $.post('play.php', {setQuestion: -1});
+   if(question_list != undefined && question_count == -1) { //Set question à -1 pour endGame
+      // console.log("set to -1");
+      $.post('play.php', {setQuestion: -1});
+   }
+   else if(question_list != undefined) {
+      $.post('play.php', {setQuestion: $('#question').attr('question_id')}, function(data){}); //Le joueur hôte set la question
+      // console.log("set to "+$('#question').attr('question_id'));
+   }
+   $.post('play.php', {playerData: 1}, function(data) {
+      if (data == "NOT IN ROOM") {
+         window.location.href = 'main.php';
+         return;
       }
-      else if(question_list != undefined) {
-         $.post('play.php', {setQuestion: $('#question').attr('question_id')}, function(data){}); //Le joueur hôte set la question
-         // console.log("set to "+$('#question').attr('question_id'));
+      result = $.parseJSON(data);
+      console.log(result);
+      if(result['current'] == 1 && result['maxplayers']!=1 || (result['admin'] == 2 && result['current'] == 0)) window.location.reload(); //Si joueur seul dans la salle
+      players = result;
+      // if(result['question_id'] == -1) return endGame(); //Fin du jeu
+      if (result['user'] != undefined) {
+         $('#players').children().first().children().first().text(result['user']['score']); //Set scores
+         $('#players').children(':not(:first-child)').each(function(index) {
+            $(this).children().first().text(result[index]['score']);
+         });
+      } else {
+         $('#players').children().each(function(index) {
+            $(this).children().first().text(result[index]['score']);
+         });
       }
-      $.post('play.php', {playerData: 1}, function(data) {
-         if (data == "NOT IN ROOM") {
-            window.location.href = 'main.php';
-            return;
-         }
-         result = $.parseJSON(data);
-         // console.log(result);
-         if(result['current'] == 1 && result['maxplayers']!=1 || (result['admin'] == 2 && result['current'] == 0)) window.location.reload(); //Si joueur seul dans la salle
-         players = result;
-         // if(result['question_id'] == -1) return endGame(); //Fin du jeu
-         if (result['user'] != undefined) {
-            $('#players').children().first().children().first().text(result['user']['score']); //Set scores
-            $('#players').children(':not(:first-child)').each(function(index) {
-               $(this).children().first().text(result[index]['score']);
-            });
-         } else {
-            $('#players').children().each(function(index) {
-               $(this).children().first().text(result[index]['score']);
-            });
-         }
-         if (result['current'] != $('#players').children().length) { //Si un joueur a quitté la salle
-            $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
-            for (var i = 1; i < $('#players').children().length; i++) {
-               var verif = false;
-               for (var j = 0; j < result['current']-1; j++) {
-                  if ($('#players').children().eq(i).children('span').text().trim() == result[j]['username']) {
-                     verif = true;
-                  }
+      if (result['current'] != $('#players').children().length) { //Si un joueur a quitté la salle
+         $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
+         for (var i = 1; i < $('#players').children().length; i++) {
+            var verif = false;
+            for (var j = 0; j < result['current']-1; j++) {
+               if ($('#players').children().eq(i).children('span').text().trim() == result[j]['username']) {
+                  verif = true;
                }
-               if(verif == false) $('#players').children().eq(i).css('opacity', '0').attr('answer', '0');
             }
+            if(verif == false) $('#players').children().eq(i).css('opacity', '0').attr('answer', '0');
          }
-         if (result['user'] != undefined) {
-            $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
+      }
+      if (result['user'] != undefined) {
+         $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
+      }
+      if(result['admin'] == 2) var current = result['current'];
+      else var current = result['current']-1;
+      for (var i = 0; i < current; i++) { //Placement des joueurs
+         if(result['admin'] == 2) var player = $('#players').children().eq(i);
+         else var player = $('#players').children().eq(i+1);
+         player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
+         if (player.attr('answer') != result[i]['answer'] && $('#progressbar').width() != 0) {
+            arrangePad(i+1, result[i]['answer']);
+            placePlayer(i+1);
+            // $('#players').children().each(function(index) {
+            //    placePlayer(index);
+            // });
          }
-         if(result['admin'] == 2) var current = result['current'];
-         else var current = result['current']-1;
-         for (var i = 0; i < current; i++) { //Placement des joueurs
-            if(result['admin'] == 2) var player = $('#players').children().eq(i);
-            else var player = $('#players').children().eq(i+1);
-            player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
-            if (player.attr('answer') != result[i]['answer'] && $('#progressbar').width() != 0) {
-               arrangePad(i+1, result[i]['answer']);
-               placePlayer(i+1);
-               // $('#players').children().each(function(index) {
-               //    placePlayer(index);
-               // });
-            }
-         }
-      });
-   }, 1000);
+      }
+      loadMessages();
+      setTimeout(playerData, 1000);
+   });
 }
 function placePlayer(index) {
    if(result['admin'] == 2) index-=1;
@@ -347,3 +349,19 @@ function shuffle(a) {
    }
    return a;
 }
+
+
+/*-----------------------------------  GESTION CHAT -----------------------------------------*/
+function loadMessages() {
+   $('#messages').load('chat.php',{loadMessages: result['room']});
+}
+
+$('#chat form').submit(function(event) {
+   event.preventDefault();
+   if($('#chat form input').val().trim().length < 1 || $('#chat form input').val().trim().length > 100) return;
+   $.post('chat.php', {message: $('#chat form input').val().trim(), room: result['room']}, function(data) {
+      // console.log(data);
+      $('#chat form')[0].reset();
+      loadMessages();
+   });
+});

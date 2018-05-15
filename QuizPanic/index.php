@@ -31,7 +31,7 @@ if(isset($_SESSION["connected"]) && $_SESSION["connected"]) {
             <span>Ce pseudo existe déjà!</span>
          </div>
          <div class="" id="alert_user" style="display: none">
-            <span>Le nom d'utilisateur doit contenir au moins 3 caractères!</span>
+            <span>Le nom d'utilisateur doit contenir entre 3 et 25 caractères!</span>
          </div>
          <div class="" id="alert_pass" style="display: none">
             <span>Le mot de passe doit contenir au moins 3 caractères!</span>

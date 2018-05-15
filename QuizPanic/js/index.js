@@ -125,7 +125,7 @@ function verifUsername() { // Effectue une requête et récupère les résultats
       $("#error_taken").fadeOut();
       return;
    }
-   if(username.length < 3) {
+   if(username.length < 3 || username.length > 25) {
       $(".container-signup .fa-user").css("color", "rgba(82, 0, 0, 0.59)");
       displayAlert("alert_user", 1500);
       $(".container-signup button").css("pointer-events", "none");

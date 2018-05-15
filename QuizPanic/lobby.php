@@ -12,7 +12,7 @@
 <body>
 
    <header>
-      <span></span>
+      <span>En attente de joueurs...</span>
       <i class="fas fa-cogs"></i>
       <i class="fas fa-sign-out-alt"></i>
       <div id="settings">
@@ -22,6 +22,13 @@
             <img src="img/avatar5.png"><img src="img/avatar6.png"><img src="img/avatar7.png"><img src="img/avatar8.png">
             <img src="img/avatar9.png"><img src="img/avatar10.png"><img src="img/avatar11.png"><img src="img/avatar12.png">
             <span>Choisis ton avatar!</span>
+         </div>
+         <div id="chat">
+            <div id="messages"></div>
+            <form>
+               <input type="text" name="message">
+               <button>Envoyer</button>
+            </form>
          </div>
       </div>
    </header>
