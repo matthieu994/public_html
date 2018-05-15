@@ -13,14 +13,19 @@
 
    <header>
       <span>En attente de joueurs...</span>
-      <i class="fas fa-cogs"></i>
+      <i class="fas fa-cog"></i>
       <i class="fas fa-sign-out-alt"></i>
       <div id="settings">
          <i class="fas fa-chevron-left"></i>
          <div id="avatar">
-            <img src="img/avatar1.png"><img src="img/avatar2.png"><img src="img/avatar3.png"><img src="img/avatar4.png">
-            <img src="img/avatar5.png"><img src="img/avatar6.png"><img src="img/avatar7.png"><img src="img/avatar8.png">
-            <img src="img/avatar9.png"><img src="img/avatar10.png"><img src="img/avatar11.png"><img src="img/avatar12.png">
+            <?php
+            $files = array_diff(scandir('img/'), array('.', '..'));
+            array_multisort(array_map('strlen', $files), $files);
+            foreach ($files as $file) {
+               if(substr($file, 0, 6) == "avatar")
+               echo '<img src="img/'. $file .'">';
+            }
+            ?>
             <span>Choisis ton avatar!</span>
          </div>
          <div id="chat">

@@ -40,13 +40,17 @@ header .fa-sign-out-alt {
    cursor: pointer;
    float: right;
 }
-header .fa-cogs, header .fa-chevron-left {
+header .fa-cog, header .fa-chevron-left {
    font-size: 50px;
    margin: 7px 10px;
    color: rgb(155, 184, 187);
    cursor: pointer;
    float: left;
    z-index: 1;
+}
+header .fa-cog { animation: 3.5s rotate360 infinite linear; }
+@keyframes rotate360 {
+   to { transform: rotate(360deg); }
 }
 #settings {
    height: 103%;
@@ -76,7 +80,7 @@ header .fa-cogs, header .fa-chevron-left {
    background-color: rgba(16, 121, 133, 0.1);
 }
 #chat form input {
-   width: auto !important;
+   width: 208px;
    background-color: rgb(12, 75, 80);
 }
 #chat form button {

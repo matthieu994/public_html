@@ -55,12 +55,14 @@ function loadPlayers() { //Chargement des joueurs avant la partie
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
       $('#players').children().remove();
       if (result['user'] != undefined) {
-         $('#players').append('<div><span></span><img src="img/avatar'+result['user']['avatar']+'.png"><span>'+ result['user']['username']);
+         if(result['user']['username'] == "admin") $('#players').append('<div><span></span><img src="img/admin.gif"><span>'+ result['user']['username']);
+         else $('#players').append('<div><span></span><img src="img/avatar'+result['user']['avatar']+'.png"><span>'+ result['user']['username']);
       }
       if(result['admin'] == 2) var current = result['current'];
       else var current = result['current']-1;
       for (var i = 0; i < current; i++) {
-         $('#players').append('<div><span></span><img src="img/avatar'+result[i]['avatar']+'.png"><span>'+result[i]['username']);
+         if(result[i]['username'] == "admin") $('#players').append('<div><span></span><img src="img/admin.gif"><span>'+result[i]['username']);
+         else $('#players').append('<div><span></span><img src="img/avatar'+result[i]['avatar']+'.png"><span>'+result[i]['username']);
       }
       for (var i = 0; i < $('#players').children().length; i++) { //Contient la position de chaque joueur
          position[i] = $('#players').children().eq(i).offset();
@@ -233,14 +235,14 @@ function playerData() {
          }
       }
       if (result['user'] != undefined) {
-         $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
+         if(result['user']['username'] != "admin") $('#players').children().first().children('img:last-of-type').attr('src', 'img/avatar'+result['user']['avatar']+'.png');
       }
       if(result['admin'] == 2) var current = result['current'];
       else var current = result['current']-1;
       for (var i = 0; i < current; i++) { //Placement des joueurs
          if(result['admin'] == 2) var player = $('#players').children().eq(i);
          else var player = $('#players').children().eq(i+1);
-         player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
+         if(result[i]['username'] != "admin") player.children('img:last-of-type').attr('src', 'img/avatar'+result[i]['avatar']+'.png');
          if (player.attr('answer') != result[i]['answer'] && $('#progressbar').width() != 0) {
             arrangePad(i+1, result[i]['answer']);
             placePlayer(i+1);
@@ -302,7 +304,7 @@ $('.sub-container div').click(function() {
 });
 
 /*----------------------------------- SETTINGS -----------------------------------------*/
-$('header .fa-cogs').click(function() {
+$('header .fa-cog').click(function() {
    $('#settings').animate({
       marginLeft: 0,
       opacity: 1
@@ -314,7 +316,7 @@ $('header .fa-chevron-left').click(function() {
       marginLeft: '-300px',
       opacity: 0
    }, 400);
-   $('header .fa-cogs').fadeIn(300);
+   $('header .fa-cog').fadeIn(300);
 });
 function updateAvatar() {
    $.post('play.php', {getAvatar: 1}, function(data) {
@@ -363,5 +365,6 @@ $('#chat form').submit(function(event) {
       // console.log(data);
       $('#chat form')[0].reset();
       loadMessages();
+      $('#messages')[0].scrollTop = $('#messages')[0].scrollHeight;
    });
 });
