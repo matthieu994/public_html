@@ -314,6 +314,7 @@ function modifyQuestion() {
       'question.php',
       data,
       function(data) { //callback on update
+         console.log(data);
          if(data == "ERROR_PERM_UPDATE") {
             displayAlert("error", 1500);
          } else {

@@ -87,7 +87,7 @@ else {
       }
    }
    else { //Ajout question
-      if(isset($_POST['sets']) && $_POST['sets'] != "Public") { //Set defini
+      if(isset($_POST['sets']) && $_POST['sets'] != "Public" && $_POST['sets'] != "NULL" && $_POST['sets'] != "Indéfini") { //Set defini
          $req = $db->prepare("INSERT INTO questions (username, question, answer1, answer2, answer3, answer4, good_answer, question_set) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
          $req->bind_param('ssssssss', $username, $question, $answer1, $answer2, $answer3, $answer4, $good_answer, $_POST['sets']);
       }
