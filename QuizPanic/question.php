@@ -66,7 +66,6 @@ else {
    $id = $_POST['id'];
 
    if (isset($_POST['modifyQuestion'])) { //Modification question
-      echo "modify";
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
@@ -80,6 +79,7 @@ else {
       if(isset($_POST['sets'])) {
          $req = $db->prepare("UPDATE questions SET question = ?, answer1 = ?, answer2 = ?, answer3 = ?, answer4 = ?, good_answer = ?, question_set = ? WHERE id=? AND username=?");
          $req->bind_param('sssssssss', $question, $answer1, $answer2, $answer3, $answer4, $good_answer, $_POST['sets'], $id, $username);
+         echo "modify";
       }
       else {
          $req = $db->prepare("UPDATE questions SET question = ?, answer1 = ?, answer2 = ?, answer3 = ?, answer4 = ?, good_answer = ? WHERE id=? AND username=?");
