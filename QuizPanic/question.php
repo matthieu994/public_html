@@ -57,7 +57,6 @@ else {
       // header('Location: .');
       return;
    }
-   $username = $_SESSION['username'];
    $question = $_POST['question'];
    $answer1 = $_POST['answer1'];
    $answer2 = $_POST['answer2'];
@@ -67,6 +66,7 @@ else {
    $id = $_POST['id'];
 
    if (isset($_POST['modifyQuestion'])) { //Modification question
+      echo "modify";
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();
