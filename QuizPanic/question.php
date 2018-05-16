@@ -5,7 +5,7 @@ require('bdd.php');
 if (isset($_POST['deleteSet'])) {
    $req = $db->prepare("DELETE FROM questions WHERE question_set=? AND username=?");
    $req->bind_param('ss', $_POST['deleteSet'], $username); $req->execute();
-   echo $_POST['deleteSet'];
+   // echo $_POST['deleteSet'];
    return;
 }
 if(isset($_POST['getQuestions'])) {
@@ -37,9 +37,24 @@ if(isset($_POST['getQuestions'])) {
    $req->close();
    $db->close();
 }
+if (isset($_POST['deleteQuestion'])) { //Suppression question
+   $req = $db->prepare("SELECT username FROM questions WHERE id=?");
+   $req->bind_param('s', $_POST['id']);
+   $req->execute();
+   $result = $req->get_result();
+   $row = $result->fetch_array();
+   if($row['username'] != $username) { //On verifie que la question est à l'user
+      echo "ERROR_PERM_UPDATE";
+      return;
+   }
+   $req = $db->prepare("DELETE FROM questions WHERE id=? AND username=?");
+   $req->bind_param('ss', $_POST['id'], $username);
+   $req->execute();
+   echo $_POST['id'];
+}
 else {
    if(!isset($_POST['question']) || !isset($_POST['answer1']) || !isset($_POST['answer2']) || !isset($_POST['answer3']) || !isset($_POST['answer4']) || !isset($_POST['good_answer'])) {
-      header('Location: .');
+      // header('Location: .');
       return;
    }
    $username = $_SESSION['username'];
@@ -51,20 +66,7 @@ else {
    $good_answer = $_POST['good_answer'];
    $id = $_POST['id'];
 
-   if (isset($_POST['deleteQuestion'])) { //Suppression question
-      $req = $db->prepare("SELECT username FROM questions WHERE id=?");
-      $req->bind_param('s', $id);
-      $req->execute();
-      $result = $req->get_result();
-      $row = $result->fetch_array();
-      if($row['username'] != $username) { //On verifie que la question est à l'user
-         echo "ERROR_PERM_UPDATE";
-         return;
-      }
-      $req = $db->prepare("DELETE FROM questions WHERE id=? AND username=?");
-      $req->bind_param('ss', $id, $username);
-   }
-   else if (isset($_POST['modifyQuestion'])) { //Modification question
+   if (isset($_POST['modifyQuestion'])) { //Modification question
       $req = $db->prepare("SELECT username FROM questions WHERE id=?");
       $req->bind_param('s', $id);
       $req->execute();

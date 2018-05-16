@@ -341,6 +341,7 @@ function deleteQuestion(donnees) {
       'question.php',
       donnees,
       function(data) { //callback on update
+         // console.log(data);
          if(data == "ERROR_PERM_UPDATE") {
             displayAlert("error", 1500);
          } else {
@@ -363,10 +364,9 @@ $('#add #delete').click(function () {
       marginRight : '10%'
    }).css('background-color', '#aac4c4').removeAttr('style');
 });
-$('#questions_list div').on('click', '.fa-trash-alt',function () { //Suppression question
-   var data = $("form#addquestion").serializeArray();
-   data.push({name: 'id', value: $(this).parent().attr('question_id')});
-   deleteQuestion(data);
+$('#questions_list').on('click', 'div .fa-trash-alt',function () { //Suppression question
+   // var data = $("form#addquestion").serializeArray();
+   deleteQuestion([{name: 'id', value: $(this).parent().attr('question_id')}]);
 });
 
 /*----------------------------- PLAY SOUND / OVERFLOW-Y --------------------------------------*/
@@ -425,7 +425,7 @@ $(document).on('input change', 'form#addroom input#range', function() {
 });
 $('#rooms form').submit(function(event) {
    event.preventDefault();
-   if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) {
+   if($('#addroom button[type="cancel"]').eq(0).is(document.activeElement)) { //Annuler Modification
       // console.log("cancel");
       $('#rooms form')[0].reset();
       $('form#addroom output#range').text("0 - "+$('form#addroom input#range').val());
@@ -434,12 +434,11 @@ $('#rooms form').submit(function(event) {
       $("#rooms form button:not(:first-child)").hide();
       return;
    }
-   if($('#addroom button[type="delete"]').eq(0).is(document.activeElement)) {
+   if($('#addroom button[type="delete"]').eq(0).is(document.activeElement)) { //Supprimer room
       var data = $(this).serializeArray();
       data.push({name: 'deleteRoom', value: 1});
       data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
       editRoom(data, "delete");
-      loadRooms();
       return;
    }
    if ($(this).children('input[name="room"]').val().trim().length <= 1) {
@@ -453,7 +452,7 @@ $('#rooms form').submit(function(event) {
          function (data) {
             var childDivs = $('#join section').children().length;
             loadRooms();
-            console.log(data);
+            // console.log(data);
             setTimeout(function () {
                if (childDivs+1 == $('#join section').children().length) { //Si ajout effectué
                   playSound();
@@ -478,7 +477,6 @@ $('#rooms form').submit(function(event) {
       data.push({name: 'modifyRoom', value: 1});
       data.push({name: 'id', value: $("#rooms form button:first-child").attr('room_id')});
       editRoom(data, "modify");
-      loadRooms();
    }
 });
 function editRoom(data, type) {
@@ -490,6 +488,7 @@ function editRoom(data, type) {
             if(type == "modify") displayAlert("success_modifyroom", 1500);
             if(type == "delete") displayAlert("success_deleteroom", 1500);
             if(type == "modify" || type == "delete") playSound();
+            loadRooms();
          }
          else {
             displayAlert("error", 1500);

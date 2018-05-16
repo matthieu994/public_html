@@ -40,7 +40,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
       }
       // console.log(data);
       result = $.parseJSON(data);
-      // if(result['admin'] == 2) $('#avatar').hide();
+      if(result['admin'] == 2) $('#avatar').hide();
       if (question_count == undefined) {
          question_count = result['question_count'];
          time = result['time'] * 1000;

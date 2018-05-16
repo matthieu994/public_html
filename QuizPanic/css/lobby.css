@@ -47,6 +47,9 @@ header .fa-cog, header .fa-chevron-left {
    cursor: pointer;
    float: left;
    z-index: 1;
+   position: absolute;
+   top: 0;
+   left: 0;
 }
 header .fa-cog { animation: 3.5s rotate360 infinite linear; }
 @keyframes rotate360 {
@@ -61,9 +64,11 @@ header .fa-cog { animation: 3.5s rotate360 infinite linear; }
    box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.5);
    position: absolute;
    z-index: 1;
+   padding-top: 75px;
 }
 #avatar {
-   margin-top: 75px;
+   padding-bottom: 10px;
+   border-bottom: 1px solid #327579;
 }
 #avatar span {
    display: inline-block;
@@ -107,8 +112,7 @@ header .fa-cog { animation: 3.5s rotate360 infinite linear; }
    height: 190px;
    resize: vertical;
    overflow: auto;
-   border-top: 1px solid #327579;
-   margin-top: 15px;
+   margin-top: 10px;
    padding-top: 3px;
 }
 #messages div {
