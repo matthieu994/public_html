@@ -31,7 +31,7 @@
          <div id="chat">
             <div id="messages"></div>
             <form>
-               <input type="text" name="message">
+               <input type="text" name="message" autocomplete="off">
                <button>Envoyer</button>
             </form>
          </div>
