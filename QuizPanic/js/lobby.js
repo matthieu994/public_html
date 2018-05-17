@@ -51,7 +51,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          $('#question').attr('question_id', question_list[question_count-1]);
          question_count--;
          $.post('chat.php', {deleteAll: result['room']});
-         console.log(question_list);
+         // console.log(question_list);
       }
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
       $('header > span').text('En attente de joueurs...'+' '+result['current']+'/'+result['maxplayers']);
@@ -162,7 +162,7 @@ function setScores() {
          else scores[index]['answer'] = $(this).attr('answer');
       });
       $.post('play.php', {setScores: scores, goodAnswer: question['good']});
-      console.log(scores);
+      // console.log(scores);
    }
    $('#players').children().each(function(index) {
       $(this).attr('answer', '0'); //Set tout les joueurs sur answer0 et re-positionne
@@ -211,7 +211,7 @@ function playerData() {
          return;
       }
       result = $.parseJSON(data);
-      console.log(result);
+      // console.log(result);
       if(result['current'] == 1 && result['maxplayers']!=1 || (result['admin'] == 2 && result['current'] == 0)) window.location.reload(); //Si joueur seul dans la salle
       players = result;
       // if(result['question_id'] == -1) return endGame(); //Fin du jeu

@@ -4,6 +4,12 @@ $(document).ready(function() { //set placeholder inputs
       $(this).attr('onblur', "this.placeholder = '"+ $(this).attr('placeholder') +"'")
    });
 });
+// $(window).resize(function() {
+//    var width = $(this).width();
+//    var height = $(this).height();
+//    var h1 = $('.header h1');
+//    h1.css('font-size', width/height*100);
+// });
 /*------------------------CHANGE FORM------------------------------------------------------------------------*/
 $(".signup button").click(toggle);
 function toggle () {
