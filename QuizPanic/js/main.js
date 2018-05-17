@@ -378,7 +378,7 @@ $('footer .fas').click(function() {
    $(this).siblings('.fas').eq(0).toggle();
 });
 
-$(document).ready(function() { //Desactiver overflow pendant animation
+$(document).ready(function() { //set placeholder inputs
    $('input, textarea').each(function() {
       $(this).attr('onfocus', "this.placeholder = ''");
       $(this).attr('onblur', "this.placeholder = '"+ $(this).attr('placeholder') +"'")
@@ -480,14 +480,17 @@ $('#rooms form').submit(function(event) {
       editRoom(data, "modify");
    }
 });
-function editRoom(data, type) {
+function editRoom(donnees, type) {
    $.post(
       'room.php',
-      data,
+      donnees,
       function (data) {
          if (data != "ERROR_PERM_UPDATE") {
             if(type == "modify") displayAlert("success_modifyroom", 1500);
-            if(type == "delete") displayAlert("success_deleteroom", 1500);
+            if(type == "delete") {
+               displayAlert("success_deleteroom", 1500);
+               $.post('play.php', {kickAll: $('input#'+donnees[3]['value']).parent().text().trim()});
+            }
             if(type == "modify" || type == "delete") playSound();
             loadRooms();
          }

@@ -11,9 +11,10 @@ $(document).ready(function() {
       $('body').css('height', $(window).height()-30);
    }
    if ($(window).width()-40 > 1000) {
-      $('body').css('min-width', $(window).width()-40);
-      $('body').css('width', $(window).width()-40);
+      $('body').css('min-width', $(window).width()-38);
+      $('body').css('width', $(window).width()-38);
    }
+   $('header').css('width', $(window).width());
    $(window).resize(function() {
       // position = $('#players').offset();
    });
@@ -53,6 +54,7 @@ function loadPlayers() { //Chargement des joueurs avant la partie
          console.log(question_list);
       }
       $('head title').text(result['room']+' - '+result['current']+'/'+result['maxplayers']);
+      $('header > span').text('En attente de joueurs...'+' '+result['current']+'/'+result['maxplayers']);
       $('#players').children().remove();
       if (result['user'] != undefined) {
          if(result['user']['username'] == "admin") $('#players').append('<div><span></span><img src="img/admin.gif"><span>'+ result['user']['username']);
@@ -181,8 +183,9 @@ function setScores() {
 function endGame() {
    setScores();
    setTimeout(function () {
-      window.location.href = 'main.php';
-   }, 10000);
+      if(result['admin'] != 2) window.location.href = 'main.php';
+      else location.reload();
+   }, 7000);
    $('#players div').each(function(index) {
       $('#leaderboard').append('<tr><td>'+
       $(this).children('img').prop('outerHTML')+

@@ -1,3 +1,9 @@
+$(document).ready(function() { //set placeholder inputs
+   $('input, textarea').each(function() {
+      $(this).attr('onfocus', "this.placeholder = ''");
+      $(this).attr('onblur', "this.placeholder = '"+ $(this).attr('placeholder') +"'")
+   });
+});
 /*------------------------CHANGE FORM------------------------------------------------------------------------*/
 $(".signup button").click(toggle);
 function toggle () {

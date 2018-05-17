@@ -24,7 +24,8 @@ if(isset($_POST['getRooms'])) {
          echo '<div><span class="playercount"> <label>0</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       else {
-         echo '<div><span class="playercount"> <label>'.  $countrow .'</label><label>'. $row['maxplayers'] .'</label></span>';
+         if($row2['admin'] == 1) echo '<div><span class="playercount" style="background: #1372a2"> <label>'.  $countrow .'</label><label>'. $row['maxplayers'] .'</label></span>';
+         else echo '<div><span class="playercount"> <label>'.  $countrow .'</label><label>'. $row['maxplayers'] .'</label></span>';
       }
       echo '<i class="fas fa-sign-in-alt"></i>';
       if ($row['username'] == $username) {

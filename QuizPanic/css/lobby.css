@@ -17,7 +17,7 @@ span {
 
 /*-------------------- HEADER --------------------------*/
 header {
-   width: 102%;
+   width: 1031%;
    height: 65px;
    background-color: rgb(15, 94, 100);
    z-index: 1;
@@ -31,11 +31,11 @@ header > span {
    position: absolute;
    left: 80px;
    right: 80px;
-   margin: 3px auto;
+   margin: 5.5px auto;
 }
 header .fa-sign-out-alt {
    font-size: 60px;
-   margin: 2px 30px;
+   margin: 2px 25px;
    color: rgb(155, 184, 187);
    cursor: pointer;
    float: right;
