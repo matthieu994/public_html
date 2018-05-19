@@ -5,7 +5,7 @@
 
 var population;
 // Each rocket is alive till 500 frames
-var lifespan = 400;
+var lifespan = 350;
 // Made to display count on screen
 var lifeP;
 // Keeps track of frames
@@ -13,13 +13,13 @@ var count = 0;
 // Where rockets are trying to go
 var target;
 // Max force applied to rocket
-var maxforce = 0.2;
+var maxforce = 0.3;
 
 // Dimensions of barrier
 var rx;
 var ry;
-var rw = 200;
-var rh = 10;
+var rw;
+var rh;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
@@ -27,6 +27,8 @@ function setup() {
 	lifeP = createP();
 	target = createVector(width / 2, 100);
 
+	rh = random(5, 25);
+	rw = random(width/5, width/2);
 	rx = (width-rw)/2;
 	ry = height/2;
 }
@@ -49,5 +51,5 @@ function draw() {
 	noStroke();
 	rect(rx, ry, rw, rh);
 	// Renders target
-	ellipse(target.x, target.y, 16, 16);
+	ellipse(target.x, target.y, 20, 20);
 }
