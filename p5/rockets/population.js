@@ -37,7 +37,6 @@ function Population() {
       // Take rockets fitness make in to scale of 1 to 100
       // A rocket with high fitness will highly likely will be in the mating pool
       for (var i = 0; i < this.popsize; i++) {
-         if(this.rockets[i].crashed) continue;
          var n = this.rockets[i].fitness * 100;
          for (var j = 0; j < n; j++) {
             this.matingpool.push(this.rockets[i]);
