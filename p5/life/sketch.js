@@ -114,6 +114,13 @@ function setPattern() {
 	count = 0;
 	var i = floor(cells.length/2);
 	var j = floor(cells[0].length/2);
+	if(pattern == 'random') {
+		for (var i = 0; i < cells.length; i++) {
+			for (var j = 0; j < cells[0].length; j++) {
+				if(floor(random(20)) == 1) cells[i][j].setLive(true);
+			}
+		}
+	}
 	if(pattern == 'glider') {
 		cells[i][j].setLive(true);
 		cells[i+1][j].setLive(true);
