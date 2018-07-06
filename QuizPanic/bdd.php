@@ -9,6 +9,6 @@ $db->set_charset("utf8");
 
 // Check connection
 if (mysqli_connect_errno()) {
-   echo "Erreur de connexion à la base de données: " . mysqli_connect_error();
+   echo "Erreur de connexion a la base de données: " . mysqli_connect_error();
 }
 ?>
