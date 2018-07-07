@@ -1,0 +1,83 @@
+@import "https://use.fontawesome.com/releases/v5.0.7/css/all.css";
+
+.title {
+   font-size: 22vmin;
+   color: rgb(250, 255, 255);
+   text-shadow: 0 1px 0 #ccc,
+   0 2px 0 #c9c9c9,
+   0 3px 0 #bbb,
+   0 4px 0 #b9b9b9,
+   0 5px 0 #aaa,
+   0 6px 1px rgba(0,0,0,.1),
+   0 0 5px rgba(0,0,0,.1),
+   0 1px 3px rgba(0,0,0,.3),
+   0 3px 5px rgba(0,0,0,.2),
+   0 5px 10px rgba(0,0,0,.25),
+   0 10px 10px rgba(0,0,0,.2),
+   0 20px 20px rgba(0,0,0,.15);
+}
+.typer {
+   display: none;
+}
+.return {
+   font-size: 9vmin;
+   color: rgb(250, 255, 255);
+   visibility: hidden;
+}
+
+.caret {
+   color: rgb(255, 255, 255);
+   font-size: 16.5vmin;
+   padding-left: 0px !important;
+}
+
+.col-12 {
+   display: inline-flex;
+}
+.container-fluid > .row {
+   height: 100vh;
+}
+
+#slide1 {
+   background: rgb(30, 30, 40) center 0 no-repeat fixed;
+}
+#slide3 {
+   background: rgb(40, 30, 30) center 0 no-repeat fixed;
+}
+
+
+#window-info {
+   padding: 0 !important;
+   position: fixed !important;
+   width: auto !important;
+   height: auto !important;
+   top: 0;
+   right: 0;
+}
+
+#window-info div {
+   width: 1.5vw;
+   height: 1.5vw;
+   margin: 0.75vw 0.5vw;
+   display: inline-block;
+   padding-top: 0.1vw;
+   text-align: center;
+   border-radius: 1vw;
+   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.04);
+}
+#window-info div:last-child {
+   margin-right: 1vw;
+}
+#window-info i {
+   color: rgba(0, 0, 0, 0.4);
+   visibility: hidden;
+}
+#window-reduce {
+   background-color: green;
+}
+#window-resize {
+   background-color: orange;
+}
+#window-close {
+   background-color: red;
+}
