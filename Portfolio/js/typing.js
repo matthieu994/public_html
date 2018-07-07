@@ -1,9 +1,15 @@
+var portfolio = ["Portfolio", "Présentation", "Parcours", "Réalisations"];
 var prevTitle;
 var prevText;
 var interval;
 
 function type(title, speed, chances) {
-   if(prevTitle) prevTitle.text(prevText);
+   if(prevTitle) {
+      prevTitle.text(prevText);
+      if(prevTitle.parent().parent().find('.return').css('visibility') == "hidden") {
+         prevTitle.parent().parent().find('.return').css('visibility', 'visible');
+      }
+   }
    clearInterval(interval);
 
    var i = 0;
@@ -12,11 +18,19 @@ function type(title, speed, chances) {
    prevTitle = title;
    title.text('');
 
+   var error = false;
+
    interval = setInterval(function () {
       if(i < text.length) {
-         if (Math.random() < chances) {
+         if(error) {
             title.text(title.text().substr(0, title.text().length-1));
             i--;
+            error = false;
+         }
+         else if (Math.random() < chances) {
+            title.text(title.text() + "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random()*"abcdefghijklmnopqrstuvwxyz".length)));
+            i++;
+            error = true;
          } else {
             title.text(title.text() + text.charAt(i));
             i++;
@@ -26,7 +40,7 @@ function type(title, speed, chances) {
          if(title.parent().parent().find('.return').css('visibility') == "hidden") {
             setTimeout(function () {
                title.parent().parent().find('.return').css('visibility', 'visible');
-               type(title.parent().parent().find('.return'), 20, 0);
+               type(title.parent().parent().find('.return'), 10, 0);
             }, 200);
          }
       }
@@ -49,7 +63,6 @@ setInterval(function () {
 }, 500);
 
 /* Portfolio data */
-var portfolio = ["Portfolio", "Présentation", "Réalisations"];
 $(portfolio).each(function(index, value) {
    var slide = $('<div>').attr('class', 'row d-block').attr('id', 'slide'+(index+1));
    slide.append($('<div>').attr('class', 'col-12'));
@@ -80,3 +93,59 @@ $(window).scroll(function() {
       }
    }
 });
+
+
+
+
+/* Locked scroll */
+var isScrolling = true;
+var currentSlide = (Math.floor($(window).scrollTop() / ($(document).height() / portfolio.length)));
+$('html, body').animate({
+   scrollTop: $(document).height()/portfolio.length * currentSlide
+}, 500, function () {
+   isScrolling = false;
+});
+
+var prevPos = $(window).scrollTop();
+$(window).scroll(function() {
+   if(isScrolling) return;
+   currentSlide = Math.floor($(window).scrollTop() / ($(document).height() / portfolio.length));
+   if(prevPos < $(window).scrollTop() && currentSlide < portfolio.length) { //Scroll down
+      isScrolling = true;
+      $('html, body').animate({
+         scrollTop: $(document).height()/portfolio.length * (currentSlide + 1)
+      }, 500, function () {
+         isScrolling = false;
+         prevPos = $(window).scrollTop();
+      });
+      showScroll(currentSlide+1);
+   }
+   else if (prevPos > $(window).scrollTop()) { //Scroll up
+      isScrolling = true;
+      $('html, body').animate({
+         scrollTop: $(document).height()/portfolio.length * currentSlide
+      }, 500, function () {
+         isScrolling = false;
+         prevPos = $(window).scrollTop();
+      });
+      showScroll(currentSlide);
+   }
+});
+
+$(document).ready(function() {
+   for (var i = 0; i < portfolio.length; i++) {
+      $('#scrollShow').append($('<div>'));
+   }
+   showScroll(currentSlide);
+});
+
+function showScroll(index) {
+   $('#scrollShow').children().each(function() {
+      $(this).animate({
+         backgroundColor: 'transparent'
+      }, 200);
+   });
+   $('#scrollShow').children().eq(index).animate({
+      backgroundColor: 'white'
+   }, 200);
+}
