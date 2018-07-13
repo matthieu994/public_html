@@ -1,13 +1,15 @@
-var portfolio = ["Portfolio", "Présentation", "Parcours", "Réalisations"];
+var portfolio = ["Portfolio", "Présentation", "Réalisations", "Contact"];
 var prevTitle;
 var prevText;
 var interval;
 
 function type(title, speed, chances) {
+   if(title.css('display') != 'none') return;
+
    if(prevTitle) {
       prevTitle.text(prevText);
-      if(prevTitle.parent().parent().find('.return').css('visibility') == "hidden") {
-         prevTitle.parent().parent().find('.return').css('visibility', 'visible');
+      if(prevTitle.parent().parent().find('.return').css('opacity') == 0) {
+         prevTitle.parent().parent().find('.return').animate({opacity: 1}, 100);
       }
    }
    clearInterval(interval);
@@ -16,12 +18,12 @@ function type(title, speed, chances) {
    var text = title.text().trim();
    prevText = text;
    prevTitle = title;
-   title.text('');
+   title.show().text('');
 
    var error = false;
 
    interval = setInterval(function () {
-      if(i < text.length) {
+      if(i < text.length || error) {
          if(error) {
             title.text(title.text().substr(0, title.text().length-1));
             i--;
@@ -37,21 +39,15 @@ function type(title, speed, chances) {
          }
       } else {
          clearInterval(interval);
-         if(title.parent().parent().find('.return').css('visibility') == "hidden") {
+         if(title.parent().parent().find('.return').css('opacity') == 0) {
             setTimeout(function () {
-               title.parent().parent().find('.return').css('visibility', 'visible');
-               type(title.parent().parent().find('.return'), 10, 0);
+               title.parent().parent().find('.return').animate({opacity: 1}, 100);
             }, 200);
          }
       }
    }, speed);
 }
 
-/* Launch first typer */
-$(document).ready(function() {
-   $('#slide1 .typer').toggle();
-   type($('#slide1 .typer'), 200, 0.1);
-});
 /* Set caret blink */
 setInterval(function () {
    $('.caret').each(function() {
@@ -82,17 +78,17 @@ $(portfolio).each(function(index, value) {
 });
 
 /* Trigger type */
-$(window).scroll(function() {
-   for (var i = 1; i <= portfolio.length; i++) {
-      var slide = $('#slide'+i);
-      var bottom_of_object = slide.offset().top + slide.outerHeight()/2;
-      var bottom_of_window = $(window).scrollTop() + $(window).height();
-      if(bottom_of_window > bottom_of_object && slide.find('.typer').css('display') == 'none') {
-         type(slide.find('.typer'), 200, 0.1);
-         slide.find('.typer').toggle();
-      }
-   }
-});
+// $(window).scroll(function() {
+//    for (var i = 1; i <= portfolio.length; i++) {
+//       var slide = $('#slide'+i);
+//       var bottom_of_object = slide.offset().top + slide.outerHeight()/2;
+//       var bottom_of_window = $(window).scrollTop() + $(window).height();
+//       if(bottom_of_window > bottom_of_object && slide.find('.typer').css('display') == 'none') {
+// type(slide.find('.typer'), 200, 0.1);
+// slide.find('.typer').toggle();
+//       }
+//    }
+// });
 
 
 
@@ -106,32 +102,6 @@ $('html, body').animate({
    isScrolling = false;
 });
 
-var prevPos = $(window).scrollTop();
-$(window).scroll(function() {
-   if(isScrolling) return;
-   currentSlide = Math.floor($(window).scrollTop() / ($(document).height() / portfolio.length));
-   if(prevPos < $(window).scrollTop() && currentSlide < portfolio.length) { //Scroll down
-      isScrolling = true;
-      $('html, body').animate({
-         scrollTop: $(document).height()/portfolio.length * (currentSlide + 1)
-      }, 500, function () {
-         isScrolling = false;
-         prevPos = $(window).scrollTop();
-      });
-      showScroll(currentSlide+1);
-   }
-   else if (prevPos > $(window).scrollTop()) { //Scroll up
-      isScrolling = true;
-      $('html, body').animate({
-         scrollTop: $(document).height()/portfolio.length * currentSlide
-      }, 500, function () {
-         isScrolling = false;
-         prevPos = $(window).scrollTop();
-      });
-      showScroll(currentSlide);
-   }
-});
-
 $(document).ready(function() {
    for (var i = 0; i < portfolio.length; i++) {
       $('#scrollShow').append($('<div>'));
@@ -140,6 +110,9 @@ $(document).ready(function() {
 });
 
 function showScroll(index) {
+   var slide = $('#slide'+(index+1));
+   type(slide.find('.typer'), 200, 0.1);
+
    $('#scrollShow').children().each(function() {
       $(this).animate({
          backgroundColor: 'transparent'
@@ -149,3 +122,43 @@ function showScroll(index) {
       backgroundColor: 'white'
    }, 200);
 }
+
+var prevPos = $(window).scrollTop();
+$(window).scroll(function() {
+   if(isScrolling) return;
+   currentSlide = Math.floor($(window).scrollTop() / ($(document).height() / portfolio.length));
+   if(prevPos < $(window).scrollTop() && currentSlide < portfolio.length) { //Scroll down
+      scroll('scroll', currentSlide + 1);
+   }
+   else if (prevPos > $(window).scrollTop()) { //Scroll up
+      scroll('scroll', currentSlide);
+   }
+});
+
+var prevSize = $(window).height();
+$(window).resize(function() {
+   if(isScrolling) return;
+   currentSlide = Math.floor($(window).scrollTop() / ($(document).height() / portfolio.length));
+   if(prevSize < $(window).height() && currentSlide < portfolio.length) { //Scroll down
+      scroll('resize', currentSlide+1);
+   }
+   else if (prevSize > $(window).height()) { //Scroll up
+      scroll('resize', currentSlide);
+   }
+});
+
+function scroll(type, index) {
+   isScrolling = true;
+   $('html, body').animate({
+      scrollTop: $(document).height()/portfolio.length * index
+   }, 500, function () {
+      isScrolling = false;
+      if(type == 'scroll') prevPos = $(window).scrollTop();
+      else prevSize = $(window).height();
+   });
+   showScroll(index);
+}
+
+$('#scrollShow').on('click', 'div', function() {
+   scroll('scroll', $(this).index());
+});
