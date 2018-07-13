@@ -8,8 +8,8 @@ function type(title, speed, chances) {
 
    if(prevTitle) {
       prevTitle.text(prevText);
-      if(prevTitle.parent().parent().find('.return').css('opacity') == 0) {
-         prevTitle.parent().parent().find('.return').animate({opacity: 1}, 100);
+      if(prevTitle.parent().parent().find('.return').css('display') == 'none') {
+         prevTitle.parent().parent().find('.return').fadeIn();
       }
    }
    clearInterval(interval);
@@ -39,9 +39,9 @@ function type(title, speed, chances) {
          }
       } else {
          clearInterval(interval);
-         if(title.parent().parent().find('.return').css('opacity') == 0) {
+         if(title.parent().parent().find('.return').css('display') == 'none') {
             setTimeout(function () {
-               title.parent().parent().find('.return').animate({opacity: 1}, 100);
+               title.parent().parent().find('.return').fadeIn();
             }, 200);
          }
       }
@@ -71,8 +71,7 @@ $(portfolio).each(function(index, value) {
 
    for (var i = 0; i < portfolio.length; i++) {
       if(i == index) continue;
-      var txt = slide.children('.col').children('h1.return').text()+' ';
-      slide.children('.col').children('h1.return').text(txt+portfolio[i]);
+      slide.children('.col').children('.return').append($('<span>').text(portfolio[i]));
    }
    $('.container-fluid').append(slide);
 });
@@ -151,7 +150,7 @@ function scroll(type, index) {
    isScrolling = true;
    $('html, body').animate({
       scrollTop: $(document).height()/portfolio.length * index
-   }, 500, function () {
+   }, 800, function () {
       isScrolling = false;
       if(type == 'scroll') prevPos = $(window).scrollTop();
       else prevSize = $(window).height();
@@ -161,4 +160,8 @@ function scroll(type, index) {
 
 $('#scrollShow').on('click', 'div', function() {
    scroll('scroll', $(this).index());
+});
+
+$('.return').on('click', 'span', function() {
+   scroll('scroll', portfolio.indexOf($(this).text()));
 });

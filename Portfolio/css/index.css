@@ -1,36 +1,44 @@
 @import "https://use.fontawesome.com/releases/v5.0.7/css/all.css";
+@import "https://fonts.googleapis.com/css?family=Roboto:100,300,800";
 
 ::-webkit-scrollbar {
    display: none;
 }
 
+h1.title:first-child {
+   margin-right: 2vmin;
+   /* text-shadow: unset; */
+}
 .title {
+   font-family: 'Roboto', sans-serif;
    font-size: 15vmin;
+   font-weight: 800;
+   letter-spacing: 0.5vmin;
    color: rgb(250, 255, 255);
-   text-shadow: 0 1px 0 #ccc,
-   0 2px 0 #c9c9c9,
-   0 3px 0 #bbb,
-   0 4px 0 #b9b9b9,
-   0 5px 0 #aaa,
-   0 6px 1px rgba(0,0,0,.1),
-   0 0 5px rgba(0,0,0,.1),
-   0 1px 3px rgba(0,0,0,.3),
-   0 3px 5px rgba(0,0,0,.2),
-   0 5px 10px rgba(0,0,0,.25),
-   0 10px 10px rgba(0,0,0,.2),
-   0 20px 20px rgba(0,0,0,.15);
+   text-shadow:
+   0 0.25vmin 0 #ccc,
+   0 0.5vmin 0 #c9c9c9;
 }
 .typer {
    display: none;
 }
 .return {
+   font-family: 'Roboto', sans-serif;
    font-size: 8vmin;
+   font-weight: 100;
    color: rgb(250, 255, 255);
-   opacity: 0;
+   display: none;
+}
+.return span {
+   margin-right: 4vmin;
+   cursor: pointer;
+}
+.return span:hover {
+   border-bottom: 2px solid rgb(255, 255, 255);
 }
 
 .caret {
-   font-size: 11.5vmin;
+   font-size: 12vmin;
    color: rgb(255, 255, 255);
    padding-left: 0px !important;
 }
