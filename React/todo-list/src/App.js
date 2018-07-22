@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Welcome from './Welcome';
+import TodoList from './Todo/TodoList';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <Welcome name="Jackson"/>
+      <TodoList />
     );
   }
 }
