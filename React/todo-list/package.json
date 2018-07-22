@@ -2,7 +2,7 @@
   "name": "todo-list",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://localhost/React/todo-list",
+  "homepage": "http://matthieu994.github.io/todo-list",
   "dependencies": {
     "ajv": "^6.5.2",
     "gh-pages": "^1.2.0",
