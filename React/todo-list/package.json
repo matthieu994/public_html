@@ -2,6 +2,7 @@
   "name": "todo-list",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://localhost/React/todo-list/build/",
   "dependencies": {
     "ajv": "^6.5.2",
     "react": "^16.4.1",
