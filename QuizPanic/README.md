@@ -1,8 +1,8 @@
-# QuizPanic EVOLVED
+# **QuizPanic EVOLVED**
 
 Projet de fin d'année en web, dans le cadre de ma 1ere année de DUT Informatique à l'IUT de Sénart.
 
-# Jeu
+## Jeu
 - Création de questions et de catégories
 - Questions locales ou partagées
 - Lobby avec parties privées ou publiques
