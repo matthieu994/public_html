@@ -1,6 +1,6 @@
 # **QuizPanic EVOLVED**
 
-Projet de fin d'année en web, dans le cadre de ma 1ere année de DUT Informatique à l'IUT de Sénart.
+Projet de fin d'année en web, dans le cadre de ma 1ère année de DUT Informatique à l'IUT de Sénart.
 
 ## Jeu
 - Création de questions et de catégories
